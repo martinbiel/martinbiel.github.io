@@ -1,0 +1,28 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            Martin Biel
+tagline:          'Personal webpage'
+description:      '<p> Ph.D Student</p> <p> Department of Automatic Control </p> <p> KTH Royal Institute of Technology </p>'
+url:              localhost:4000
+baseurl:          /
+
+author:
+  name:           'Martin Biel'
+
+paginate:         5
+
+# Custom vars
+version:          2.1.0
+
+gems:		  [jekyll-paginate, jekyll-gist]
+
+collections:
+    publications:
+        output: true
+    teachingmaterial:
