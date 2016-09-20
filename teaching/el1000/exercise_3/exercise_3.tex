@@ -5,13 +5,28 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{url,graphicx,tabularx,array,geometry,color,float}
+\usepackage[colorinlistoftodos,prependcaption,textsize=small]{todonotes}
+\usepackage{url,graphicx,tabularx,array,geometry,color,float,placeins}
 \setlength{\parskip}{1ex} %--skip lines between paragraphs
 \setlength{\parindent}{0pt} %--don't indent paragraphs
 %\setcounter{secnumdepth}0}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, 3d, decorations}
+
+\tikzstyle{block} = [draw, rectangle, thick, minimum height=3em, minimum width=6em, align=center, text width=2cm, top color=white, bottom color=white!85!black]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{tmp} = [coordinate]
+\tikzstyle{sum} = [draw, circle, node distance=1cm]
+\tikzstyle{wire} = [->,thick]
+\tikzstyle{lab} = []
+\tikzstyle{laba} = [lab, label distance=0cm]
+\tikzstyle{labb} = [lab, label distance=0.5em]
+\tikzstyle{split} = [fill,black,circle,inner sep=0.03cm]
 
 \newcommand{\sspan}[1]{\mathrm{span}\left\{#1\right\}}
 \newcommand{\ima}[1]{\mathrm{Im}\; #1}
+\newcommand{\qline}{\hrule \vspace*{10pt}}
 
 %\linespread{2} %-- Uncomment for Double Space
 \begin{document}
@@ -23,7 +38,170 @@
 
 \maketitle
 
-\section*{Introduktion}
-nurå
+\section*{Repetition}
+
+\begin{itemize}
+\item \textbf{Återkopplat system} \\
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (system) {$G(s)$};
+\node [block, left of=system, node distance=4cm] (reg) {$F(s)$};
+\node [split, right of=system] (split) {};
+\node [sum, left of=reg, node distance=3cm] (sum) {};
+\node [tmp, below of=reg] (tmp){};
+
+\draw [wire] ++(-9,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.45, right, align=center, label={[laba]below:$y_{ref}(t)$}] {};
+\draw [wire] (sum) -- (reg) node[pos=0.45, right, align=center, label={[laba]below:$e(t)$}] {};
+\draw [wire] (system) -- ++(4,0) node[pos=0.45, right, align=center, label={[laba]below:$y(t)$}] {};
+\draw [wire] (reg) -- (system) node[pos=0.45, right, align=center, label={[laba]below:$u(t)$}] {};
+\draw [wire] ++(0,2) -- (system) node[pos=0.25, right, align=center, label={right:$v(t)$}] {};
+\draw [wire] (split) |- (tmp) -| node[pos=0.99, right] {$-$} (sum);
+\end{tikzpicture}
+
+\textbf{Reglerfelet:} $E(s) = Y(s) - Y_{ref}(s)$ \\
+\textbf{Regulator:} $F(s)$ \\
+
+\item \textbf{Öppna systemet:} $G_0 (s) = F(s)G(s)$
+\item \textbf{Slutna systemet:} $G_c (s) = \dfrac{G_0 (s)}{1 + G_0 (s)}$
+\item \textbf{PID-Regulator:} $F_{PID}(s) = K_P + \dfrac{K_I}{s} + K_D s$
+\end{itemize}
+
+\section*{Andra ordningens system}
+
+\begin{equation*}
+  G(s) = \frac{b}{s^2 + a_1 s + a_2}
+\end{equation*}
+Inför: \\
+\begin{align*}
+  \omega_0 &= \sqrt{a_2} \text{ - Egenfrekvens} \\
+  \zeta &= \frac{a_1}{2\sqrt{a_2}} \text{ - Relativ dämpning} \\
+  K &= \frac{b}{a_2} \text{ - förstärkning}
+\end{align*}
+\begin{equation*}
+  \Rightarrow G(s) = \frac{K\omega_0^2}{s^2 + 2\zeta \omega_0s + \omega_0^2}
+\end{equation*}
+Identifiera systemets poler
+\begin{equation*}
+  s^* = -\zeta\omega_0 \pm \omega\sqrt{\zeta^2-1} = -\zeta\omega_0 \pm i \omega\sqrt{1 - \zeta^2}
+\end{equation*}
+Notera att vi får komplexkonjugerade poler då $\zeta < 1$. \\
+Kom ihåg att polernas avstånd från origo påverkar systemets hastighet och att storleken på imaginärdelen påverkar systemets svängighet/dämpning. \\
+
+Identifiera belopp och argument: \\
+\begin{align*}
+|s^*| &= \sqrt{(\zeta\omega)^2 + \omega^2(1-\zeta^")} = \omega_0 \\
+\arg{s^*} &= \phi \text{, där } \cos{\phi} = \frac{\zeta\omega}{\omega} = \zeta 
+\end{align*}
+$\omega_0$ relaterar således till systemets hastighet då dess värde avgör polernas avstånd från origo. Kortfattat gäller:
+\begin{itemize}
+\item $\omega_0$ stor - snabbt system
+\item $\omega_0$ liten - långsamt system
+\end{itemize}
+$\zeta$ relaterar till systemets dämpning då dess värde avgör hur stor imaginärdel polerna får. Kortfattat gäller (för $\zeta < 1$:
+\begin{itemize}
+\item $\zeta$ stor - svagt dämpat systemet (svängigt)
+\item $\zeta$ liten - start dämpat system (inte svängigt)
+\end{itemize}
+För $\zeta > 1$ erhålls ett starkt dämpat system som beter sig likt ett första ordningens system (fast med två exponentialtermer). För $\zeta = 1$ erhålls ett kritiskt dämpat system med överföringsfunktion
+\[G(s) = \frac{K}{(\frac{s}{w_0} + 1)^2}\]
+Dubbelpolen i $-\omega_0$ ger för $\omega_0 > 0$ upphov till ett system som rör sig tillbaka till jämvikt fortast möjligt för ett andra ordningens system.
+
+\section*{Uppgift 3.2}
+Givet från uppgift 3.1 är det slutna systemet
+\begin{equation*}
+  H(s) = \frac{2F(s)}{s(1+5s)+2F(s)} H_{ref}(s)
+\end{equation*}
+\subsection*{a)}
+Vilka poler får systemet ifall $F(s)$ är en P-regulator med $K_P = 1$?
+\qline
+Nämnarpolynomet för det slutna systemet ges av
+\[s(1+5s) + 2F(s) = 5s^2 + s + 2\]
+Nollställena till detta polynom ges av
+\[s^* = -0.1 \pm 0.62i\]
+Stegsvaret för det resulterande systemet är återgivet i Figur \ref{fig:32stepP}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{3_2stepP}
+  \caption{Stegsvar för systemet då P-reglering används}
+\label{fig:32stepP}
+\end{figure}
+\FloatBarrier
+Notera att det inte förekommer något stationärt fel, även fast vi inte inkluderande en integrator i $F(s)$. Ifall det nominella systemet $G(s)$ (utan reglering) inehåller en ren integrering så erhålls inget stationärt fel för det slutna systemet. Det kvittar alltså ifall integratorn är en del av regulatorn eller det givna systemet. För att se varför, undersök hur referenssignalen $H_{ref}(s)$ överförs till felet $E(s)$: \\
+\begin{align*}
+  E(s) &= H_{ref}(s) - H(s) = H_{ref}(s) - G(s)U(s) = H_{ref}(s) - F(s)G(s)E(s) \\
+  \Rightarrow E(s) &= \frac{1}{1+F(s)G(s)}H_{ref}(s)
+\end{align*}
+Använd slutvärdessatsen då $H_{ref}(s)$ är ett stegsvar:
+\begin{equation*}
+  \lim_{t \to \infty} e(t) = \lim_{s \to 0}s \cdot \frac{1}{1 + F(s)G(s)} \cdot \frac{1}{s} = \lim_{s \to 0} \frac{1}{1 + F(s)G(s)}
+\end{equation*}
+Härav följar att ifall antingen $F(s) \to \infty$ eller $G(s) \to \infty$ då $s \to 0$ så kommer $e(t) \to 0$ då $t \to \infty$. Således räcker det med att en ren integrering förekommer i antingen $F(s)$ eller $G(s)$ för att det stationära felet ska gå mot noll.
+
+\subsection*{b)}
+Använd en PD-regulator så att den relativa dämpningen blir större än $\frac{1}{\sqrt{2}}$.
+\qline
+Nu är $F(s) = K_P + K_D s$. Nämnarpolynomet ges nu istället av
+\begin{equation*}
+  s(1+5s)+2(K_P + K_D s) = s^2 + \frac{1+2K_D}{5}s + \frac{2K_P}{5}
+\end{equation*}
+Identifiera egenfrekvensen och den relativa dämpningen ($s^2 + 2\zeta\omega_0 s + \omega_0^2$):
+\begin{align*}
+  \omega_0 &= \sqrt{\frac{2K_P}{5}} \\
+  \zeta &= \frac{\frac{1+K_D}{5}}{2\sqrt{\frac{2K_P}{5}}} = \frac{1+2K_D}{2\sqrt{10K_P}}
+\end{align*}
+Notera att $K_D$ inte påverkar $\omega_0$. Det är således möjligt att först fixera $K_P$ så att en önskad snabbhet uppnås och sedan välja $K_D$ för att reducera överslängen i stegsvaret. Antag att $K_P = 1$, vilket här bara är ett godtyckligt val.
+\begin{equation*}
+  \frac{1+2K_D}{2\sqrt{10}} > \frac{1}{\sqrt{2}} \Leftrightarrow K_D > \frac{\sqrt{20} - 1}{2} \approx 1.7
+\end{equation*}
+Med de valda parameterna $K_P = 1$ och $K_D = 1.7$ erhålls stegsvaret i Figur \ref{fig:32stepPD}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{3_2stepPD}
+  \caption{Stegsvar för systemet då PD-reglering används}
+  \label{fig:32stepPD}
+\end{figure}
+Jämfört med Figur \ref{fig:32stepP} är det tydligt att systemet nu blivit mer dämpat.
+
+\section*{Rotort}
+Diagram över det \emph{slutna} systemets poler som funktion av någon parameter $K$ (ofta gäller $0 \leq K \leq \infty$.
+
+\textbf{Rita rotort:}
+\begin{enumerate}
+\item Ta fram $G_c(s)$
+\item Skriv nämnarpolynomet på formen
+\[P(s) + KQ(s)\]
+Där $n = \grad{P} \geq \grad{Q} = m$
+\item Hitta startpunkter till rotorten
+\[K = 0 \Leftrightarrow P(s) = 0\]
+Ges av nollställen till $P(s)$ (finns $n$ stycken)
+\item Hitta ändpunkter till rotorten
+\[K \to \infty \Leftrightarrow Q(s) \to 0\]
+Motsvarar nollställena till $Q(s)$ (finns $m$ stycken)
+\item Bestäm antal asymptoter \\
+Ges av $n-m$
+\item Bestäm skärningspunkt (för asympoterna) \\
+Ges av 
+\[\frac{1}{n-m}(\sum \text{Startpunkter} - \sum \text{Ändpunkter}\right)\]
+Notera at startpunkterna och ändpunkternas \emph{värden} summeras, inte deras antal.
+\item Hitta asymptoternas riktningar \\
+Ges av
+\[\frac{\pi}{n-m} + 2k\frac{\pi}{n-m}, k = 0,1,2,\cdots. n-m-1\]
+\item Bestäm eventuell skärning med Im-axeln \\
+Motsvarar att lösa $P(i\omega) + KQ(i\omega) = 0$
+\item Bestäm de delar av Re-axeln som tillhör Rotorten. Minnesregel är att punkter på Re-axeln med ett udda antal start- och ändpunkter till höger tillhör rotorten.
+\item Rita rotort
+\end{enumerate}
+En kommentar till punkt 9: \\
+Vid ett nollställe till nämnarpolynomet gäller $P(s) + KQ(s) = 0$ vilket är ekvivalent med
+\[\frac{P(s)}{Q(s)} = -K\]
+och då vi antar att $K > 0$ implicerar uttrycket ovan att kvoten mellan $P(s)$ och $Q(s)$ måste vara negativ för att tillhöra rotorten. Ifall polynomen faktoriseras 
+\[\frac{P(s)}{Q(s)} = \frac{(s-p_1)(s-p_2)\cdots(s^2+\alpha_1s + \alpha_2)\cdots}{(s-q_1)(s-q_2)\cdots(s^2+\gamma_1s+\gamma_2)\cdots} \]
+där komplexkonjugerande nollställen ger upphov till andragradsfaktorer. Det är nu tydligt att 
+\[\frac{P(s)}{Q(s)}\]
+är positiv för $s>>0$ och byter inte tecken då $s$ minskar förrän en startpunkt ($s = p_i$) eller ändpunkt ($s = q_i$) passeras. Således kommer kvoten vara negativ för alla punkter på Re-axeln som ligger till vänster av ett udda antal start- eller ändpunkter.
+
+\section*{Uppgift 3.6}
+
+
 
 \end{document}
