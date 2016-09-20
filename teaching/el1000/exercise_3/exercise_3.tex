@@ -13,7 +13,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes, arrows, 3d, decorations}
 
-\tikzstyle{block} = [draw, rectangle, thick, minimum height=3em, minimum width=6em, align=center, text width=2cm, top color=white, bottom color=white!85!black]
+\tikzstyle{block} = [draw, rectangle, thick, minimum height=3em, minimum width=2em, align=center, text width=1.5cm, top color=white, bottom color=white!85!black]
 \tikzstyle{input} = [coordinate]
 \tikzstyle{output} = [coordinate]
 \tikzstyle{tmp} = [coordinate]
@@ -170,7 +170,7 @@ Diagram över det \emph{slutna} systemets poler som funktion av någon parameter
 \item Ta fram $G_c(s)$
 \item Skriv nämnarpolynomet på formen
 \[P(s) + KQ(s)\]
-Där $n = \grad{P} \geq \grad{Q} = m$
+Där $n = \mathrm{grad}{P} \geq \mathrm{grad}{Q} = m$
 \item Hitta startpunkter till rotorten
 \[K = 0 \Leftrightarrow P(s) = 0\]
 Ges av nollställen till $P(s)$ (finns $n$ stycken)
@@ -181,7 +181,7 @@ Motsvarar nollställena till $Q(s)$ (finns $m$ stycken)
 Ges av $n-m$
 \item Bestäm skärningspunkt (för asympoterna) \\
 Ges av 
-\[\frac{1}{n-m}(\sum \text{Startpunkter} - \sum \text{Ändpunkter}\right)\]
+\[\frac{1}{n-m}\left(\sum \text{Startpunkter} - \sum \text{Ändpunkter}\right)\]
 Notera at startpunkterna och ändpunkternas \emph{värden} summeras, inte deras antal.
 \item Hitta asymptoternas riktningar \\
 Ges av
@@ -198,10 +198,183 @@ och då vi antar att $K > 0$ implicerar uttrycket ovan att kvoten mellan $P(s)$ 
 \[\frac{P(s)}{Q(s)} = \frac{(s-p_1)(s-p_2)\cdots(s^2+\alpha_1s + \alpha_2)\cdots}{(s-q_1)(s-q_2)\cdots(s^2+\gamma_1s+\gamma_2)\cdots} \]
 där komplexkonjugerande nollställen ger upphov till andragradsfaktorer. Det är nu tydligt att 
 \[\frac{P(s)}{Q(s)}\]
-är positiv för $s>>0$ och byter inte tecken då $s$ minskar förrän en startpunkt ($s = p_i$) eller ändpunkt ($s = q_i$) passeras. Således kommer kvoten vara negativ för alla punkter på Re-axeln som ligger till vänster av ett udda antal start- eller ändpunkter.
+är positiv för $s >> 0$ och byter inte tecken då $s$ minskar förrän en startpunkt ($s = p_i$) eller ändpunkt ($s = q_i$) passeras. Således kommer kvoten vara negativ för alla punkter på Re-axeln som ligger till vänster av ett udda antal start- eller ändpunkter.\\\\
+Notera att rotorten är entydig för varje $K$. En uppsättning poler motsvarar ett unikt $K$. Således kan en specifik punkt bara passeras en gång då rotorten ritas.
 
 \section*{Uppgift 3.6}
 
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (int) {$\dfrac{1}{s}$};
+\node [block, left of=int, node distance=4cm] (dc) {$\dfrac{\kappa}{1+s\tau}$};
+\node [block, left of=dc, node distance=3cm] (K) {$K$};
+\node [block, below of=K, node distance=1.5cm, xshift=1.5cm] (a) {$\alpha$};
+\node [split, left of=int] (split1) {};
+\node [split, right of=int] (split2) {};
+\node [sum, left of=K, node distance=3cm] (sum1) {};
+\node [sum, left of=K, node distance=1.5cm] (sum2) {};
+\node [tmp, below of=reg, node distance=2.5cm] (tmp){};
 
+\draw [wire] ++(-12,0) -- node[pos=0.99] {$+$} (sum1) node[pos=0.45, right, align=center, label={[laba]above:$\theta_{ref}(t)$}] {};
+\draw [wire] (sum1) -- node[pos=0.99] {$+$} (sum2);
+\draw [wire] (sum2) -- (K);
+\draw [wire] (int) -- ++(4,0) node[pos=0.45, right, align=center, label={[laba]above:$\theta(t)$}] {};
+\draw [wire] (K) -- (dc);
+\draw [wire] (dc) -- (int) node[pos=0.45, right, align=center, label={[laba]above:$\dot{\theta}(t)$}] {};
+\draw [wire] (split1) |- (a) -| node[pos=0.99, right] {$-$} (sum2);
+\draw [wire] (split2) |- (tmp) -| node[pos=0.99, right] {$-$} (sum1);
+\end{tikzpicture}
+$\tau = 0.5$ \\
+$\kappa = 2$ \\
+\newpage
+Rita rotort med avseende på $K$ för $\alpha = 0$
+\qline
+Följ proceduren ovan.\\
+\textbf{1)} \\
+Gå i blockdiagrammet för att bestämma $G_c(s)$
+\begin{align*}
+  \Theta(s) &= \frac{1}{s}\dot{\Theta}(s) \\
+  \dot{\Theta}(s) &= \frac{2K}{1+0.5s}U(s) \\
+  U(s) &= E(s) - \alpha\dot{\Theta}(s) \\
+  E(s) &= \Theta_{ref}(s) - \Theta (s) \\
+  \Rightarrow \dot{\Theta}(s) &= \frac{2K}{1+0.5s}\left(\Theta_{ref}(s) - \Theta(s) - \alpha\dot{\Theta}(s)\right) \\
+  \Rightarrow \dot{\Theta}(s) &= \frac{\frac{2K}{1+0.5s}}{1 + \frac{2\alpha K}{1+0.5s}}\left(\Theta_{ref}(s) - \Theta(s)\right) = \frac{2K}{1 + 0.5s + 2\alpha K}\left(\Theta_{ref}(s) - \Theta(s)\right) \\
+  \Rightarrow \Theta(s) &= \frac{2K}{s(1+0.5s+2\alpha K)}\left(\Theta_{ref}(s) - \Theta(s)\right) \\
+  \Rightarrow \Theta(s) &= \frac{\frac{2K}{s(1+0.5s+2\alpha K)}}{1 + \frac{2K}{s(1+0.5s+2\alpha K)}}\left(\Theta_{ref}(s) - \Theta(s)\right) = \frac{2K}{0.5s^2 + s + (2\alpha + 2)K}\Theta_{ref}(s)
+\end{align*}
+Överföringsfunktionen för slutna systemet, då $\alpha = 0$ ges således av
+\[\frac{2K}{0.5s^2 + s + 2K}\]
+\textbf{2)} \\
+\begin{align*}
+  P(s) &= 0.5s^2 + s (n = 2) \\
+  Q(s) &= 2 (m = 0)
+\end{align*}
+\textbf{3)} \\
+\begin{align*}
+  P(s) &= 0 \\
+  \Leftrightarrow s(0.5s+1) &= 0 \\
+  \Rightarrow s &= 0, s = -2
+\end{align*}
+Rotorten startar alltså i polerna $s = 0$ och $s = -2$. \\
+\textbf{4)} Rotorten saknar ändpunkter \\
+\textbf{5)} Antalet asymptoter ges av $n-m = 2$. \\
+\textbf{6)} Asymptoternas skärningspunkt ges av
+\[\frac{1}{2}(-2-0) = -1\]
+\textbf{7)} Asymptoternas riktningar ges av $\dfrac{\pi}{2}$, $\dfrac{3\pi}{2}$. \\
+\textbf{8)} 
+\begin{align*}
+  0.5(i\omega)^2 + i\omega + 2K &= 0 \\
+  \Leftrightarrow (-0.5\omega^2 + 2K) + i\omega &= 0
+\end{align*}
+Im-del: $\omega = 0$ \\
+Re-del $\omega = \pm 2\sqrt{K}$ \\
+$\Rightarrow$ enda lösningen är $\omega = 0$ då $K = 0$! Detta är ekvivalent med att rotorten skär imaginär axeln i origo. \\
+\textbf{9)} Alla punkter mellan $-2$ och $0$ tillhör rotorten då de ligger till vänster om \emph{en} startpunkt. Inga andra delar av Re-axeln tillhör rotorten\\\\
+Eftersom rotorten är entydig tvingas polerna mot varandra (från $-2$ och $0$) tills de möts på mitten i $-1$. Där tvingas polerna rakt ut (Riktningar: $90^{\circ}$ och $270^{\circ}$)  i komplexa talplanet. Rotorten visas i Figur \ref{fig:36rlocus}. I detta triviala fall kan polerna beräknas explicit som funktion av $K$:
+\[s^* = -1 \pm \sqrt{1-4K}\]
+Lösningen ger intuition för rotortens utseende. För $K < 1/4$ erhålls reella poler mellan $-2$ och $0$. Då $K > 1/4$ erhålls komplex konjugerande punkter som utgår från skärningspunkten $-1$ och rör rakt ut i komplexa talplanet (en pol rakt upp, den andra rakt ner) för ökande $K$.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{3_6rlocus}
+  \caption{Rotort med avseende på $K$ då $\alpha = 0$.}
+  \label{fig:36rlocus}
+\end{figure}
+\FloatBarrier
+
+\section*{Uppgift 3.7}
+
+Vi betraktar en luftfarkost som flyger med konstant pitch $\theta$, se Figur \ref{fig:37plane}. \\
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{3_7plane}
+  \caption{Flygfarkost}
+  \label{fig:37plane}
+\end{figure}
+\FloatBarrier
+Låt
+\[\omega(t) = \dot{\theta}(t)\]
+Nära ett givet jämviktsläge $\theta_0$ gäller
+\[\Omega (s) = \frac{s+1}{(s+4)(s-3)}\Delta (s) := G_2(s)\Delta(s)\]
+Rodret drivs via
+\[\Delta (s) = \frac{10}{s + 10}\Delta_{ref}(s) := G_1(s) \Delta_{ref}(s)\]
+Alltså har vi följande överföringsfunktion från efterfrågat roderutslag till pitch-hastighet:
+\[\Omega(s) = G_2(s)G_1(s)\Delta_{ref}(s) = \frac{10(s+1)}{(s+10)(s+4)(s-3)}\Delta_{ref}(s)\]
+
+\subsection*{a)}
+Vad händer med $\omega$ ifall vi begär ett konstant roderutslag $\delta_{ref}$?
+\qline
+Det nominella systemet är instabilt (pol i $s = 3$). Således gäller att $\omega(t) \to \infty$ ifall vi applicerar en konstant stegsignal.
+
+\subsection*{b)}
+$\omega$ mäts och används i en negativ återkoppling för att styra systemet med en P-regulator ($\Delta_{ref} = K(\Omega_{ref}(s) - \Omega(s))$. Rita rotort för det slutna systemet. För vilka $K$ är det slutna systemet stabilt?
+\qline
+Som tidigare följer vi proceduren steg för steg. \\
+\textbf{1)}
+\begin{align*}
+  \Omega (s) &= G_2(s)G_1(s)K(\Omega_{ref}(s) - \Omega(s)) \\
+  \Rightarrow \Omega(s) &= \frac{KG_2(s)G_1(s)}{1 + KG_2(s)G_1(s)}\Omega_{ref}(s) = \frac{10K(s+1)}{(s+10)(s+4)(s-3) + 10K(s+1)}\Omega_{ref}(s) \\
+\end{align*}
+\textbf{2)}
+\begin{align*}
+  P(s) &= (s+10)(s+4)(s-3) (n = 3) \\
+  Q(s) &= 10(s+1) (m = 1)
+\end{align*}
+\textbf{3)}
+\begin{align*}
+  P(s) &= 0 \\
+  \Rightarrow s &= -10, s = -4, s = 3
+\end{align*}
+Rotorten startar alltså i polerna $s = -10$, $s = -4$ och $s = 3$. \\
+\textbf{4)}
+\begin{align*}
+  Q(s) &= 0 \\
+  \Rightarrow s &= -1
+\end{align*}
+Rotorten slutar alltså i polen $s = -1$ \\
+\textbf{5)} Antalet asymptoter ges av $3 - 1 = 2$ \\
+\textbf{6)} Skärningspunkten ges av
+\[\frac{1}{3-1}(-10-4+3 - (-1)) = -5\]
+\textbf{7)} Asymptoternas riktningar ges av $\frac{\pi}{2}$, $\frac{3\pi}{2}$. \\
+\textbf{8)} 
+\begin{align*}
+  P(i\omega) + KQ(i\omega) &= 0 \\
+  \Leftrightarrow (i\omega+10)(i\omega+4)(i\omega-3) + 10K(i\omega+1) &= 0 \\
+  \Leftrightarrow (-\omega^2+14i\omega+40)(i\omega-3) + 10K(i\omega+1) &= 0 \\
+  \Leftrightarrow -i\omega^3+3\omega^2-14i\omega-42i\omega + 40i\omega-120 + 10K(i\omega+1) &= 0 \\
+  \Leftrightarrow (-\omega^2 + 10K - 2)\omega i + (-11\omega^2 + 10K - 120) &= 0
+\end{align*}
+Im-del: $-(\omega^2-10K+2)\omega = 0$ \\
+Re-del: $11\omega^2 - 10K + 120 = 0$ \\
+Im-delen har lösningarna
+\[\omega = 0, \omega = \sqrt{10K-2}\]
+Re-delen har lösningen (för $\omega \neq 0$)
+\[\omega = \frac{\sqrt{10K-120}}{11} \neq \sqrt{10K-2}\]
+$\Rightarrow$ enda lösningen är $\omega = 0$ vilket ger (insättning $\omega = 0$ i Re-delen)
+\[K = \frac{120}{10} = 12\]
+\textbf{9)} \\
+Punkter mellan $-1$ och $3$ tillhör rotorten (vänster om en startpunkt). \\
+Punkter mellan $-10$ och $-4$ tillhör rotorten (vänster om två startpunkter och en ändpunkt) \\\\
+Polen som börjar i $s = 3$ slutar eventuellt i ändpunkten $s = -1$ när $K \to \infty$. Polerna som börjar i $s = -10$ och $s = -4$ tvingas mot varandra då $K$ växer, och tvingas ut i komplexa talplanet då de möts i mitten (i punkten $s = -7$). Då $K \to \infty$ rör sig det komplexa polparet ut mot asymptoterna (som har skärningspunkt $5$). Den resulterande rotorten visas i Figur \ref{fig:37rlocus}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{3_7rlocus}
+  \caption{Rotort med avseende på $K$}
+  \label{fig:37rlocus}
+\end{figure}
+Skärningen med Im-axeln sker när $K = 12$. Polerna som eventuellt rör sig ut i det komplexa talplanet har negativ realdel för samtilga $K$. Således befinner sig alla poler i VHP för $K > 12$ vilket därför blir vårat stabilitetskriterium. \\
+\textbf{Svar:} Systemet är stabilt när $K > 12$.
+
+\subsection*{c)}
+Finns det något värde på $K$ där systemet är stabilt och alla poler befinner sig på realaxeln?\vspace*{2pt}
+\qline
+Beräkna först det $K$ där två poler börjar tvingas ut i det komplexa talplanet, vilket motsvarar punkten $s = -7$. Insättning ger:
+\begin{align*}
+  P(-7) + KQ(-7) &= 0 \\
+  \Leftrightarrow (-7+10)(-7+4)(-7-3) + 10K(-7+1) &= 0 \\
+  \Leftrightarrow 9-&K &= 0 \\
+  \Rightarrow K &= \frac{3}{2} = 1.5
+\end{align*}
+Således får det slutna systemet komplexkonjugerande poler då $K > 1.5$. Eftersom systemet blir stabilt först för $K > 12$ är det omöjligt att erhålla ett stabilt system med realvärda poler.\\
+\textbf{Svar:} Det finns inget $K$ för vilket systemet är stabilt och har enbart realvärda poler. \\\\
+Den sista uppgiften exemplifierar en begränsning med P-regulatorn. Det är ibland omöjligt att erhålla ett stabilt slutet system utan att även införa oscillationer i utsignalen. Med hjälp av rotorten kan vi identifiera hur det $K$ värde som krävs för att erhålla samtliga poler i VHP (för stabilitet) även tvingar ut vissa poler i det komplexa talplanet (vilket ger upphov till svängningar).
 
 \end{document}

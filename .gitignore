@@ -1,6 +1,6 @@
 # Autosave #
 ##################
-~
+*~
 
 # Compiled source #
 ###################
@@ -60,6 +60,7 @@ _site
 
 # LaTeX #
 ####################
-.aux
-.log
-.el
+*.aux
+*.log
+*.el
+*_region_.tex
