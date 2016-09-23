@@ -9,6 +9,7 @@ permalink:        pretty
 title:            Martin Biel
 tagline:          'Personal webpage'
 description:      '<p> Ph.D Student</p> <p> Department of Automatic Control </p> <p> KTH Royal Institute of Technology </p>'
+google_analytics: UA-84669373-1
 url:              localhost:4000
 baseurl:          /
 
