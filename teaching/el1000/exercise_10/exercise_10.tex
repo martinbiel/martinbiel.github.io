@@ -100,7 +100,7 @@ Bestäm dimenion för de styrbara och icke-observerbara underrummen. Bestäm äv
   2 & -6 & 18
 \end{pmatrix}\]
 Första och andra raden är linjärt beroende. Ifall en stryks är de återstående linjärt oberoende.\\
-$\Rightarrow \dim{\sspan{\mathcal{S}}} = 2$.
+$\Rightarrow \dim{(\sspan{\mathcal{S}})} = 2$.
 Det styrbara underrummet spänns upp av två valfria linjärt oberoende kolumner i $\mathcal{S}$:
 \begin{equation*}
   \sspan{\mathcal{S}} = \sspan{
@@ -146,8 +146,8 @@ Ifall vi utför Gauss-elíminering kommer vi kunna svara på båda frågeställn
   \end{array}
 \right)
 \end{equation*}
-$\Rightarrow \dim{\sspan{\mathcal{O}}} = 2, \dim{\ker{\mathcal{O}}} = 1$ \\
-En basvektor för $\ker{\mathcal{O}}$ bestäms genom att införa $x_3 = t, t \in \mathbb{R}$ och substituera.
+$\Rightarrow \dim{(\sspan{\mathcal{O}})} = 2, \dim{(\ker{\mathcal{O}})} = 1$ \\
+En basvektor för $\ker{\mathcal{O}}$ bestäms genom att införa $x_3 = t, t \in \mathbb{R}$ vilket ger $x_2 = -0.5t$ och $x_1 = 0$. Alltså ges nollrummet av
 \[\Rightarrow \ker{\mathcal{O}} = \sspan{
   \begin{pmatrix}
     0 \\
@@ -158,6 +158,301 @@ En basvektor för $\ker{\mathcal{O}}$ bestäms genom att införa $x_3 = t, t \in
 vilket även ger underrummet av icke-observerbara tillstånd.
 
 \subsection*{b)}
+
+\begin{align*}
+  \dot{x} &=
+            \begin{pmatrix}
+              -1 & 0 & 0 \\
+              1 & -2 & 0 \\
+              0 & 0 & -4
+            \end{pmatrix}x +
+                      \begin{pmatrix}
+                        0 \\
+                        4 \\
+                        -2
+                      \end{pmatrix}u \\
+  y &=
+      \begin{pmatrix}
+        0 & 3 & 0
+      \end{pmatrix}x
+\end{align*}
+\qline
+\textbf{Styrbarhet:}
+\[\mathcal{S} =
+\begin{pmatrix}
+  0 & 0 & 0 \\
+  4 & -8 & 16 \\
+  -2 & 8 & -32
+\end{pmatrix}\]
+Första raden faller bort och återstående rader är linjärt oberoende.\\
+$\Rightarrow \dim{(\sspan{\mathcal{S}})} = 2$.
+Det styrbara underrummet spänns upp av två valfria linjärt oberoende kolumner i $\mathcal{S}$:
+\begin{equation*}
+  \sspan{\mathcal{S}} = \sspan{
+    \begin{pmatrix}
+      0 \\
+      4 \\
+      -2
+    \end{pmatrix},
+    \begin{pmatrix}
+      0 \\
+      -8 \\
+      8
+    \end{pmatrix}}
+\end{equation*}
+\textbf{Observerbarhet:}
+\begin{equation*}
+  \mathcal{O} =
+  \begin{pmatrix}
+    0 & 3 & 0 \\
+   3 & -6 & 0 \\
+    -9 & 12 & 0
+  \end{pmatrix}
+\end{equation*}
+Tredje kolumnen faller bort och de återstående är linjärt oberoende. \\
+$\Rightarrow \dim{(\sspan{\mathcal{O}})} = 2, \dim{(\ker{\mathcal{O}})} = 1$. Utför Gauss-eliminering:
+\begin{equation*}
+  \left(
+  \begin{array}{ccc|c}
+    0 & 3 & 0 & 0\\
+    3 & -6 & 0 & 0 \\
+    -9 & 12 & 0 & 0
+  \end{array}\right) ~ 
+\left(
+  \begin{array}{ccc|c}
+    3 & -6 & 0 & 0 \\
+    0 & 3 & 0 & 0 \\
+    0 & -12 & 0 & 0
+  \end{array}
+\right)
+\end{equation*}
+$\Rightarrow x_1 = 0, x_2 = 0$ och $x_3 = t, t \in \mathbb{R}$. \\
+$\Rightarrow \dim{(\ker{\mathcal{O}})} = 1$ \\
+Alltså ges nollrummet av
+\[\Rightarrow \ker{\mathcal{O}} = \sspan{
+  \begin{pmatrix}
+    0 \\
+    0 \\
+    1
+  \end{pmatrix}
+}\]
+vilket även ger underrummet av icke-observerbara tillstånd.
+
+\section*{Uppgift 8.13}
+(FIGUR)
+\subsection*{a)}
+Linjärisera systemet kring $\varphi_1 = \varphi_2 = 0$ när $l = m = g = 1$.
+\qline
+Pendel 1: $\ddot{z}\cos{\varphi_1} + \ddot{\varphi}_1 = \sin{\varphi_1}$ \\
+Pendel 2: $\ddot{z}\cos{\varphi_2} + \alpha\ddot{\varphi}_2 = \sin{\varphi_2}$ \\
+Linjärisering: \\
+Pendel 1: $\ddot{z} + \ddot{\varphi}_1 = \varphi_1$ \\
+Pendel 2: $\ddot{z} + \alpha\ddot{\varphi}_2 = \varphi_2$ \\
+Låt $u = \ddot{z}$ utgöra insignal och inför tillstånden
+\begin{align*}
+x_1 &= \varphi_1 &\Rightarrow \dot{x}_1 &= x_2 \\
+x_2 &= \dot{\varphi}_1 &\Rightarrow \dot{x}_2 &= x_1 - u\\
+x_3 &= \varphi_2 &\Rightarrow \dot{x}_3 &= x_4\\
+x_4 &= \dot{\varphi}_2 &\Rightarrow \dot{x}_4 &= \frac{1}{\alpha}(x_3 - u)
+\end{align*}
+Alltså erhålls
+\[\dot{x} = \begin{pmatrix}
+0 & 1 & 0 & 0 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & \frac{1}{\alpha} & 0
+\end{pmatrix}x + \begin{pmatrix}
+0 \\
+-1 \\
+0 \\
+-\frac{1}{\alpha}
+\end{pmatrix}u \]
+\subsection*{b)}
+För vilka $\alpha$ är systemet styrbart?
+\qline
+Styrbarhetsmatrisen ges av
+\[\mathcal{S} = \begin{pmatrix}
+0 & -1 & 0 & -1 \\
+-1 & 0 & -1 & 0 \\
+0 & -\frac{1}{\alpha} & 0 & -\frac{1}{\alpha^2} \\
+-\frac{1}{\alpha} & 0 & -\frac{1}{\alpha^2} & 0
+\end{pmatrix} \]
+$\mathcal{S}$ är kvadratisk, så vi kan beräkna determinanten för att dra slutsatser om styrbarhet.
+\begin{align*}
+{\mathcal{S}} &= \begin{vmatrix}
+-1 & -1 & 0 \\
+0 & 0 & -\frac{1}{\alpha^2} \\
+-\frac{1}{\alpha} & -\frac{1}{\alpha} & 0
+\end{vmatrix} + \begin{vmatrix}
+-1 & 0 & -1 \\
+0 & -\frac{1}{\alpha} & 0 \\
+-\frac{1}{\alpha} & 0 & -\frac{1}{\alpha^2}
+\end{vmatrix} \\
+&= \frac{1}{\alpha^2}\begin{vmatrix}
+-1 & -1 \\
+-\frac{1}{\alpha} & -\frac{1}{\alpha^2}
+\end{vmatrix} - \begin{vmatrix}
+-\frac{1}{\alpha} & 0 \\
+0 & -\frac{1}{\alpha^2}
+\end{vmatrix} - \begin{vmatrix}
+0 & -\frac{1}{\alpha} \\
+-\frac{1}{\alpha} & 0
+\end{vmatrix} \\
+&= \frac{1}{\alpha^2}\left(\frac{1}{\alpha^2} - \frac{1}{\alpha}\right) - \frac{1}{\alpha^3} + \frac{1}{\alpha^2} \\
+&= \frac{1}{\alpha^2}\left(\frac{1}{\alpha^2} - \frac{2}{\alpha} + 1\right) \\
+&= \frac{1}{\alpha^2}\left(\frac{1}{\alpha} - 1\right)^2 \\
+&= \left(\frac{1-\alpha}{\alpha^2}\right)^2
+\end{align*}
+$\Rightarrow \det{\mathcal{S}} \neq 0$ om $\alpha \neq 1$. \\
+$\Rightarrow$ Systemet är styrbart ifall $\alpha \neq 1$. \\\\
+Fallet $\alpha = 1$ motsvarar ett system där pendlarna är lika långa, vilket resulterar i att  varje insignal ger upphov till samma vinkelförändring $\varphi_1 = \varphi_2$ i båda pendlarna. Således går det inte att uppnå alla tillstånd eftersom det inte är möjligt att nå tillstånd där $\varphi_1 \neq \varphi_2$.\\
+
+\section*{Tillståndsåterkoppling}
+(FIGUR)
+Återkoppla systemets tillstånd istället för utsignalen. Slutna systemet ges av
+\begin{align*}
+\dot{x} &= Ax + B(r-Lx) = (A-BL)x + Br \
+y &= Cx
+\end{align*}
+$\Rightarrow$ Slutna systemet får poler motsvarande egenvärdena till $A-BL$ (istället för $A$). \\
+$\Rightarrow$ Vi kan påverka polerna med $L$!\\
+
+\textbf{Sats} (s.183) \\
+Ifall systemet är styrbart kan polerna (egenvärdena) till $A-BL$ placeras godtyckligt.\\
+
+Ifall systemet inte är styrbart kan det ändå vara möjligt att placera polerna önskvärt.
+
+\section*{Tillståndsobservatör}
+Om inte tillstånden är mätbara kan en observatör användas för att uppskatta $x(t)$ från $y(t)$.
+
+(FIGUR)
+Observatören är också ett dynamiskt system som "simulerar" det ursprungliga systemet.
+\[\dot{\hat{x}} = A\hat{x} + Bu + K(y-C\hat{x})\]
+De två första termerna simulerar systemet och den sista termen är en korrigerande term som motsvarar återkoppling av den verkliga utsignalen (observatören simulerar $C\hat{x}$ men utsignalen ges av $y$). Undersök skattningsfelet $\tilde{x} = x - \hat{x}$:s dynamik:
+\begin{align*}
+\dot{\tilde{x}} &= Ax + Bu - \lbrace A\hat{x} + Bu + K(y-C\hat{x}) \rbrace \\
+&= Ax - A\hat{x} + K(Cx - C\hat{x}) \\
+&= (A-KC)\tilde{x}
+\end{align*}
+$\Rightarrow$ Om $(A-KC)$ är stabil (egenvärden i VHP) så går skattningsfelet mot noll. \\
+
+\textbf{Sats} (s.193) \\
+Ifall systemet är observerbart kan polerna (egenvärdena) till $A-KC$ placeras godtyckligt\\
+
+Ifall systemet inte är observerbart kan det ändå vara möjligt att placera polerna önskvärt.
+
+\section{Uppgift 9.1}
+
+\begin{align*}
+\dot{x} &= \begin{pmatrix}
+-2 & -1 \\
+1 & 0
+\end{pmatrix}x + \begin{pmatrix}
+1 \\
+0
+\end{pmatrix}u \\
+y &= \begin{pmatrix}
+1 & 0
+\end{pmatrix}x
+\end{align*}
+
+\subsection*{a)}
+Bestäm en tillståndsåterkoppling som placerar polerna i
+\begin{itemize}
+\item[(i)] $-3,-5$ \\
+\item[(ii)] $-10, -15$
+\end{itemize} 
+Vad begränsar godtycklig dynamik?
+\qline
+\[\mathcal{S} = \begin{pmatrix}
+1 & -2 \\
+0 & 1
+\end{pmatrix} \]
+har full rang. \\
+$\Rightarrow$ Kan placera polerna till $A-BL$ godtyckligt.
+\[A-BL = \begin{pmatrix}
+-2 & -1 \\
+1 & 0
+\end{pmatrix} - \begin{pmatrix}
+1 \\
+0
+\end{pmatrix} \begin{pmatrix}
+l_1 & l_2
+\end{pmatrix} = \begin{pmatrix}
+-2-l_1 & -1-l_2 \\
+1 & 0
+\end{pmatrix} \]
+
+\[\det{(sI - (A-BL)} = 0 \Leftrightarrow \begin{vmatrix}
+s + 2 + l_1 & 1 + l_2 \\
+-1 & s
+\end{vmatrix} = 0 \]
+\begin{align*}
+&\Leftrightarrow s(s+2+l_1= + 1 + l_2 = 0 \\
+&\Leftrightarrow s^2 + (2 + l_1)s + (1 + l_2) = 0
+\end{align*}
+Identifiera koefficient så att de efterfrågade polerna erhålls. \\
+
+\textbf{(i)} $(s+3)(s+5) = s^2 + 8s + 15$ \\
+$\Rightarrow l_1 = 6, l_2 = 14$ \\
+$\Rightarrow u = -6x_1 - 14x_2 + y_{ref}$ \\
+
+\textbf{(ii)} $(s+10)(s+15) = s^2 + 25s + 150$ \\
+$\Rightarrow l_1 = 23, l_2 = 149$ \\
+$\Rightarrow u = -23x_1 - 149x_2 + y_{ref}$ \\
+
+Ju längre ut i VHP polerna placeras desto  större koefficienter dyker upp i styrlagen, vilket resulterar i en större insignal. \\
+$\Rightarrow$ Godtycklig dynamik kan ej uppnås på grund av fysiska begränsningar i insignalen. 
+
+\subsection*{b)}
+Om enbart $y(t)$ kan mätas, bestäm en observatör. (och diskutera polernas påverkan)
+\qline
+\[\mathcal{O} = \begin{pmatrix}
+1 & 0 \\
+-2 & -1
+\end{pmatrix} \]
+har full rang. \\
+$\Rightarrow$ kan placera polerna till $A-KC$ godtyckligt. \\
+Skattningsfelets dynamik ges av
+\[\dot{\tilde{x}} = (A-KC)\tilde{x}\]
+Vi vill att skattningsfelet går mot noll snabbare än det styrda systemets dynamik. Således bör observatörens poler placeras längre till vänster i VHP än det slutna systemet. (t.ex. i $s = -20$). Ifall polerna placeras för långt ut blir observatören känslig för mätbrus.
+\[A - KC = \begin{pmatrix}
+-2 & -1 \\
+1 & 0
+\end{pmatrix} - \begin{pmatrix}
+k_1 \\
+k_2
+\end{pmatrix} \begin{pmatrix}
+1 & 0
+\end{pmatrix} = \begin{pmatrix}
+-2 -k_1 & -1 \\
+1 - k_2 & 0
+\end{pmatrix} \]
+\[\det{(sI-(A-KC))} = 0\]
+\begin{align*}
+&\Leftrightarrow \begin{vmatrix}
+s + (2+k_1) & 1 \\
+-1+k_2 & s
+\end{vmatrix} = 0 \\
+&\Leftrightarrow s^2 + (2+k_1)s + (1-k_2) = 0
+\end{align*}
+Två poler i $s = -20$ ger
+\[(s+20)^2 = s^2 + 40s + 400\]
+$\Rightarrow k_1 = 38, k_2 = -399$
+Den resulterande observatören ges av
+\[\dot{\hat{x}} = \begin{pmatrix}
+-2 & -1 \\
+1 & 0
+\end{pmatrix}\hat{x} + \begin{pmatrix}
+1 \\
+0
+\end{pmatrix}u + \begin{pmatrix}
+38 \\
+-399
+\end{pmatrix} [y - \begin{pmatrix}
+1 & 0
+\end{pmatrix}\hat{x}] \]
+
 
 
 \end{document}
