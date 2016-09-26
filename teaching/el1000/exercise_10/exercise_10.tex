@@ -1,0 +1,164 @@
+\documentclass[12pt]{article}
+\usepackage[swedish]{babel}
+\usepackage[T1]{fontenc}{
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[colorinlistoftodos,prependcaption,textsize=small]{todonotes}
+\usepackage{url,graphicx,tabularx,array,geometry,color,float,placeins}
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+%\setcounter{secnumdepth}0}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, 3d, decorations, calc, decorations.markings}
+
+\tikzstyle{block} = [draw, rectangle, thick, minimum height=3em, minimum width=2em, align=center, text width=1.5cm, top color=white, bottom color=white!85!black]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{tmp} = [coordinate]
+\tikzstyle{sum} = [draw, circle, node distance=1cm]
+\tikzstyle{wire} = [->,thick]
+\tikzstyle{lab} = []
+\tikzstyle{laba} = [lab, label distance=0cm]
+\tikzstyle{labb} = [lab, label distance=0.5em]
+\tikzstyle{split} = [fill,black,circle,inner sep=0.03cm]
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+%default radius will be 1pt. 
+cross/.default={5pt}}
+
+\newcommand{\sspan}[1]{\mathrm{span}\left\{#1\right\}}
+\newcommand{\ima}[1]{\mathrm{Im}\; #1}
+\newcommand{\qline}{\hrule \vspace*{10pt}}
+
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+\begin{titlepage}
+\author{Martin Biel \\ \texttt{mbiel@kth.se}}
+\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 9}
+\date{22 september 2016}
+\end{titlepage}
+
+\maketitle
+
+\section*{Repetition}
+\begin{align*}
+  \dot{x} &= Ax + Bu \\
+  y &= Cx + Du
+\end{align*}
+\textbf{Styrbarhet} \\
+\begin{itemize}
+\item Ett tillstånd $x^*$ är \emph{styrbart} om det finns en insignal $u(t)$ som tar tillståndsvektorn från $x(0) = 0$ till $x^*$ på ändlig tid.
+\item $\mathcal{S} =
+  \begin{bmatrix}
+    B & AB & \dots & A^{n-1}B
+  \end{bmatrix}$ - Styrbarhetsmatrisen
+\item De styrbara tillstånden ligger i $\sspan{\mathcal{S}}$.
+\item Systemet är \emph{styrbart} om alla tillstånd är styrbara, dvs om $\sspan{\mathcal{S}} = \mathbb{R}^n$ (alternativt ifall $\mathcal{S}$ har full rang, eller ifall $\det{\mathcal{S}} \neq 0$ om $\mathcal{S}$ är kvadratisk.
+\end{itemize}
+\textbf{Observerbarhet}
+\begin{itemize}
+\item Ett tillstånd $x^* \neq 0$ är \emph{icke-observerbart} om utsignalen är identiskt noll ($y(t) \equiv 0$) då $x(0) = x^*$ och $u(t) \equiv 0$.
+\item $\mathcal{O} =
+  \begin{bmatrix}
+    C \\
+    CA \\
+    \vdots \\
+    CA^{n-1}
+  \end{bmatrix}$ - Observerbarhetsmatrisen
+\item De icke-observerbara tillstånden ligger i $\ker{\mathcal{O}}$ (nollrummet till $\mathcal{O}$).
+\item Systemet är \emph{observerbart} om det saknar icke-observerbara tillstånd, dvs $\ker{\mathcal{O}} = \emptyset$ (alternativt ifall $\sspan{\mathcal{O}} = \mathbb{R}^n$, $\mathcal{O}$ har full rang, eller ifall $\det{\mathcal{O}} \neq 0$ om $\mathcal{O}$ är kvadratisk).
+\end{itemize}
+
+\section*{Uppgift 8.10}
+Bestäm dimenion för de styrbara och icke-observerbara underrummen. Bestäm även dessa underrum.
+
+\subsection*{a)}
+\begin{align*}
+  \dot{x} &=
+            \begin{pmatrix}
+              -2 & 0 & 0 \\
+              0 & -1 & 1 \\
+              0 & 0 & -3
+            \end{pmatrix}x +
+                      \begin{pmatrix}
+                        1 \\
+                        -1 \\
+                        2
+                      \end{pmatrix}u \\
+  y &=
+      \begin{pmatrix}
+        1 & 3 & 1.5
+      \end{pmatrix}x
+\end{align*}
+\qline
+\textbf{Styrbarhet:}
+\[\mathcal{S} =
+\begin{pmatrix}
+  1 & -2 & 4 \\
+  -1 & 3 & -9 \\
+  2 & -6 & 18
+\end{pmatrix}\]
+Första och andra raden är linjärt beroende. Ifall en stryks är de återstående linjärt oberoende.\\
+$\Rightarrow \dim{\sspan{\mathcal{S}}} = 2$.
+Det styrbara underrummet spänns upp av två valfria linjärt oberoende kolumner i $\mathcal{S}$:
+\begin{equation*}
+  \sspan{\mathcal{S}} = \sspan{
+    \begin{pmatrix}
+      1 \\
+      -2 \\
+      2
+    \end{pmatrix},
+    \begin{pmatrix}
+      -2 \\
+      3 \\
+      -6
+    \end{pmatrix}}
+\end{equation*}
+\textbf{Observerbarhet:}
+\begin{equation*}
+  \mathcal{O} =
+  \begin{pmatrix}
+    1 & 3 & 1.5 \\
+    -2 & -3 & -1.5 \\
+    4 & 3 & 1.5
+  \end{pmatrix}
+\end{equation*}
+Ifall vi utför Gauss-elíminering kommer vi kunna svara på båda frågeställningarna.
+\begin{equation*}
+  \left(
+  \begin{array}{ccc|c}
+    1 & 3 & 1.5 & 0\\
+    -2 & -3 & -1.5 & 0 \\
+    4 & 3 & 1.5 & 0
+  \end{array}\right) ~ 
+\left(
+  \begin{array}{ccc|c}
+    1 & 3 & 1.5 & 0 \\
+    0 & 3 & 1.5 & 0 \\
+    0 & -9 & -4.5 & 0
+  \end{array}
+\right) ~ \left(
+  \begin{array}{ccc|c}
+    1 & 3 & 1.5 & 0 \\
+    0 & 3 & 1.5 & 0 \\
+    0 & 0 & 0 & 0
+  \end{array}
+\right)
+\end{equation*}
+$\Rightarrow \dim{\sspan{\mathcal{O}}} = 2, \dim{\ker{\mathcal{O}}} = 1$ \\
+En basvektor för $\ker{\mathcal{O}}$ bestäms genom att införa $x_3 = t, t \in \mathbb{R}$ och substituera.
+\[\Rightarrow \ker{\mathcal{O}} = \sspan{
+  \begin{pmatrix}
+    0 \\
+    -0.5 \\
+    1
+  \end{pmatrix}
+}\]
+vilket även ger underrummet av icke-observerbara tillstånd.
+
+\subsection*{b)}
+
+
+\end{document}
+

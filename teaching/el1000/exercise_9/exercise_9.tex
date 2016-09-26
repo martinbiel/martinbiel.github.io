@@ -1,0 +1,136 @@
+\documentclass[12pt]{article}
+\usepackage[swedish]{babel}
+\usepackage[T1]{fontenc}{
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[colorinlistoftodos,prependcaption,textsize=small]{todonotes}
+\usepackage{url,graphicx,tabularx,array,geometry,color,float,placeins}
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+%\setcounter{secnumdepth}0}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, 3d, decorations, calc, decorations.markings}
+
+\tikzstyle{block} = [draw, rectangle, thick, minimum height=3em, minimum width=2em, align=center, text width=1.5cm, top color=white, bottom color=white!85!black]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{tmp} = [coordinate]
+\tikzstyle{sum} = [draw, circle, node distance=1cm]
+\tikzstyle{wire} = [->,thick]
+\tikzstyle{lab} = []
+\tikzstyle{laba} = [lab, label distance=0cm]
+\tikzstyle{labb} = [lab, label distance=0.5em]
+\tikzstyle{split} = [fill,black,circle,inner sep=0.03cm]
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+%default radius will be 1pt. 
+cross/.default={5pt}}
+
+\newcommand{\sspan}[1]{\mathrm{span}\left\{#1\right\}}
+\newcommand{\ima}[1]{\mathrm{Im}\; #1}
+\newcommand{\qline}{\hrule \vspace*{10pt}}
+
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+\begin{titlepage}
+\author{Martin Biel \\ \texttt{mbiel@kth.se}}
+\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 9}
+\date{22 september 2016}
+\end{titlepage}
+
+\maketitle
+
+\section*{Prestandabegränsningar}
+
+\begin{itemize}
+\item Modell:\\
+  \begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (system) {$G(s)$};
+\node [block, left of=system, node distance=4cm] (reg) {$F(s)$};
+\node [split, right of=system] (split) {};
+\node [sum, left of=reg, node distance=3cm] (sum) {};
+\node [tmp, below of=reg] (tmp){};
+
+\draw [wire] ++(-9,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.45, right, align=center, label={[laba]below:$y_{ref}(t)$}] {};
+\draw [wire] (sum) -- (reg) node[pos=0.45, right, align=center, label={[laba]below:$e(t)$}] {};
+\draw [wire] (system) -- ++(4,0) node[pos=0.45, right, align=center, label={[laba]below:$y(t)$}] {};
+\draw [wire] (reg) -- (system) node[pos=0.45, right, align=center, label={[laba]below:$u(t)$}] {};
+\draw [wire] (split) |- (tmp) -| node[pos=0.99, right] {$-$} (sum);
+\end{tikzpicture}
+\item Verkliga systemet:\\
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (system) {$G^0(s)$};
+\node [block, left of=system, node distance=4cm] (reg) {$F(s)$};
+\node [split, right of=system] (split) {};
+\node [sum, below of=split, node distance=2cm] (sum2) {};
+\node [sum, left of=reg, node distance=3cm] (sum1) {};
+\node [tmp, below of=reg] (tmp){};
+
+\draw [wire] ++(-9,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.45, right, align=center, label={[laba]below:$y_{ref}(t)$}] {};
+\draw [wire] (sum1) -- (reg) node[pos=0.45, right, align=center, label={below:$e(t)$}] {};
+\draw [wire] (system) -- ++(4,0) node[pos=0.45, right, align=center, label={above:$z(t)$}] {};
+\draw [wire] (reg) -- (system) node[pos=0.45, right, align=center, label={below:$u(t)$}] {};
+\draw [wire] ++(0,2) -- (system) node[pos=0.25, right, align=center, label={right:$v(t)$}] {};
+\draw [wire] (split) -- node[pos=0.95, left] {$+$} (sum2);
+\draw [wire] ++(4,-2) -- (sum2) node[pos=0.25, label={above:$n(t)$}] {} node[pos=0.99] {$+$};
+\draw [wire] (sum2) -| node[pos=0.43,above] {$y(t)$} node[pos=0.99, right] {$-$} (sum1);
+\end{tikzpicture}
+\begin{itemize}
+\item Störsignal: $v(t)$ \\
+\item Mätfel/Mätbrus: $n(t)$ \\
+\item Modellfel: $G^0(s)$ (istället för $G(s)$)
+\end{itemize}
+\end{itemize}
+Vi har fram till nu designat våra regulator efter hypotesten att systems dynamik perfekt beskrivs av
+\begin{equation}
+Y(s) = G(s)U(s)\label{eq:nom}
+\end{equation}
+
+där $y(t)$ är utsignalen vi mäter. Det visar sig dock att den faktiska utsignalen vi kan mäta ges av
+\begin{equation}
+Y(s) = Z(s) + N(s) = G^0(s)U(s) + V(s) + N(s)\label{eq:real}
+\end{equation}
+
+Hur påverkas prestandan av att använda en regulator $F(s)$ baserad på \eqref{eq:nom}, ifall det verkliga systemet ges av \eqref{eq:real}? Vi fokuserar först på effekter från störningarna. Bestäm överföringsfunktion från referenssignal, störsignal och mätbrus till systemets faktiska uppförande $z(t)$:
+\begin{align*}
+  Z(s) &= G(s)U(s) + V(s) \\
+  &= G(s)F(s)
+    \left[
+    Y_{ref}(s) - Y(s)
+    \right] + V(s) \\
+&= G(s)F(s)
+    \left[
+    Y_{ref}(s) - Z(s) - N(s)
+    \right] + V(s)
+\end{align*}
+\[\Rightarrow Z(s) = \frac{G(s)F(s)}{1 + G(s)F(s)}Y_{ref}(s) - \frac{G(s)F(s)}{1 + G(s)F(s)}N(s) + \frac{1}{1 + G(s)F(s)}V(s) = G_c(s) - T(s)N(s) + S(s)V(s)\]
+\begin{itemize}
+\item $S(s)$ - Känslighetsfunktionen, förstärker störsignalen $v(t)$ 
+\item $T(s)$ - Komplementära känslighetsfunktionen, förstärker mätbruset $n(t)$
+\end{itemize}
+Notera att $S(s) + T(s) = 1$. \\
+$\Rightarrow S(s)$ och $T(s)$ kan inte vara små samtidigt. \\
+$\Rightarrow$ Måste prioritera ifall störning eller mätbrus ska undertryckas.
+
+\section*{Robusthet}
+Tolerans mot modellfel.
+\[G^0(s) = G(s)(1 + \Delta_G(s)\]
+$\Delta_G(s) -$ Relativt modellfel (okänd, annars hade vi haft exakt vetskap om $G^0(s)$)
+
+\textbf{Robusthetskriterium} \\
+Ifall $F(s)$ stabiliserar $G(s)$, och $G(s), G^0(s)$ har samma antal poler i HHP, samt att $G(s)F(s) \to 0$ och $G^0(s)F(s) \to 0$ då $|s| \to \infty$, så gäller att slutna systemet
+\[\frac{G^0(s)F(s)}{1 + G^0(s)F(s)}\]
+är stabilt \emph{om}
+\begin{equation}
+|\Delta_G(i\omega) < \frac{1}{|T(i\omega)|} \forall \omega\label{eq:robust}
+\end{equation}
+
+(\emph{Tillräckligt} men \emph{inte nödvändigt} villkor, systemet kan vara stabilt även om inte \eqref{eq:robust})
+
+\section*{Uppgift 6.7}
+
+
+
+\end{document}
+
