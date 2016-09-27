@@ -36,7 +36,7 @@ cross/.default={5pt}}
 \begin{titlepage}
 \author{Martin Biel \\ \texttt{mbiel@kth.se}}
 \title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 9}
-\date{22 september 2016}
+\date{27 september 2016}
 \end{titlepage}
 
 \maketitle
@@ -239,7 +239,14 @@ Alltså ges nollrummet av
 vilket även ger underrummet av icke-observerbara tillstånd.
 
 \section*{Uppgift 8.13}
-(FIGUR)
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{8_13pend}
+  \caption{Two pendlar på en vagn}
+  \label{fig:813pend}
+\end{figure}
+
 \subsection*{a)}
 Linjärisera systemet kring $\varphi_1 = \varphi_2 = 0$ när $l = m = g = 1$.
 \qline
@@ -308,7 +315,27 @@ $\Rightarrow$ Systemet är styrbart ifall $\alpha \neq 1$. \\\\
 Fallet $\alpha = 1$ motsvarar ett system där pendlarna är lika långa, vilket resulterar i att  varje insignal ger upphov till samma vinkelförändring $\varphi_1 = \varphi_2$ i båda pendlarna. Således går det inte att uppnå alla tillstånd eftersom det inte är möjligt att nå tillstånd där $\varphi_1 \neq \varphi_2$.\\
 
 \section*{Tillståndsåterkoppling}
-(FIGUR)
+\begin{figure}[h!]
+  \centering
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block, text width=3cm, text height = 0.1cm] (system) {
+  \begin{align*}
+    \dot{x} &= Ax + Bu \\
+    y &= Cx
+  \end{align*}
+};
+\node [sum, left of=system, node distance=3cm] (sum) {};
+\node [block, below of=system, node distance=3cm] (L){$L$};
+
+\draw [wire] ++(-6,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.45, right, align=center, label={[laba]below:$y_{ref}(t)$}] {};
+\draw [wire] (sum) -- (system) node[pos=0.45, right, align=center, label={[laba]below:$u(t)$}] {};
+\draw [wire] (system) -- ++(4,0) node[pos=0.45, right, align=center, label={[laba]below:$y(t)$}] {};
+\draw [wire] (system) -- node[pos=0.5, right] {$x(t)$} (L);
+\draw [wire] (L) -| node[pos=0.99, right] {$-$} (sum);
+\end{tikzpicture}
+  \caption{Tillståndsåterkoppling}
+  \label{fig:återk}
+\end{figure}
 Återkoppla systemets tillstånd istället för utsignalen. Slutna systemet ges av
 \begin{align*}
 \dot{x} &= Ax + B(r-Lx) = (A-BL)x + Br \
@@ -324,8 +351,33 @@ Ifall systemet inte är styrbart kan det ändå vara möjligt att placera polern
 
 \section*{Tillståndsobservatör}
 Om inte tillstånden är mätbara kan en observatör användas för att uppskatta $x(t)$ från $y(t)$.
+\begin{figure}[h!]
+  \centering
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block, text width=3cm, text height = 0.1cm] (system) {
+  \begin{align*}
+    \dot{x} &= Ax + Bu \\
+    y &= Cx
+  \end{align*}
+};
+\node [block, below of=system, node distance=3cm, text width=2cm] (obs) {Observatör};
+\node [sum, left of=system, node distance=5cm] (sum) {};
+\node [split, right of=system] (split2) {};
+\node [split, left of=system] (split1) {};
+\node [block, left of= obs, node distance=3cm] (L){$L$};
+\node [tmp, below of=system, node distance=1.5cm] (tmp){};
 
-(FIGUR)
+\draw [wire] ++(-7,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.4, right, align=center, label={[laba]below:$y_{ref}(t)$}] {};
+\draw [wire] (sum) -- (system) node[pos=0.45, right, align=center, label={[laba]below:$u(t)$}] {};
+\draw [wire] (system) -- ++(4,0) node[pos=0.45, right, align=center, label={[laba]below:$y(t)$}] {};
+\draw [wire] (split1) |- (tmp) -- (obs);
+\draw [wire] (split2) |- (obs);
+\draw [wire] (obs) -- (L) node[pos=0.5, above] {$\hat{x}$};
+\draw [wire] (L) -| node[pos=0.99, right] {$-$} (sum);
+\end{tikzpicture}
+  \caption{Tillståndsobservatör}
+  \label{fig:återk}
+\end{figure}
 Observatören är också ett dynamiskt system som "simulerar" det ursprungliga systemet.
 \[\dot{\hat{x}} = A\hat{x} + Bu + K(y-C\hat{x})\]
 De två första termerna simulerar systemet och den sista termen är en korrigerande term som motsvarar återkoppling av den verkliga utsignalen (observatören simulerar $C\hat{x}$ men utsignalen ges av $y$). Undersök skattningsfelet $\tilde{x} = x - \hat{x}$:s dynamik:
