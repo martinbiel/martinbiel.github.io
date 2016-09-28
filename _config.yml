@@ -21,7 +21,7 @@ paginate:         5
 # Custom vars
 version:          2.1.0
 
-gems:		  [jekyll-paginate, jekyll-gist, redcarpet]
+gems:		  [jekyll-paginate, jekyll-gist, redcarpet, jekyll-sitemap]
 
 collections:
     publications:
