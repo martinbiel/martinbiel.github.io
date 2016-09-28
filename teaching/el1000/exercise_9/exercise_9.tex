@@ -82,12 +82,12 @@ cross/.default={5pt}}
 \item Modellfel: $G^0(s)$ (istället för $G(s)$)
 \end{itemize}
 \end{itemize}
-Vi har fram till nu designat våra regulator efter hypotesten att systems dynamik perfekt beskrivs av
+Vi har fram till nu designat våra regulatorer efter hypotesten att systems dynamik perfekt beskrivs av
 \begin{equation}
 Y(s) = G(s)U(s)\label{eq:nom}
 \end{equation}
 
-där $y(t)$ är utsignalen vi mäter. Det visar sig dock att den faktiska utsignalen vi kan mäta ges av
+där $y(t)$ är utsignalen vi mäter. Det visar sig dock att den faktiska utsignalen vi mäter ges av
 \begin{equation}
 Y(s) = Z(s) + N(s) = G^0(s)U(s) + V(s) + N(s)\label{eq:real}
 \end{equation}
@@ -102,10 +102,13 @@ Hur påverkas prestandan av att använda en regulator $F(s)$ baserad på \eqref{
 &= G(s)F(s)
     \left[
     Y_{ref}(s) - Z(s) - N(s)
-    \right] + V(s)
+    \right] + V(s) \\
+\Rightarrow Z(s) &= \frac{G(s)F(s)}{1 + G(s)F(s)}Y_{ref}(s) - \frac{G(s)F(s)}{1 + G(s)F(s)}N(s) + \frac{1}{1 + G(s)F(s)}V(s) \\
+&= G_c(s)Y_{ref}(s) - T(s)N(s) + S(s)V(s)
 \end{align*}
-\[\Rightarrow Z(s) = \frac{G(s)F(s)}{1 + G(s)F(s)}Y_{ref}(s) - \frac{G(s)F(s)}{1 + G(s)F(s)}N(s) + \frac{1}{1 + G(s)F(s)}V(s) = G_c(s) - T(s)N(s) + S(s)V(s)\]
+
 \begin{itemize}
+\item $G_c(s)$ - Slutna systemet, överför referenssignal till utsignal
 \item $S(s)$ - Känslighetsfunktionen, förstärker störsignalen $v(t)$ 
 \item $T(s)$ - Komplementära känslighetsfunktionen, förstärker mätbruset $n(t)$
 \end{itemize}
@@ -123,12 +126,561 @@ Ifall $F(s)$ stabiliserar $G(s)$, och $G(s), G^0(s)$ har samma antal poler i HHP
 \[\frac{G^0(s)F(s)}{1 + G^0(s)F(s)}\]
 är stabilt \emph{om}
 \begin{equation}
-|\Delta_G(i\omega) < \frac{1}{|T(i\omega)|} \forall \omega\label{eq:robust}
+|\Delta_G(i\omega)| < \frac{1}{|T(i\omega)|} \forall \omega\label{eq:robust}
 \end{equation}
 
 (\emph{Tillräckligt} men \emph{inte nödvändigt} villkor, systemet kan vara stabilt även om inte \eqref{eq:robust})
 
 \section*{Uppgift 6.7}
+En given modell för en likströmsmotor
+\[G(s) = \frac{1}{s(s+1)}\]
+styrs med en P-regulator där $K_P = 4$. Amplitudkurvan för det resulterande slutna systemet $G_c(s)$ är återgiven i Figur \ref{fig:67bode}.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{6_7bode}
+  \caption{Amplitudkurvan för det slutna systemet $G_c(s)$}
+  \label{fig:67bode}
+\end{figure}
+\FloatBarrier
+Det visar sig att det riktiga systemet ges av
+\[G^0(s) = G(s)\frac{\alpha}{s + \alpha}\]
+för någon okänd parameter $\alpha > 0$, men den givna P-regulatorn används ändå för att styra systemet.
+
+\subsection*{a)}
+Rita Rotort med avseende på $\alpha$ för det riktiga slutna systemet och bestäm för vilka $\alpha$ det riktiga slutna systemet blir stabilt.
+\qline
+\begin{align*}
+  G_c^0(s) &= \frac{4G^0(s)}{1 + 4G^0(s)} \\
+  &= \frac{4\alpha}{s(s+1)(s+\alpha) + 4\alpha} \\
+  &= \frac{4\alpha}{s^2(s+1) + \alpha(s^2+s+4)}
+\end{align*}
+Följ den systematiska metoden för att rita rotorten (Se övning 3):
+\begin{itemize}
+\item
+  $P(s) = s^2(s+1) \hspace*{5pt} n = 3$ \\
+  $Q(s) = s^2+s+4 \hspace*{5pt} m = 2$
+\item start: $s = 0$ (dubbel), $s = -1$ \\
+  slut: $s = -\dfrac{1}{2} \pm i \dfrac{\sqrt{15}}{2}$
+\item $1$ asymptot i riktningen $\pi$ (längs negativa Re-axeln)
+\item $(-\infty,-1)$ med i rotort ($3$ startpunkter till höger)
+\item
+  \begin{align*}
+    P(i\omega) + \alpha Q(i\omega) &= 0 \\
+    \Rightarrow -\omega^2(i\omega+1) + \alpha (-\omega^2+i\omega+4) &= 0 \\
+    \Rightarrow -\omega^2(1+\alpha) + 4\alpha = 0,\;\;\; -\omega^3+\alpha\omega &= 0 \\
+    \Rightarrow \alpha = 0, \;\;\; \omega &= 0 \\
+    \alpha = 3,\;\;\; \omega &= \pm \sqrt{3}
+  \end{align*}
+\end{itemize}
+$\Rightarrow$ Skär i origo (i en startpunkt) och skär $\pm \sqrt{3}i$ då $\alpha = 3$. Eftersom bara $(-\infty,-1)$ är med i rotorten måste polerna som utgår från origo direkt röra sig ut i komplexa talplanet. Eftersom slutpunkterna är i VHP och rotorten har två skärningar med Im-axeln kommer polerna först gå ut i RHP. Den fullständiga rotorten är återgiven i Figur. \ref{fig:67rlocus}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.5\textwidth]{6_7rlocus}
+  \caption{Rotort för det verkliga systemet med avseende på $\alpha$.}
+  \label{fig:67rlocus}
+\end{figure}
+\FloatBarrier
+
+Efter skärningen med Im-axeln är alla poler i VHP. \\
+$\Rightarrow$ Det riktiga slutna systemet är stabilt för $\alpha > 3$.
+
+\subsection*{b)}
+Använd robusthetskriteriet för att avgöra för vilka $\alpha$ som $G_C^0(s)$ är stabil.\vspace*{2pt}
+\qline
+Identifiera det relativa modellfelet:
+\begin{equation*}
+  G^0(s) = G(s)\left(\frac{\alpha}{s + \alpha}\right) = G(s)
+  \left(
+    1 + \frac{\alpha}{s + \alpha} - 1
+  \right)
+\end{equation*}
+$\Rightarrow \Delta_G(s) = \dfrac{\alpha}{s + \alpha} - 1 = -\dfrac{s}{s+\alpha}$. \\
+
+Undersök ifall 
+\begin{equation*}
+  |\Delta_G(i\omega)| < 
+\left|
+  \frac{1}{T(i\omega)}
+\right| \;\;\; \forall \omega
+\end{equation*}
+eller omvänt ifall
+\begin{equation*}
+  \left|
+    \frac{1}{\Delta_G(i\omega)} \right| > |T(i\omega)| \;\;\; \forall \omega
+\end{equation*}
+Vi har att
+\begin{equation*}
+  \left|
+    \frac{1}{\Delta_G(s)}
+  \right| = 
+  \left|
+    \frac{i\omega + \alpha}{i\omega}
+  \right| = \frac{\sqrt{\omega^2+\alpha^2}}{\omega}
+\end{equation*}
+Figur \ref{fig:67bodecomp} visar amplitudkurvorna för $T(s)$ och $\dfrac{1}{\Delta_G(s)}$ då $\alpha = 4$. Utifrån figuren ser vi att robusthetskriteret är uppfyllt ifall $\dfrac{1}{\Delta_G(i\omega_r)} > T(i\omega_r)$, det vill säga ligger ovanför $T(s)$:s resonanstopp. Ur figuren erhålls att resonanstoppen sker vid $\omega_r = 2$ och har värdet $2$.
+\begin{align*}
+  \frac{\sqrt{\omega_r^2 + \alpha^2}}{\omega_r} &> 2 \\
+  \Rightarrow \frac{\sqrt{4 + \alpha^2}}{2} &> 2 \\
+  \Rightarrow \alpha > \sqrt{12} \approx 3.46 (> 3)
+\end{align*}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{6_7bodecomp}
+  \caption{Amplitudkurva för $T(s)$ samt $\dfrac{1}{\Delta_G(s)}$ där $\alpha = 4$}
+  \label{fig:67bodecomp}
+\end{figure}
+\FloatBarrier
+
+\subsection*{c)}
+Robusthetskriteriet krävde ett större $\alpha$ än rotorten, varför?
+\qline
+Robusthetskriteriet är ett \emph{tillräckligt} villkor för stabilitet. Rotorten visar när polerna ligger strikt i VHP, vilket ger ett \emph{tillräckligt} och \emph{nödvändigt} villkor för stabilitet. I det här fallet ger Robusthetskriteret ett konservativt svar.
+
+\section*{Tillståndsbeskrivning}
+Högre ordningens linjära differentialekvationer kan skrivas som ett system av första ordningens differentialekvationer:
+\begin{align*}
+   \dot{x}(t) &= Ax(t) + Bu(t) \\
+  y(t) &= Cx(t) + Du(t)
+\end{align*}
+där $(A,B,C,D)$ är matriser.
+\begin{itemize}
+\item $y(t)$ - utsignal (likt tidigare)
+\item $u(t)$ - insignal (likt tidigare)
+\item $x(t) =
+  \begin{pmatrix}
+    x_1(t) \\
+    \vdots \\
+    x_n(t)
+  \end{pmatrix}$ - tillståndsvektor
+\item  $x_i$ - tillståndsvariabel
+\end{itemize}
+Tillståndsvektorn beskriver hela systemet vid tiden $t$.
+
+\subsection*{Styrbarhet}
+Möjligt att styra varje tillstånd till ett givet läge inom en ändlig tid. \\
+Ex: \\
+\begin{align*}
+  \dot{x}_1 &= x_2 \\
+  \dot{x}_2 &= x_2 + u
+\end{align*}
+$\Rightarrow \ddot{x}_1 = \dot{x}_2 = x_2 + u$. Det är här möjligt att nå varje tillstånd med insignalen (genom successiva integrationer). Mer nästa övning!
+
+\subsection*{Observerbarhet}
+Möjligt att inom ändlig tid bestämma hela tillståndet utifrån utsignalen. \\
+Ex: \\
+\begin{align*}
+  \dot{x}_1 &= x_2 \\
+  \dot{x}_2 &= x_1 + x_2 \\
+  y &= x_1
+\end{align*}
+$\Rightarrow \dot{y} = \dot{x}_1 = x_2$, och $y = x_1$. Således kan vi i varje tidpunkt bestämma hela tillståndet genom utsignalen (kanske genom successiva deriveringar). Mer nästa övning!
+
+\subsection*{Realisationer}
+Realisering åsyftar proceduren att skriva ett system på tillståndsform utifrån någon modell eller en given överföringsfunktion. Detta är typiskt ett svårt problem eftersom det finns oändligt många tillståndsbeskrivningar för varje system (alltid möjligt att lägga till redundanta tillstånd). I boken förelås två kanoniska former för att skriva en given överföringsfunktion på tillståndsform:
+\begin{itemize}
+\item Styrbar kanonisk form (s.158)
+\item  Observerbar kanonisk form (s.159)
+\end{itemize}
+där den första är garanterat styrbar och den andra garanterat observerbar.\\
+
+\textbf{Minimal realisation:} Realisation med minsta möjliga antal tillstånd (lägst dimension). \\
+
+Ifall en given tillståndsbeskrivning är både styrbar och observerbar är den också minimal. \\
+
+Via invers Laplacetransformering erhålls ett uttryck för en överföringfunktions givet en godtycklig ekvivalent tillståndsbeskrivning:
+\begin{equation*}
+  G(s) = C(sI-A)^{-1}B
+\end{equation*}
+
+\subsection*{Linjärisering}
+Taylorutveckling av ett olinjärt system nära ett jämviktsläge \\
+$\Rightarrow$ Lokalt linjärt system
+
+\section*{Uppgift 8.4}
+Skriv följade dynamiska system på tillståndsform
+
+\subsection*{a)}
+$\dddot{y}(t) + 6\ddot{y}(t) + 11 \dot{y}(t) + 6y(t) = 6u(t)$
+\qline
+Tredje ordningens differentialekvation $\Rightarrow$ behöver minst tre tillstånd i tillståndsbeskrivningen. När insignalen bara förekommer som en funktion $u(t)$ är det enklast att införa tillstånden
+\begin{align*}
+  x_1(t) &= y(t) \\
+  x_2(t) &= \dot{y}(t) \\
+  x_3(t) &= \ddot{y}(t)
+\end{align*}
+Tillståndsderivatorna erhålls nu enkelt:
+\begin{align*}
+  \dot{x}_1(t) &= \dot{y}(t) = x_2(t) \\
+  \dot{x}_2(t) &= \ddot{y}(t) = x_3(t) \\
+  \dot{x}_3(t) &= \dddot{y}(t) = -6\ddot{y}(t) - 11\dot{y}(t) - 6y(t) + 6u(t) = -6x_3(t)-11x_2(t)-6x_1(t) + 6u(t)
+\end{align*}
+På matrisform:
+\begin{align*}
+  \begin{pmatrix}
+    \dot{x}_1(t) \\
+    \dot{x}_2(t) \\
+    \dot{x}_3(t)
+  \end{pmatrix} &=
+  \begin{pmatrix}
+    0 & 1 & 0 \\
+    0 & 0 & 1 \\
+    -6 & -11 & -6
+  \end{pmatrix}
+               \begin{pmatrix}
+                 x_1(t) \\
+                 x_2(t) \\
+                 x_3(t)
+               \end{pmatrix}
++
+  \begin{pmatrix}
+    0 \\
+    0 \\
+    6
+  \end{pmatrix}u(t) \\
+y(t) &=
+       \begin{pmatrix}
+         1 & 0 & 0
+       \end{pmatrix}
+                 \begin{pmatrix}
+                   x_1(t) \\
+                   x_2(t) \\
+                   x_3(t)
+                 \end{pmatrix}
+\end{align*}
+
+\subsection*{b)}
+$\dddot{y}(t) + \ddot{y}(t) + 5\dot{y}(t) + 3y = 4\ddot{u}(t) + \dot{u}(t) + 2u$
+\qline
+Återigen krävs åtminstone tre tillstånd. Eftersom derivator av insignalen förekommer kan vi inte tillämpa samma metod som i a). Ta istället först fram överföringsfunktionen genom att Laplacetransformera:
+\begin{equation*}
+  s^3Y(s) + s^2Y(s) + 5sY(s) + 3Y(s) = 4s^2U(s) + sU(s) + 2U(s)
+\end{equation*}
+\begin{equation*}
+  \Rightarrow Y(s) = \frac{4s^2 + s + 2}{s^3 + s^2 + 5s + 3}U(s)
+\end{equation*}
+Ta fram en ekvivalent tillståndsbeskrivning. Välj tillexempel styrbar kanonisk form:
+\begin{align*}
+  \dot{x} &=
+  \begin{pmatrix}
+    -1 & -5 & -3 \\
+    1 & 0 & 0 \\
+    0 & 1 & 0
+  \end{pmatrix}x +
+            \begin{pmatrix}
+              1 \\
+              0 \\
+              0
+            \end{pmatrix}u \\
+  y &=
+      \begin{pmatrix}
+        4 & 1 & 2
+      \end{pmatrix}x
+\end{align*}
+
+\subsection*{c)}
+\begin{equation*}
+  G(s) = \frac{2s+3}{s^2+5s+6}
+\end{equation*}
+\qline
+Observerbar kanonisk form:
+\begin{align*}
+  \dot{x} &=
+  \begin{pmatrix}
+    -5 & 1 \\
+    -6 & 0
+  \end{pmatrix}x +
+            \begin{pmatrix}
+              2 \\
+              3
+            \end{pmatrix}u \\
+  y &=
+      \begin{pmatrix}
+        1 & 0
+      \end{pmatrix}x
+\end{align*}
+
+Styrbar kanonisk form:
+\begin{align*}
+  \dot{x} &=
+  \begin{pmatrix}
+    -5 & -6 \\
+    1 & 0
+  \end{pmatrix}x +
+            \begin{pmatrix}
+              1 \\
+              0              
+            \end{pmatrix}u \\
+  y &=
+      \begin{pmatrix}
+        2 & 3
+      \end{pmatrix}x
+\end{align*}
+
+\section*{Uppgift 8.3}
+Betrakta blockdiagrammet för en elmotor som är återgivet i Figur \ref{fig:83block}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{8_3block}
+  \caption{Blockdiagram för elmotor}
+  \label{fig:83block}
+\end{figure}
+\FloatBarrier
+Ta fram en tillståndsbeskrivning av systemet där $m_l(t)$ och $i(t)$ är insignaler och $y(t)$ är utsignal.
+\qline
+Välj tillstånd:
+\begin{align*}
+  x_1 = y \\
+  x_2 = \theta \\
+  x_3 = z
+\end{align*}
+(Tips: Välj signaler som följer en integrator $\dfrac{1}{s}$ som tillstånd. Det blir då trivialt att ta fram tillståndsderivatorna) \\
+
+Bestäm uttryck för tillstånden
+\begin{align*}
+  X_1(s) &= Y(s) = \frac{1}{s}\left(M_l(s) + K_2\Theta(s)\right) = \frac{1}{s}
+           \left(
+           M_l(s) + K_2 X_2(s)
+           \right) \\
+  X_2(s) &= \Theta(s) = \frac{1}{s}
+           \left(
+           Z(s) - Y(s)
+           \right) = \frac{1}{s}\left(X_3(s) - X_1(s)\right) \\
+  X_3(s) &= Z(s) = \frac{1}{s}
+           \left(
+           K_1 I(s) - K_2\Theta(s)
+           \right) = \frac{1}{s}
+           \left(
+           K_1 I(s) - K_2 X_2(s)
+           \right)
+\end{align*}
+Bestäm tillstånds derivatorna
+\begin{align*}
+  sX_1(s) &= M_l(s) + K_2X_2(s) &\mathcal{L}^{-1} \Rightarrow \dot{x}_1(t) &= m_l(t) + K_2x_2(t) \\
+  sX_2(s) &= X_3(s) - X_1(s) &\mathcal{L}^{-1} \Rightarrow \dot{x}_2(t) &= x_3(t) - x_1(t) \\
+  sX_3(s) &= K_1 I(s) - K_2 X_2(s) &\mathcal{L}^{-1} \Rightarrow \dot{x}_3(t) &= K_1 i(t) - K_2 x_2(t)
+\end{align*}
+På matrisform:
+\begin{align*}
+  \dot{x} &=
+  \begin{pmatrix}
+    0 & K_2 & 0 \\
+    -1 & 0 & 1 \\
+    0 & -K_2 & 0
+  \end{pmatrix}x +
+               \begin{pmatrix}
+                 0 & 1 \\
+                 0 & 0 \\
+                 K_1 & 0
+               \end{pmatrix}
+                       \begin{pmatrix}
+                         i \\
+                         m_l
+                       \end{pmatrix} \\
+  y &=
+      \begin{pmatrix}
+        1 & 0 & 0
+      \end{pmatrix}
+\end{align*}
+Notera att $B$ matrisen blir $3 \times 2$ eftersom vi har två insignaler.
+
+\section*{Uppgift 8.2}
+
+Givet den olinjära modellen
+\begin{equation*}
+  l\ddot{\theta} + g\sin{\theta}
+ + \ddot{z}\cos{\theta} = 0
+\end{equation*}
+inför tillstånd, samt insignal och utsignal som följer
+\begin{equation*}
+  x_1 = \theta, x_2 = \dot{\theta}, u = \ddot{z}/l, y = \theta
+\end{equation*}
+Definiera även $\omega_0^2 = g/l$. \\
+
+Linjärisera systemet kring jämviktspunkten
+\begin{equation*}
+  x_1 = \pi, x_2 = 0, u = 0
+\end{equation*}
+\qline
+Bilda först systemet på olinjär tillståndsform.
+\begin{align*}
+  \dot{x}_1 &= \dot{\theta} = x_2 \\
+  \dot{x}_2 &= \ddot{\theta} = -\frac{g}{l}\sin{\theta} - \frac{\ddot{z}}{l}\cos{\theta} \\
+  &= -\omega_0^2\sin{x_1} - u\cos{x_1}
+\end{align*}
+Inför tillståndsvektorn
+\begin{equation*}
+  x =
+  \begin{pmatrix}
+    x_1 \\
+    x_2
+  \end{pmatrix}
+\end{equation*}
+Nu gäller att
+\begin{align*}
+  \dot{x} &= f(x,u) =
+            \begin{pmatrix}
+              x_2 \\
+              -\omega_0^2\sin{x_1} - u \cos{x_1}
+            \end{pmatrix} \\
+  y &= h(x,u) = x_1
+\end{align*}
+Verifiera att den givna punkten är en jämviktspunkt:
+\begin{equation*}
+  f(x_0,u_0) =
+  \begin{pmatrix}
+    0 \\
+    0 - 0\cdot\cos{\pi}
+  \end{pmatrix} =
+  \begin{pmatrix}
+    0 \\
+    0
+  \end{pmatrix}
+\end{equation*}
+och notera att $y_0 = h(x_0,y_0) = \pi$. \\
+
+Inför nya tillstånd som avvikelser från jämviktspunkten
+\begin{align*}
+  \Delta x &= x - x_0 \\
+  \Delta u &= u - u_0 \\
+  \Delta y &= y - y_0
+\end{align*}
+Nära jämviktsläget gäller approximativt den linjära dynamiken
+\begin{align*}
+  \dot{\Delta x} &= A\Delta x + B\Delta u \\
+  \Delta y &= C\Delta x + D \Delta u
+\end{align*}
+där
+\begin{align*}
+  A &= f_x(x_0,u_0) =
+  \left.\begin{pmatrix}
+    0 & 1 \\
+    -\omega_0^2\cos{x_1} + u\sin{x_1} & 0
+  \end{pmatrix}\right|_{x = x_0, u = u_0} =
+                                        \begin{pmatrix}
+                                          0 & 1 \\
+                                          \omega_0^2 & 0
+                                        \end{pmatrix} \\
+  B &= f_u(x_0, u_0) =
+      \left.\begin{pmatrix}
+        0 \\
+        -\cos{x_1}
+      \end{pmatrix}\right|_{x = x_0, u = u_0} =
+  \begin{pmatrix}
+    0 \\
+    1
+  \end{pmatrix} \\
+  C &= h_x(x_0,u_0) =
+      \begin{pmatrix}
+        1 & 0
+      \end{pmatrix} \\
+  D &= h_u(x_0,u_0) = 0
+\end{align*}
+Slutligen erhålls således föjande linjära approximation nära jämviktsläget
+\begin{align*}
+  \dot{\Delta x} &=
+                   \begin{pmatrix}
+                     0 & 1 \\
+                     \omega_0^2 & 0
+                   \end{pmatrix}\Delta x +
+                                  \begin{pmatrix}
+                                    0 \\
+                                    1
+                                  \end{pmatrix}\Delta u \\
+  \Delta y &=
+             \begin{pmatrix}
+               1 & 0
+             \end{pmatrix}\Delta x
+\end{align*}
+
+\section*{Uppgift 8.6}
+Bestäm överföringsfunktioen för systemet med tillståndsbeskrivning
+\begin{align*}
+  \dot{x} &=
+            \begin{pmatrix}
+              -2 & 1 \\
+              0 & -3
+            \end{pmatrix}x +
+                  \begin{pmatrix}
+                    1 \\
+                    1
+                  \end{pmatrix}u \\
+  y &=
+      \begin{pmatrix}
+        -1 & 2
+      \end{pmatrix}x
+\end{align*}
+\qline
+Identifiera
+\begin{equation*}
+  A = \begin{pmatrix}
+              -2 & 1 \\
+              0 & -3
+            \end{pmatrix}, B =
+            \begin{pmatrix}
+              1 \\
+              1
+            \end{pmatrix}, C =
+            \begin{pmatrix}
+              -1 & 2
+            \end{pmatrix}, D = 0
+\end{equation*}
+\begin{align*}
+  G(s) &= C(sI-A)^{-1}B \\
+  &=
+    \begin{pmatrix}
+      -1 & 2
+    \end{pmatrix}
+           \left(
+           \begin{pmatrix}
+             s & 0 \\
+             0 & s
+           \end{pmatrix} -
+                 \begin{pmatrix}
+                   -2 & 1 \\
+                   0 & -3
+                 \end{pmatrix}
+           \right)^{-1}
+                       \begin{pmatrix}
+                         1 \\
+                         1
+                       \end{pmatrix} \\
+  &= \begin{pmatrix}
+      -1 & 2
+    \end{pmatrix}
+           \left(
+           \begin{pmatrix}
+             s+2 & -1 \\
+             0 & s+3
+           \end{pmatrix}\right)^{-1}
+                       \begin{pmatrix}
+                         1 \\
+                         1
+                       \end{pmatrix} \\
+  &= \frac{1}{(s+2)(s+3)}
+    \begin{pmatrix}
+      -1 & 2
+    \end{pmatrix}
+           \begin{pmatrix}
+             s + 3 & 1 \\
+             0 & s+2
+           \end{pmatrix}
+                 \begin{pmatrix}
+                   1 \\
+                   1
+                 \end{pmatrix} \\
+  &= \frac{1}{(s+2)(s+3)}
+    \begin{pmatrix}
+      -1 & 2
+    \end{pmatrix}
+           \begin{pmatrix}
+             s + 4 \\
+             s + 2
+           \end{pmatrix} \\
+  &= \frac{1}{(s+2)(s+3)}(-s-4+2s+4) \\
+  &= \frac{s}{(s+2)(s+3)}
+\end{align*}
 
 
 
