@@ -1,7 +1,7 @@
 ---
 title: "EL1000 - Exercise 11"
 course: el1000
-type: na
+type: exercise
 number: 11
 authors: Håkan Terelius
 year: 2016
