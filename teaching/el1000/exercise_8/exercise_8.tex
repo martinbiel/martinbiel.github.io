@@ -35,336 +35,290 @@ cross/.default={5pt}}
 \begin{document}
 \begin{titlepage}
 \author{Martin Biel \\ \texttt{mbiel@kth.se}}
-\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 5}
-\date{13 september 2016}
+\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 8}
+\date{19 september 2016}
 \end{titlepage}
 
 \maketitle
 
-\section*{Argumentvariationsprincipen}
-Låt $f(z)$ vara en \emph{meromorf} funktion, det vill säga en funktion som är \emph{analytisk} i ett öppet områda $\Omega$, så när som på ett ändligt antal punkter (poler).
+\section*{Repetition}
 
-Ifall $\gamma$ är en kurva som \emph{omsluter} $P$ poler och $N$ nollställen till $f(z)$ enkelt (ett varv) så gäller att
-\begin{equation*}
- N-P = \frac{1}{2\pi}\mathrm{var}_{\gamma}\;\mathrm{arg}f(z)
-\end{equation*}
-$f(z)$ definierar en avbildning $\gamma \rightarrow \gamma'$, så att varje punkt $z \in \gamma$ mappas till en punkt $z' = f(z) \in \gamma'$, och $\mathrm{var}_{\gamma}\;\mathrm{arg}f(z)$ innefattar variationen i argument längs den mappade kurvan $\gamma'$ när $\gamma$ genomlöps i positiv riktning (moturs). I enklare mening kan variationen i argument tolkas som antal varv $\gamma'$ löper kring origo. Genom Argumentvariationsprincipen är det möjligt att dra slutsatser om en funktions poler och nollställen, som omsluts av en sluten kurva, genom att grafiskt observera funktionens avbildning av kurvan. Argumentvariationsprincipen ligger som grund för Nyquistkriteriet.
+\begin{itemize}
+\item $\omega_c$ - Skärfrekvens \\
+frekvens när förstärkningen är $1$ (Nyquist skär enhetscirkeln) 
+\item $\omega_p$ - Fasskärfrekvens \\
+frekvens där fasen är $-180^{\circ}$ (Nyquist skär negativa Re-axeln)
+\item $A_m$ - Amplitudmarginal \\
+skillnad i amplitud mellan förstärkningen vid $\omega_p$ och $1$
+\item $\varphi_m$ - Fasmarginal \\
+skillnad i fas mellan fasen vid $\omega_c$ och $-180^{circ}$.
+\end{itemize}
 
-\section*{Nyquistkriteriet}
-När vi ritade Rotort undersökte vi stabiliteten hos det slutna systemet genom att analysera det slutna systemets poler. Med Nyquistkriteriet är det möjligt att undersöka stabilitet hos det slutna systemet genom att analysera det öppna systemet. Sluta systemet ges av
-\begin{equation*}
-  G_c(s) = \frac{G_0(s)}{1 + G_0(s)} = \frac{G(s)F(s)}{1 + G(s)F(s)}
-\end{equation*}
-Därav följer att polerna till $G_c(s)$ motsvarar nollställen till funktionen $1 + G_0(s)$. Alltså är det slutna systemet instabilt ifall $1 + G_0(s)$ har nollställen i HHP. Idén med Nyquistkriteriet är att åberopa argumentvariationsprincipen på $G_0(s)$ för att dra slutsatser om hur många av det slutna systemets poler som befinner sig i HHP. Eftersom vi är intresserade av nollställen till $1+G_0(s)$ i höger halvplan använder vi den slutna kurvan som återges i Figur \ref{fig:nyquistorig}.
+$\omega_c \sim \frac{1}{T_r} \Rightarrow \omega_c$ relaterar till systemets hastighet
+\begin{itemize}
+\item $\omega_c$ stor $\rightarrow$ snabbt system
+\item $\omega_c$ liten $\rightarrow$ långsamt system
+\end{itemize}
 
-\begin{figure}[h!]
-  \centering  
-\begin{tikzpicture}
-% Configurable parameters
-\def\gap{0.2}
-\def\bigradius{3}
-\def\littleradius{0.3}
+$\varphi$ relaterar till systemets stabilitet/dämpning
+\begin{itemize}
+\item $\varphi > 0 \rightarrow$ stabilt system
+\item $\varphi$ stor $\rightarrow$ dämpat system
+\item $\varphi$ liten $\rightarrow$ svängigt system 
+\end{itemize}
 
-% Axes
-\draw [help lines,->] (-1.25*\bigradius, 0) -- (1.25*\bigradius,0);
-\draw [help lines,->] (0, -1.25*\bigradius) -- (0, 1.25*\bigradius);
-% Red path
-\draw[line width=1pt, dashed, decoration={ markings,
-  mark=at position 0.4 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.6 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.75 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 1 with {\arrow[line width=1.2pt]{>}}},
-  postaction={decorate}]
-  let
-     \n1 = {acos(\gap/\bigradius)}
-  in (-\n1:\bigradius) arc (-\n1:\n1:\bigradius)
-  -- (\gap,2+\littleradius) arc (90:-90:\littleradius)
-  -- (\gap,\littleradius) arc (90:-90:\littleradius)
-  -- (\gap,-2+\littleradius) arc (90:-90:\littleradius)
-  -- cycle;
-% The labels
-\node at (3.6,-0.2){$\mathrm{Re}$};
-\node at (-0.3,3.53) {$\mathrm{Im}$};
-\node at (1.9,2.8) {$\gamma$};
-\draw (0,2) node[cross] {};
-\draw (0,0) node[cross] {};
-\draw (0,-2) node[cross] {};
+\section*{Lead-lag kompensering}
+Regulatorkonstruktion baserat på specifikationer i frekvensplanet:
+\begin{itemize}
+\item $\varphi$ - stabilitet/dämpning
+\item $\omega_c$ - hastighet
+\item $e_i$ - felstorlek
+\end{itemize}
+Lead-lag kompensering är en systematisk metod för att erhålla ett öppet system med önskade värden på $\omega_c$,$\varphi_m$ och $e_i$.
 
-\end{tikzpicture}
-\caption{Kurvan $\gamma$ som avbildas av $G_0(s)$ i Nyquistkriteriet.}
-  \label{fig:nyquistorig}
-\end{figure}
-\FloatBarrier
+\subsection*{Lead-del}
 
-Genom att öka radien av den stora halvcirkeln så kommer $\gamma$ i gräns att täcka hela HHP. Notera att eventuella poler på imaginäraxeln måste uteslutas eftersom argumentvariationsprincipen kräver att $G_0(s)$ är analytisk på randen av $\gamma$. Poler utesluts genom att låta kurvan röra sig längs halvcirklar, med godtyckligt liten radie, omkring dem. Låt $N_{1+G_0(s)}$ beteckna antalet nollställen i HHP hos $1 + G_0(s)$ och $P_{1 + G_0(s)}$ notera antalet poler i HHP. Antalet poler hos $1 + G_0(s)$ är samma som antalet poler hos $G_0(s)$, alltså gäller $P_{1 + G_0(s)} = P_0$. Åberopa nu argumentsvariationsprincipen genom att låta $G_0(s)$ avbilda kurvan $\gamma$ ovan (Notera att vi observerar avbildningen av $G_0(s)$, inte $1+G_0(s)$).
-\begin{align*}
-  N_{1 + G_0(s)} - P_0 &= \frac{1}{2\pi}\mathrm{var}_{\gamma}\;\mathrm{arg} (1 + G_0(s)) \\
-  \Rightarrow N_{1 + G_0(s)} &= P_0 + \text{antal varv } \gamma' \text{omsluter -1 i positiv riktning}
-\end{align*}
-Eftersom kurvan mappas av $G_0(s)$ räknar vi antal varv kring $-1$ istället för kring origo. Kom ihåg att riktningen spelar stor roll! I enkla termer gäller alltså att: \\
-\begin{center}
-Antalet poler i HHP för det slutna systemet \\
-= \\
-Antalet poler i HHP för det öppna systemet \\
-+ \\
-Antal varv $\gamma'$ omsluter $-1$ i positiv riktning \\  
-\end{center}
-Ifall det öppna systemet inte har några poler i HHP säger Nyquist kriteriet att $-1$ inte får omslutas av $\gamma'$ i positiv riktning för att slutna systemet ska vara stabilt. Notera att Ifall öppna systemet har en pol i HHP så krävs det att $\gamma'$ omsluter $-1$ i negativ riktning minst en gång för stabilitet!
+\[F_{lead}(s) = K \frac{\tau_ds+1}{\beta\tau_ds+1}\]
+$K$ ändrar enbart amplitud. Ifall fasmarginalen är tillräcklig vid önskad $\omega_c$ räcker det med en P-regulator. \\
 
-\section*{Nyquistkurvan}
-Nyquistkurvan innefattar avbildningen av positiva Im-axeln, det vill säga $G_0(s)$ då $s = i\omega$ där $\omega: 0 \to \infty$. Notera att denna kurvas riktning är motsatt den som uppstår om hela nyquistdiagrammet ritas. För enklare system, som inte ger upphov till komplexa nyquistdiagram, så kan ett förenklat Nyquistkriterium tillämpas baserat på Nyquistkurvan:
-\begin{center}
-Ifall $G_0(s)$ inte har några poler i HPP så är det slutna systemet stabilt ifall punkten $-1$ ligger till vänster om Nyquistkurvan.
-\end{center}
-I uppgifterna nedan åsyftar \emph{Nyquistdiagram} hela avbildningen av $\gamma$, och \emph{Nyquistkurvan} enbart positiva Im-axelns avbildning.
+Ifall $\varphi_m$ inte tillräcklig vid $\omega_c$ höjs fasen med en lead-länk
+\begin{enumerate}
+\item $\beta$ avgör den maximala fashöjningen 
+  \[\phi = \arctan{\frac{1-\beta}{2\sqrt{\beta}}} \text{ (Använd diagram på s.106)}\]
+Notera att små $\beta$ leder till stor förstärkning av mätbrus.
+\item $\tau_D$ bestämmer vid vilken frekvens den maximala fasförskjutningen $\phi$ inträffar 
+  \[\tau_D = \frac{1}{\omega_c\sqrt{\beta}}\] 
+  $\Rightarrow \phi$ vid $\omega_c$
+\item $K$ kan nu väljas så att den önskade $\omega_c$ uppnås 
+  \[|F_{lead}(i\omega_c)| = \frac{K}{\sqrt{\beta}}\] 
+  \[\Rightarrow K = \frac{\sqrt{\beta}}{|G(i\omega_c)|}\]
+  Notera att $|F_{lead}(s)|: K \rightarrow \dfrac{K}{\beta}$ \\
+  Ifall den nödvändiga fasadvanceringen är större än ungefär $40^{\circ}$ används två lead-länkar eftersom $\beta$ annars blir för liten. Notera att $K$ förekommer i varje lead-länk och ger upphov till förstärkningen $K^2$.
+\end{enumerate}
 
-\section*{Uppgift 3.14}
-Ett system $G(s)$ styrs genom återkoppling med en $P-$regulator.
+\subsection*{Lag-del}
 
-\subsection*{A)}
-För $K_P = 1$ erhålls nyquistdiagrammen i Figur \ref{fig:314nyquist}. Vilka motsvarande slutna system är stabila? ($G(s)$ har inga poler i HHP i något av fallen)
+\[F_{lag}(s) = \frac{\tau_Is+1}{\tau_Is+\gamma}  \]
+Lag-länken införs för att minska stationära fel (integrerande del). $\gamma$ läggs till i nämnaren för att göra lag-länken stabil. En följd av detta är att det stationära felet aldrig fullt elimineras, eftersom det inte längre sker en ren integration. Det gäller dock att 
+\[F_{lag}(0) = \frac{1}{\gamma}\]
+så att den statiska förstärkningen (och därmed det statiska felet) kan väljas godtyckligt genom att variera $\gamma$.
+\begin{enumerate}
+\item Välj $\gamma$ så att önskad feldämpning uppnås. Använd slutvärdesstasen för lämplig insignal (steg, ramp, ...) för att undersöka det statiska felet. Kom ihåg att $F_{lead}(s)$ ger upphov till en förstärkning $K$ i $s = 0$. ($|F_{lead}(0)| = K$).
+\item $\tau_I$ avgör hur höga frekvenser som förstärks av lag-länken. Effekten av förstärkningen blir en fasretardation. Fasretarderingen vid $\omega_c$ ges av
+  \[\mathrm{arg}(F_{lag}(i\omega_c)) = -\arctan{\frac{1}{\tau_I \omega_c}}\]
+Sätt tillexempel $\tau_I$ till 
+\[\tau_I = \frac{10}{\omega_c}\]
+vilket ger upphov till $5.7^{\circ}$ i fasretarderingen. Detta kan kompenseras för genom att höja fasen $\approx 6^{\circ}$ extra. Amplitudförändringen från lag-delen kan försummas, eftersom den inte märkbart kommer flytta $\omega_C$.
+\end{enumerate}
 
+Den resulterande regulatorn ges av 
+\[F_{lead-lag}(s) = K \frac{\tau_Ds + 1}{\beta\tau_D + 1} \frac{\tau_Is +1}{\tau_Is+\gamma}\]
+Lead-lag kompensering är en approximativ metod, så dubbelkolla alltid att alla specifikationer uppfylls!
+
+\section*{Uppgift 5.20}
+Bodediagrammet för ett system $G(s)$ är återgivet i Figur \ref{fig:5_20bode}.
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.5\textwidth]{3_14nyquist}
-  \caption{Nyquistkurvor för $4$ olika system då en $P-$regulator med $K_P = 1$ används.}
-  \label{fig:314nyquist}
+  \includegraphics[width=0.5\textwidth]{5_20bode}
+  \caption{Bodediagram för $G(s)$}
+  \label{fig:5_20bode}
 \end{figure}
 \FloatBarrier
-\qline
-Eftersom de öppna systemet inte har några poler i HHP blir stabilitetskriteriet att $-1$ inte får omslutas i Nyquistdiagrammet. Det kan i början vara konceptuellt svårt att bestämma ifall $-1$ omsluts i ett Nyquistdiagram (särskilt om man inte tidigare läst en kurs i komplex analys). Det finns olika knep och minnesregler för att underlätta, men det krävs framförallt träning. \\\\
-Ett trick är att låta en penna utgå från $-1$ och först peka mot origo (åt höger). Låt detta motsvara ursprungsvinkeln $0$ grader. Följ sen nyquistdiagrammet (moturs) med pennspetsen och försök visualisera vinkeln mellan pennspetsen och origo. När pennan istället pekar åt vänster har vi svept $180$ grader, och ifall vi fortsätter i samma riktning tills den pekar åt höger igen har vi svept $360$ vilket motsvarar ett varv. När pennspetsen har rört varje del av kurvan och vi är tillbaka i origo kan vi räkna hur många gånger vi svepte $360$ grader i motursriktningen.\\
-
-\textbf{i)} I det här Nyquistdiagrammet omsluts inte $-1$ alls. Med penntricket: Ifall vi följer kurvan mellan origo och $-0.4$ så pekar pennan först upp en aning men återgår sen till att peka åt höger. Detta innebär att sett från $-1$ är den totala argumentvariationen noll mellan origo och $-0.4$. På samma sätt är variationen noll mellan $-0.4$ och positiva skärningen med Re-axeln, och därifrån gäller samma resultat när kurvan återgår till origo.\\
-$\Rightarrow$ Det slutna systemet är stabilt. \\
-
-\textbf{ii)} Det här fallet är något lättare eftersom det tydligt går att se vilken område som omsluts av nyquistdiagrammet. Eftersom $-1$ inte finns på insidan av kurvan (till exempel omsluts $1$) så omsluts in $-1$.\\
-$\Rightarrow$ Det slutna systemet är stabilt. \\
-
-\textbf{iii)} Med penntricket: Mellan origo och $-2$ sveper pennan $180$ grader, eftersom den nu pekar åt vänster mot $-2$. När vi fortsätter följa kurvan moturs till positiva skärningen med Re-axeln fortsätter pennan svepa tills den till slut pekar åt höger igen. Således har vi då gått ett varv runt $-1$. Samma sak upprepas när vi löper längs restrerande halvan av kurvan, pennan pekar tillslut till höger igen och vi har rört oss två varv kring $-1$. Kurvan omsluter alltså $-1$ två gånger. \\
-$\Rightarrow$ Det slutna systemet är instabilt. \\
-
-\textbf{iv)} Med penntricket: Mellan origo och $-2$ sveper vi likt innan $180$ grader, men när vi följer kurvan från $-2$ till positiva skärningen med Re-axeln byter pennan riktningen och återgår till slut till att peka åt höger (men den här gången har vi inte gått ett fullt varv!). Samma sak upprepas när vi löper längs den restrerande halvan av kurvan, vi sveper först $180$ i en riktning, men sen $180$ i motsatt riktning. Således omsluter vi totalt $-1$ två gånger, fast i motsatt riktning! \\
-$\Rightarrow$ Det slutna systemet är stabilt.
-
-\subsection*{b)}
-Ifall nu $K > 0$, för vilka $K$ blir respektive slutna system ovan stabila?
-\qline
-Hur påverkar $K$ Nyquistdiagramen? Ifall vi bestämmer hur ett tal på kurvan förändras på grund av $K$ får vi direkt hur hela kurvan förändras. Varje punkt på kurvan är ett komplext tal med belopp och argument. Minns att $\gamma'(s) = G_0(s \text{ längs } \gamma) = KG(s \text{ längs } \gamma)$ \\
-\textbf{Belopp:}
-\[|\gamma'(s)| = |KG| = |K|\cdot|G|\]
-$\Rightarrow$ Varje punkt på kurvan skalas med en faktor $K$. \\
-\textbf{Argument:}
-\[\mathrm{arg}(\gamma'(s)) = \mathrm{arg}(KQ) = \mathrm{arg}(K) + \mathrm{arg}(G) = 0 + \mathrm{arg}(G)\]
-(Argumentet för $K$ är noll eftersom det är ett reellt tal). \\
-$\Rightarrow$ Inga vinklar ändras! \\
-$\Rightarrow$ Nyquistdiagrammen spänns ut/in med en faktor $K$, men bibehåller sin form (eftersom inga argument förändras). \\
-
-Identifiera kritiska punkter och undersök för vilka $K$ som $-1$ omsluts. \\
-
-\textbf{i)} Ifall skärningen med negativa Re-axeln (som för $K = 1$ är $-0.4$) sker vänster om $-1$ så omsluter kurvan $-1$ (verifiera med t.ex. penntricket). 
-\[K\cdot 0.4 = 1 \Rightarrow K = \frac{5}{2}\]
-$\Rightarrow$ Stabilt när $0 < K < \dfrac{5}{2}$.\\
-
-\textbf{ii)} Det är inte möjligt att skala om den här kurvan så den omsluter $-1$. \\
-$\Rightarrow$ stabilt för $0 < K < \infty$. \\
-
-\textbf{iii)} Den kritiska punkten är vid $-2$ (skärning med negativa Re-axeln). Ifall detta sker till höger om $-1$ så omsluter inte kurvan $-1$ (verifera med t.ex. penntricket).
-\[K\cdot 2 = 1 \Rightarrow K = \frac{1}{2}\]
-$\Rightarrow$ stabilt för $0 < K < \dfrac{1}{2}$. \\
-
-\textbf{iv)} Det här fallet har två kritiska punkter. Vi kan likt (iii) helt utesluta att $-1$ omsluts ifall vi flyttar skärningen längs till vänster (i $-4$) till att ligga höger om $-1$.
-\[K \cdot 4 = 1 \Rightarrow K = \frac{1}{4}\]
-Notera sen att ifall den andra skärningen med negativa Re-axeln (i $-2$) skulle ske till höger om $-1$ så erhålls inte längre fenomenet när $-1$ omsluts i motsatta riktningar. Istället omsluts $-1$ nu två gånger (verifiera med t.ex. penntricket).
-\[K \cdot 2 = 1 \Rightarrow K = \frac{1}{2}\]
-$\Rightarrow$ stabilt för $0 < K < \dfrac{1}{4}, K > \dfrac{1}{2}$.
-
-\section*{Uppgift 3.15}
-\subsection*{b)}
-Rita Nyquistdiagrammet för dubbelintegratorn
-\[G(s) = \frac{1}{s^2}\]
-\qline
-Dubbelintegratorn har en dubbelpol i origo som måste uteslutas. Således ges domänkurvan $\gamma$ som följer, se Figur \ref{fig:315nyquistorig}
-\begin{figure}[h!]
-\centering  
-\begin{tikzpicture}
-% Configurable parameters
-\def\gap{0.2}
-\def\bigradius{3}
-\def\littleradius{0.3}
-
-% Axes
-\draw [help lines,->] (-1.25*\bigradius, 0) -- (1.25*\bigradius,0);
-\draw [help lines,->] (0, -1.25*\bigradius) -- (0, 1.25*\bigradius);
-% Red path
-\draw[line width=1pt, dashed, decoration={ markings,
-  mark=at position 0.4 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.6 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.75 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 1 with {\arrow[line width=1.2pt]{>}}},
-  postaction={decorate}]
-  let
-     \n1 = {acos(\gap/\bigradius)}
-  in (-\n1:\bigradius) arc (-\n1:\n1:\bigradius)
-  -- (\gap,\littleradius) arc (90:-90:\littleradius)
-  -- cycle;
-% The labels
-\node at (3.6,-0.2){$\mathrm{Re}$};
-\node at (-0.3,3.53) {$\mathrm{Im}$};
-\node at (1.9,2.8) {$\gamma$};
-\node at (0.4, 2) {\textbf{1}};
-\node at (0.6, 0.35) {\textbf{2}};
-\node at (0.4, -2) {\textbf{3}};
-\node at (2.5, -2) {\textbf{4}};
-\draw (0,0) node[cross] {};
-
-\end{tikzpicture}
-\caption{Kurvan $\gamma$.}
-  \label{fig:315nyquistorig}
-\end{figure}
-\FloatBarrier
-I figuren har delar som lättast parametriserats för sig märkts ut. Undersök hur de fyra delarna mappas av $G(s)$ i turordning.\\
-
-\textbf{1} Positiva Im-axelns avbildning.\\
-$s = i\omega$ där $\omega: \infty \to 0$.
-\[G(i\omega) = \frac{1}{(i\omega)^2} = -\frac{1}{\omega^2}\]
-Avbildningens början: $-\dfrac{1}{\omega^2} \to 0$ då $\omega \to \infty$ \\
-Avbildningens slut: $-\dfrac{1}{\omega^2} \to -\infty$ då $\omega \to 0$ \\
-Den positiva Im-axeln mappas alltså på negativa Re-axeln (i vänster riktning $-\infty \to 0$). \\
-
-\textbf{2} Lilla halvcirclens avbildning \\
-$s = re^{i\theta}$ där $r \to 0, \theta: \dfrac{\pi}{2} \to -\dfrac{\pi}{2}$
-\[G(re^{i\theta} = \frac{1}{(re^{i\theta})^2} = \frac{1}{r^2e^{2i\theta}}\]
-Avbildningens början: $G(re^{i\theta}) \to \infty \cdot e^{-i\pi}$ då $r \to 0, \theta = \dfrac{\pi}{2}$ \\
-Avbildningens slut: $G(re^{i\theta}) \to \infty \cdot e^{i\pi}$ då $r \to 0, \theta = -\dfrac{\pi}{2}$ \\
-Den lilla halvcirlen mappas alltså på en stor helcirkel ($-180$ grader till $180$ grader med växande radie). \\
-
-\textbf{3} Negativa Im-axeln
-$s = -i\omega$ där $\omega: 0 \to \infty$.
-\[G(-i\omega) = \frac{1}{(-i\omega)^2} = -\frac{1}{\omega^2}\]
-Avbildningens början: $-\dfrac{1}{\omega^2} \to -\infty$ då $\omega \to 0$ \\
-Avbildningens slut: $-\dfrac{1}{\omega^2} \to -0$ då $\omega \to \infty$ \\
-Den negativa Im-axeln mappas alltså på negativa Re-axeln (i höger riktning $0 \to -\infty$). \\
-
-\textbf{4} Stora halvcirclens avbildning \\
-$s = Re^{i\theta}$ där $r \to \infty, \theta: -\dfrac{\pi}{2} \to \dfrac{\pi}{2}$
-\[G(Re^{i\theta} = \frac{1}{(Re^{i\theta})^2} = \frac{1}{R^2e^{2i\theta}}\]
-Avbildningens början: $G(Re^{i\theta}) \to 0 \cdot e^{i\pi}$ då $R \to \infty, \theta = -\dfrac{\pi}{2}$ \\
-Avbildningens slut: $G(Re^{i\theta}) \to 0 \cdot e^{-i\pi}$ då $R \to \infty, \theta = \dfrac{\pi}{2}$ \\
-Den stora halvcirlen mappas alltså på en liten helcirkel ($180$ grader till $-180$ grader med minskande radie). \\
-
-Det resulterande Nyquistdiagrammet är uppritat i Figur \ref{fig:315nyquist}.
-\begin{figure}[h!]
-\centering
-\begin{tikzpicture}
-% Configurable parameters
-\def\gap{0.2}
-\def\bigradius{3}
-\def\littleradius{0.5}
-
-% Axes
-\draw [help lines,->] (-1.25*\bigradius, 0) -- (1.25*\bigradius,0);
-\draw [help lines,->] (0, -1.25*\bigradius) -- (0, 1.25*\bigradius);
-% Red path
-\draw[line width=1pt, decoration={ markings,
-  mark=at position 0.2455 with {\arrow[line width=1.2pt]{<}},
-  mark=at position 0.765 with {\arrow[line width=1.2pt]{<}},
-  mark=at position 0.87 with {\arrow[line width=1.2pt]{<}},
-  mark=at position 0.97 with {\arrow[line width=1.2pt]{<}}},
-  postaction={decorate}]
-  let
-     \n1 = {180 - asin(\gap/2/\bigradius)},
-     \n2 = {180 - asin(\gap/2/\littleradius)}
-  in (\n1:\bigradius) arc (\n1:-\n1:\bigradius)
-  -- (-\n2:\littleradius) arc (-\n2:\n2:\littleradius)
-  -- cycle;
-
-% The labels
-\node at (3.6,-0.2){$\mathrm{Re}$};
-\node at (-0.3,3.53) {$\mathrm{Im}$};
-\node at (-1.8,2.8) {$\gamma'$};
-\node at (-1.8,-0.5) {\textbf{1}};
-\node at (0.6,-2.6) {\textbf{2}};
-\node at (-1.8,0.5) {\textbf{3}};
-\node at (0.5,0.6) {\textbf{4}};
-
-\end{tikzpicture}
-\caption{Nyquistdiagram för dubbelintegratorn}
-\label{fig:315nyquist}
-\end{figure}
-\FloatBarrier
-
-Notera att del \textbf{1} och del \textbf{3} går längs negativa Re-axeln, gapet är bara inritat för att förtydliga diagrammets riktning. Kurvan omsluter inte $-1$ eftersom den punkten ligger på randen av diagrammet. Denna situation uppstår eftersom det slutna systemet får poler på imaginära axeln.
-
-\section*{Uppgift 3.16}
-Ett system $G(s)$ är asymptotiskt stabilt (ekvivalent med insignal-utsignal stabilt för de system som förekommer i den här kursen), och styrs genom negativ återkoppling. Nyquistkurvan för $G(s)$ är återgiven i Figure \ref{fig:316nyquist}.
-
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.4\textwidth]{3_16nyquist}
-  \caption{Nyquistkurva för $G(s)$.}
-  \label{fig:316nyquist}
-\end{figure}
 
 \subsection*{a)}
-Ifall en P-regulator används, för vilka $K_P$ är det slutna systemet stabilt?
+$G(s)$ återkopplas med en regulator $F(s)$. Bestäm det slutna systemet.
 \qline
-Eftersom en \emph{Nyquistkurva} är given blir stabilitetskriteriet att $-1$ måste ligga till vänster om kurvan. Minns att $K_P$ bara ändrar beloppet av varje punkt på kurvan. Identifiera den kritiska punkten när Nyquistkurvan skär negativa Re-axeln i $-1.5$. Ifall skärningen sker till höger om $-1$ erhålls ett stabilt slutet system.
-\[K\cdot 1.5 = 1 \Rightarrow K = \frac{2}{3}\]
-$\Rightarrow$ stabilt slutet system ifall $K < \dfrac{2}{3}$.
+
+\[G_c(s) = \frac{F(s)G(s)}{1+F(s)G(s)}\]
 
 \subsection*{b)}
-Bestäm det stationära felet, $e_{\infty}$, som funktion av $K_P$ ifall $y_{ref}$ är ett enhetssteg.
+Låt $F(s) = K$. Beräkna $\omega_c$ och $\varphi_m$ för $G_0(s) = KG(s)$ då $K = 1$. Är slutna systemet stabilt för $K = 1$.\vspace*{5pt}
 \qline
-Vet från a) att $G_c(s)$ är stabil då $K < 2/3$. Alltså kan vi använda slutvärdessatsen för dessa $K$:
+Från bodediagrammet i Figur \ref{fig:5_20bode} erhålls
 \begin{align*}
-  E(s) &= S(s)Y_{ref}(s) = \frac{1}{1+K_PG(s)}Y_{ref}(s) \\
-  \Rightarrow e_{\infty} &= \lim_{t \to \infty}e(t) = \lim_{s \to 0}sE(s) = \lim_{s \to 0}s \cdot \frac{1}{1 + K_PG(s)\cdot\frac{1}{s}} \\
-  &= \frac{1}{1+K_PG(0)} = \lbrace G(0) = 2 \text{ (se figur) } \rbrace = \frac{1}{1+2K_P}
+  \omega_c &= 1 [\mathrm{rad/s}] \\
+  \varphi_m &= \arg{G(i\omega_c)}-(-180^{\circ}) = -130^{\circ} - (-180^{\circ}) = 50^{\circ}
 \end{align*}
-Det stationära felet ges alltså av
-\[e_{\infty} = \frac{1}{1+2K}, K < \frac{2}{3}\]
-Notera att det stationära felet försvinner endast då $K_P \to \infty$, men systemet blir instabilt redan för $K_P = 2/3$. Det är inte möjligt att stabilisera systemet $G(s)$ med enbart P-reglering utan att det uppstår ett stationärt fel.
+Eftersom $\varphi_m > 0$ är det slutna systemet stabilt då $K = 1$.
 
 \subsection*{c)}
-Ifall $G(s)$ istället styrs av en I-regulator:
-\[\frac{K_I}{s}\]
-(vilket skulle eliminera det stationära felet) För vilka $K_I$ är det slutna systemet stabilt?\vspace*{5pt}
+Beräkna $K$ så systemet blir dubbelt så snabbt.
 \qline
-Hur påverkar integratorn Nyquistkurvan?\\
+Minns att $\omega_c \sim \dfrac{1}{T_r}$. \\
 
-\textbf{Belopp:}
-\[|\gamma'(s)| =
-\begin{Bmatrix}
-  s = i\omega \\
-  \omega \geq 0
-\end{Bmatrix}
-= 
-\left|
-  \frac{K_I}{i\omega}
-\right| |G(i\omega) = 
-\left|
-  \frac{K_I}{\omega}
-\right||G(i\omega|\]
-$\Rightarrow$ Kurvan skalas med $
-\left|
-  \dfrac{K_I}{\omega}
-\right|$.\\
+$\Rightarrow \omega_{c,d} = 2\omega_c = 2 [\mathrm{rad/s}]$. \\
 
-\textbf{Argument:}
-\[\mathrm{arg}(\gamma'(s)) = \mathrm{arg}
-\left(
-  \frac{K_I}{i\omega}G(i\omega)
-\right) = \mathrm{arg}(K_I) - \mathrm{arg}(i\omega) + \mathrm{arg}(G(i\omega)) = \mathrm{arg}(G(i\omega)) - \frac{\pi}{2}
-\]
-$\Rightarrow$ Kurvan vrid $90$ grader \emph{medurs} (minns att moturs är den positiva riktningen). För att underlätta vrider vi kurvan $90$ grader innan vi applicerar skalningen. Skärningen med negativa Im-axeln i $-3i$ då $\omega = 2$ kommer vridas $90$ grader medurs och blir då en skärning med negativa Re-axeln i $-3$. Detta blir våran nya kritiska punkt. Likt tidigare kollar vi vad $K_I$ måste uppfylla för att skärningen med Re-axeln ska ske till höger om $-1$:
-\[
-\left|
-  \frac{K_I}{\omega}G(i\omega)
-\right| = \lbrace \omega = 2 \rbrace = 
-\left|
-  \frac{K_I}{2} (-3)
-\right| = \frac{3}{2}K_I = 1 \Rightarrow K = \frac{2}{3}\]
-$\Rightarrow$ stabilt slutet system ifall $K > \dfrac{2}{3}$.
+$|KG(i2)| = 1 \Rightarrow K = \dfrac{1}{|G(i2)|} = \dfrac{1}{0.3} = 3.33$
+
+\subsection*{d)}
+Hur försämrades systemet i c)?
+\qline
+Vid den nya skärfrekvensen är fasen $\approx -175^{\circ}$. Alltså är $\varphi_m = 5^{\circ}$ vilket ger ett mer svängigt system än i a).
+
+\subsection*{e)}
+Använd en lead-länk så systemet approximativt bibehåller samma översläng men är dubbelt så snabbt.
+\vspace*{5pt}
+\qline
+Specifikation:
+\begin{align*}
+  \omega_{c,d} &= 2 [\mathrm{rad/s}] \\
+  \varphi_m &= 50^{\circ}
+\end{align*}
+Eftersom fasen är $5^{\circ}$ vid den önskade skärfrekvensen behöver vi höja fasen med $45^{\circ}$, så att $\phi = 45^{\circ}$. \\
+$\Rightarrow \beta = 0.18$ (från diagram). \\ 
+\[\tau_D = \frac{1}{\omega_{c,d}\sqrt{\beta}} = \frac{1}{2\sqrt{0.18}} \approx 1.18\] 
+\[|F_{lead}(i\omega_{c,d})| \cdot |G(i\omega_{c,d})| = 1 \Rightarrow \frac{K}{\sqrt{0.18}}\cdot 0.3 = 1 \Rightarrow K \approx 1.4 \]
+
+\[\Rightarrow F_{lead}(s) = 1.4 \frac{1.18s+1}{0.21s+1}\]
+
+\subsection*{f)}
+Beräkna det statiska felet efter ett enhetssteg.
+\qline
+
+\[\lim_{t \to \infty}e(t) = \lim_{s \to 0} sE(s) = \lim_{s \to 0}s \cdot \frac{1}{1+F(s)G(s)} \cdot \frac{1}{s} = \frac{1}{1+KG(0)} = 0.17\]
+(För att statiska felet ska gå mot noll krävs att antingen $F(s)$ eller $G(s)$ innehåller en ren integration.)
+
+\subsection*{g)h)}
+Inför en lag-länk. Välj $\gamma$ så att det statiska felet blir $0.01$. Välj även ett lämpligt värde på $\tau_I$.
+\qline
+\[\lim_{t \to \infty}e(t) = \lim_{s \to 0} sE(s) = \lim_{s \to 0}s \cdot \frac{1}{1+F(s)G(s)} \cdot \frac{1}{s} = \frac{1}{1+\frac{K}{\gamma}G(0)} = 0.01\] 
+\[\Rightarrow 1+\frac{K}{\gamma}G(0) = 100 \Rightarrow \gamma = 0.048\]
+Vi betraktar olika alternativ på $\tau_I$:
+\begin{itemize}
+\item $\tau_I = \dfrac{1}{\omega_c} \Rightarrow$ ($-45^{\circ}$ fas, men eliminerar felet för högfrekventa signaler)
+\item $\tau_I = \dfrac{10}{\omega_c} \Rightarrow$ ($-5.7^{\circ}$ fas, men eliminerar inte felet för högfrekventa signaler)
+\end{itemize}
+Vi utförde ingen kompensering för valet av $\tau_I$ i lead-länken, så vi väljer förslaget med minst inverkan på fasen: 
+\[\tau_I = \frac{10}{\omega_c}\]
+
+\section*{Uppgift 5.10}
+Betrakta systemet som är återgivet i Figur \ref{fig:5_10block}.
+
+\begin{figure}[h!]
+  \centering
+  \begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (g1) {$G_1(s)$};
+\node [block, right of=g1, node distance=3cm] (int) {$\frac{1}{s}$};
+
+\draw [wire] ++(-2,0) -- (g1) node[pos=0.45,above] {$u$};
+\draw [wire] (g1) -- (int);
+\draw [wire] (int) -- ++(2,0) node[pos=0.45, above] {$y$};
+\end{tikzpicture}
+  \caption{Blockschema för systemet $G(s)$}
+  \label{fig:5_10block}
+\end{figure}
+\FloatBarrier
+
+så att det fullständiga systemet ges av 
+\[G(s) = \frac{G_1(s)}{s}\]
+Bodediagrammet för $G_1(s)$ är återgivet i Figur \ref{fig:5_10bode}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{5_10bode}
+  \caption{Bodediagram för $G_1(s)$}
+  \label{fig:5_10bode}
+\end{figure}
+\FloatBarrier
+
+Bestäm en kompensator så att
+\begin{itemize}
+\item $\varphi_m = 40^{\circ}$
+\item Systemet är dubbelt så snabbt som ett system med $\varphi_m = 40^{\circ}$ där enbart P-reglering används.
+\item Det statiska felet vid en ramp är $1\%$ av motsvarande fel för ett system med $\varphi_m = 40^{\circ}$ där enbart P-reglering används.
+\end{itemize}
+\qline
+Bestäm först amplitud- och fasförhållandena mellan $G(s)$ och $G_1(s)$:
+\begin{align*}
+  |G(i\omega)| &= \frac{|G_1(i\omega)|}{\omega} \\
+  \arg{G(i\omega)} &= \arg{G_1(i\omega)} - 90^{\circ}
+\end{align*}
+$\varphi_m = 40^{\circ}$ uppnås ifall 
+\[\arg{G(i\omega_c)} = -140 ^{\circ} \Rightarrow \arg{G_1(i\omega_c)} = 50 ^{\circ}\]
+Läs av ur Figur \ref{fig:5_10bode} vilket $\omega_c$ detta motsvarar: \\
+$\omega_{c,d}^P = 0.52$ rad/s. \\
+Bestäm ett $K_P$ så att den önskade fasmarginalen uppnås med enbart P-reglering: \\
+\[K_P\cdot \frac{|G_1(i\omega_{c,d}^P)|}{\omega_{c,d}^P} = 1 \Rightarrow K_P \approx 4.2\]
+
+Specifikationen är att systemet ska vara dubbelt så snabbt som det P-reglerade systemet. \\
+$\Rightarrow \omega_{c,d} = 2\omega_{c,d}^P = 1.05$ rad/s. \\
+
+Kolla vilken fasmarginal vi skulle ha ifall $\omega_{c,d}$ uppnås: 
+\[\arg{G_1(i1.05)} = -107 ^{\circ} \Rightarrow \arg{G(i1.05)} = -197 ^{\circ}\]
+$\varphi_m = 40 ^{\circ}$ kräver alltså att fasen advanceras 
+\[17 ^{\circ} + 40 ^{\circ} + 6 ^{\circ} = 63 ^{\circ}\]
+där $17 ^{\circ}$ flyttar fasen till $-180 ^{\circ}$, $40 ^{\circ}$ ger den önskade fasmarginalen och $6 ^{\circ}$ kompenserar för att vi kommer införa en lag-länk. Denna fasadvancering kräver två lead-länkar som höjder fasen $32 ^{\circ}$ var.
+\begin{align*}
+  \beta &= 0.31 \text{ Från diagram} \\
+  \tau_D &= \frac{1}{\omega_{c,d}\sqrt{\beta}} = \frac{1}{1.05\sqrt{0.31}} \approx 1.72 \\ 
+  |F_{lead}(i\omega_{c,d})|^2\cdot|G(i\omega_{c,d})| &= \frac{K^2}{\beta}\cdot \frac{|G_1(i\omega_{c,d})|}{\omega_{c,d}} \\
+                                                     &= \frac{K^2}{0.31}\cdot \frac{0.024}{1.05} \\
+                                                     &= 1 \\
+  \Rightarrow K &\approx 1
+\end{align*}
+Introducera en lag-länk för att sänka det statiska felet vid en ramp. Notera att den rena integreringen i $G(s)$ eliminerar statiskt fel när insignalen är ett steg. Undersök det statiska felet vid ramp via slutvärdessatsen: 
+\[e_1 = \lim_{s \to 0}s \cdot \frac{1}{1 + F(s) \frac{G_1(s)}{s}}\cdot \frac{A}{s^2} = \lim_{s \to 0} \frac{A}{s + F(s)G_1(s)} = \frac{A}{|F(0)|\cdot|G_1(0)|}\]
+Detta gäller allmänt för alla $F(s)$. Ansätt nu att felet med lead-lag regulatorn ska vara $1\%$ av felet när P-regulatorn (med $K_P = 4.2$) används: 
+\[\frac{A}{|F_{lead-lag}(0)|\cdot|G_1(0|} = 0.01\frac{A}{K_P\cdot |G_1(0)|}\]
+$\Rightarrow |F_{lead-lag}(0)| = 100K_P = 420$ \\
+$|F_{lead-lag}(0)| = |F_{lead}(0)|^2\cdot|F_{lag}(0)| = \dfrac{K^2}{\gamma} = 420$ \\
+$\Rightarrow \gamma = \dfrac{1}{31} = 0.032$ \\
+
+Lead-länken har kompenserat för en fasretardering med storlek $6 ^{\circ}$. Välj därför 
+\[\tau_I = \frac{10}{\omega_{c,d}} \approx 10\]
+Den resulterande regulatorn ges således av 
+\[F_{lead-lag}(s) = 13.6 \left(\frac{1.72s+1}{0.53s+1}\right)^2 \left( \frac{10s+1}{10s+0.032}\right)\]
+
+\section*{Uppgift 6.3}
+Figur \ref{fig:6_3nyquist} visar Nyquistkurvan för ett öppet system $G_0(s)$.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.4\textwidth]{6_3nyquist}
+  \caption{Nyquistkurva för ett givet $G_0(s)$}
+  \label{fig:6_3nyquist}
+\end{figure}
+\FloatBarrier
+
+Visa i figur för vilka frekvenser additiva störsignaler förstärks repsektive dämpas.
+\qline
+Det fullständiga systemet kan återges i följande blockschema \\
+
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (system) {$G(s)$};
+\node [block, left of=system, node distance=4cm] (reg) {$F(s)$};
+\node [split, right of=system] (split) {};
+\node [sum, left of=reg, node distance=3cm] (sum) {};
+\node [tmp, below of=reg] (tmp){};
+
+\draw [wire] ++(-9,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.45, right, align=center, label={[laba]below:$y_{ref}(t)$}] {};
+\draw [wire] (sum) -- (reg) node[pos=0.45, right, align=center, label={[laba]below:$e(t)$}] {};
+\draw [wire] (system) -- ++(4,0) node[pos=0.45, right, align=center, label={[laba]below:$y(t)$}] {};
+\draw [wire] (reg) -- (system) node[pos=0.45, right, align=center, label={[laba]below:$u(t)$}] {};
+\draw [wire] ++(0,2) -- (system) node[pos=0.25, right, align=center, label={right:$v(t)$}] {};
+\draw [wire] (split) |- (tmp) -| node[pos=0.99, right] {$-$} (sum);
+\end{tikzpicture} \\
+
+En additiv störsignal innebär att utsignalens laplacetransform får följande uttryck: 
+\[Y(s) = G_c(s)Y_{ref}(s) + S(s)V(s)\]
+Där $G_c(s)$ utgör det slutna systemet, $V(s)$ laplacetransformen av störsignalen, och $S(s)$ är känslighetsfunktionen som ges av
+\[S(s) = \frac{1}{1 + G_0(s)}\]
+Att störningen förstärks respektive dämpas innebär precis att $|S(s)| > 1$ respektive $|S(s)| < 1$. Vi bestämmer för vilka frekvenser störsignalen förstärks: 
+\[|S(i\omega)| > 1 \Rightarrow |1 + G_0(i\omega)| < 1\]
+Störsignalerna förstärks alltså vid de frekvenser när Nyquistkurvan ligger inom en enhetscirkel centrerad i $-1$. Situationen återgivs i Figur \ref{fig:6_3sensitivity}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.4\textwidth]{6_3sensitivity}
+  \caption{Nyquistkurva för $G_0$ med en utritad enhetscirkel som är centrerad i $-1$}
+  \label{fig:6_3sensitivity}
+\end{figure}
+\FloatBarrier
+
+Alltså, ifall störsignalen har frekvenser som motsvarar punkter på Nyquistkurvan inom den utritade enhetscirkeln förstärks dem under regleringen. Alla andra signalen dämpas.\\
+
+Vi tog inte hänsyn till störningar när vi designade regulatorer i de föregående uppgifterna. Ibland måste man offra lite av prestandan som uppnås genom regulatordesign för att erhålla en snällare känslighetsfunktion.
+
+
+
 \end{document}
 
