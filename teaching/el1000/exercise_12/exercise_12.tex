@@ -1,0 +1,526 @@
+\documentclass[12pt]{article}
+\usepackage[swedish]{babel}
+\usepackage[T1]{fontenc}{
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[colorinlistoftodos,prependcaption,textsize=small]{todonotes}
+\usepackage{url,graphicx,tabularx,array,geometry,color,float,placeins}
+\setlength{\parskip}{1ex} %--skip lines between paragraphs
+\setlength{\parindent}{0pt} %--don't indent paragraphs
+%\setcounter{secnumdepth}0}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, 3d, decorations, calc, decorations.markings}
+
+\tikzstyle{block} = [draw, rectangle, thick, minimum height=3em, minimum width=2em, align=center, text width=1.5cm, top color=white, bottom color=white!85!black]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{tmp} = [coordinate]
+\tikzstyle{sum} = [draw, circle, node distance=1cm]
+\tikzstyle{wire} = [->,thick]
+\tikzstyle{lab} = []
+\tikzstyle{laba} = [lab, label distance=0cm]
+\tikzstyle{labb} = [lab, label distance=0.5em]
+\tikzstyle{split} = [fill,black,circle,inner sep=0.03cm]
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+%default radius will be 1pt. 
+cross/.default={5pt}}
+
+\newcommand{\sspan}[1]{\mathrm{span}\left\{#1\right\}}
+\newcommand{\ima}[1]{\mathrm{Im}\; #1}
+\newcommand{\qline}{\hrule \vspace*{10pt}}
+
+%\linespread{2} %-- Uncomment for Double Space
+\begin{document}
+\begin{titlepage}
+\author{Martin Biel \\ \texttt{mbiel@kth.se}}
+\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 12}
+\date{3 oktober 2016}
+\end{titlepage}
+
+\maketitle
+
+\section*{Repetition}
+\begin{align*}
+  x &= Ax+Bu \\
+  y &= Cx + Du
+\end{align*}
+
+\textbf{Tillståndsåterkoppling} 
+\[u(t) = -Lx(t) + \tilde{r}(t)\]
+\begin{itemize}
+\item $L$ - placerar slutna systemets poler
+\item $\tilde{r}(t)$ - avgör statiska förstärkningen och innehåller ofta systemets referenssignal
+\end{itemize}
+Det slutna systemets poler kan placeras godtyckligt ifall systemet är \emph{styrbart}.
+
+\textbf{Rekonstruktion av tillstånd} \\
+Ifall tillståndet $x$ ej kan mätas rekonstruerar vi det med en tillståndsobservatör: 
+\[\dot{\hat{x}}(t) = A\hat{x} + Bu + K(y-C\hat{x})\]
+Skattningsfelet $\tilde{x} = x - \hat{x}$ kan avta mot noll godtyckligt snabbt ifall systemet är \emph{observerbart}.
+
+\section*{Tillståndsåterkoppling med rekonstruerat tillstånd}
+Vi kombinerar nu båda metoderna till en gemensam styrlag. I Figur \ref{fig:återobs} återges ett blockschema som visar hur tillståndsåterkopplingen samt tillståndsobservatören kan implementeras.
+
+\begin{figure}[h!]
+  \centering
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block, text width=3cm, text height = 0.1cm] (system) {
+  \begin{align*}
+    \dot{x} &= Ax + Bu \\
+    y &= Cx
+  \end{align*}
+};
+\node [block, below of=system] (B) {$B$};
+\node [split, left of=system] (split1) {};
+\node [split, right of=system, node distance=4.5cm] (split2) {};
+\node [sum, left of=system, node distance=4cm] (sum) {};
+\node [block, below of=B, text width=2.5cm] (invA) {$(sI-A)^{-1}$};
+\node [split, left of=invA, xshift=-0.5cm] (split3) {};
+\node [sum, right of=invA, node distance=2.5cm] (sum2) {};
+\node [block, right of=sum2] (K1) {$K$};
+\node [block, left of=invA, node distance=4cm] (L){$L$};
+\node [block, below of=invA, xshift=-1cm] (K2) {$K$};
+\node [block, right of=K2] (C) {$C$};
+
+\draw [wire] ++(-6,0) -- node[pos=0.99] {$+$} (sum) node[pos=0.45, below] {$r(t)$};
+\draw [wire] (sum) -- (system) node[pos=0.45, right, below] {$u(t)$};
+\draw [wire] (split1) |- (B);
+\draw [wire] (B) -| (sum2) node[pos=0.99,left] {$+$};
+\draw [wire] (system) -- ++(6,0) node[pos=0.35, right, below] {$y(t)$};
+\draw [wire] (split2) -- (K1);
+\draw [wire] (K1) -- node[pos=0.8] {$+$} (sum2);
+\draw [wire] (sum2) -- (invA);
+\draw [wire] (invA) -- (L) node[pos=0.65, above] {$\hat{x}(t)$};
+\draw [wire] (split3) |- (K2);
+\draw [wire] (K2) -- (C);
+\draw [wire] (C) -| node[pos=0.99,left] {$-$} (sum2);
+\draw [wire] (L) -- (sum) node[pos=0.99,right] {$-$};
+\end{tikzpicture}
+  \caption{Tillståndsåterkoppling, där tillståndet rekonstrueras av en tillståndsobeservatör}
+  \label{fig:återobs}
+\end{figure}
+\FloatBarrier
+
+Notera att det slutna systemet kommer ges av 
+\[\dot{x} = (A-BL)\hat{x}\]
+så att ifall $\hat{x}$ är en snäll signal så kommer systemets riktiga tillstånd stabiliseras om $A-BL$ har egenvärden i VHP. Det gäller också att skattningsfelets dynamik 
+\[\dot{\tilde{x}} = (A-KC)\tilde{x}\]
+är oberoende av $L$. Dessa observationer indikerar att det är möjligt att designa tillståndsåterkopplingen och tillståndsobservatören oberoende av varandra.
+
+\section*{Uppgift 9.4}
+
+\begin{align*}
+  \dot{x} &= \begin{pmatrix}
+             0 & 0 \\
+             0 & -1
+             \end{pmatrix}x + \begin{pmatrix}
+               1 \\
+               1
+             \end{pmatrix}u \\
+  y &= \begin{pmatrix}
+    1 & -1
+  \end{pmatrix}x
+\end{align*}
+Målet är att placera slutna systemets poler i $\lbrace -2, -3 \rbrace$. Föreslå en tillståndsåterkoppling samt en observatör.
+\qline
+Kontrollera styrbarhet och observerbarhet: 
+\[\mathcal{S} = \begin{pmatrix}
+1 & 0 \\
+1 & -1
+\end{pmatrix}\]
+har full rang, så systemet är styrbart. 
+\[\mathcal{O} = \begin{pmatrix}
+1 & -1 \\
+0 & 1
+\end{pmatrix} \]
+har också full rang, så systemet är observerbart. Vi vet nu att det kommer gå att placera det slutna systemets poler som önskat, samt designa en tillräckligt bra observatör. Börja med att designa återkopplingen: 
+\[u(t) = -Lx(t) +\tilde{r}(t)\]
+där $\tilde{r}(t) = l_0 r(t)$. $l_0$ kommer påverka systemets statiska förstärkning. Slutna systemets karaktäristiska polynom erhålls genom 
+\begin{align*}
+\det{(sI - (A-BL))} &= 
+\left|
+  \begin{pmatrix}
+s & 0  \\
+0 & s
+  \end{pmatrix} - \begin{pmatrix}
+0 & 0 \\
+0 & -1
+  \end{pmatrix} + \begin{pmatrix}
+1 \\
+1
+  \end{pmatrix}\begin{pmatrix}
+l_1 & l_1
+  \end{pmatrix}
+\right| \\
+&= 
+\left|
+  \begin{pmatrix}
+s & 0 \\
+0 & s
+  \end{pmatrix} + \begin{pmatrix}
+l_1 & l_2 \\
+l_1 & 1 + l_2
+  \end{pmatrix}
+\right| \\
+ &= 
+\begin{vmatrix}
+s + l_1 & l_2 \\
+l_1 & s+l_2+1
+\end{vmatrix} \\
+&= (s+l_1)(s+l_2+1)-l_1l_2 \\
+&= s^2+(1+l_1+l_2)s+l_1
+\end{align*}
+De efterfrågade polerna motsvarar följande karaktäristiska polynom: 
+\[(s+2)(s+3) = s^2+5s+6\]
+Koefficientidentifiering ger 
+\[l_1 = 6, l_2 = -2\]
+Det slutna systemet ges nu av 
+\begin{align*}
+  \dot{x} &= (A-BL)x + Bl_0r \\
+  y &= Cx
+\end{align*}
+Hur bestämmer vi $l_0$? \\
+
+Antag att målet är att det slutna systemets statiska förstärkning skall ges av $d$, så att 
+\[|G_c(0)| = d\]
+Överföringsfunktionen för det slutna systemet kan bestämmas från tillståndsbeskrivningen: 
+\[G_c(s) = C(sI-(A-BL))^{-1}Bl_0\]
+och vi har att 
+\[d = |G_c(0)| = C(BL-A)^{-1}Bl_0\] 
+\[\Rightarrow l_0 = \frac{d}{|C(BL-A)^{-1}B} = \frac{d}{1/6} = 6d\]
+Den resulterande regulatorn ges således av 
+\[u(t) = -\begin{pmatrix}
+6 & -2
+\end{pmatrix}x(t) + 6dr(t)\]
+där $d$ är det slutna systemets statiska förstärkning. \\
+
+Designa nu en tillståndsobservatör. Minns att skattningsfelets dynamik ges av 
+\[\dot{\tilde{x}} = (A-KC)\tilde{x}\]
+Karaktäristiskt polynom:
+\begin{align*}
+  \det{(sI-(A-KC))} &= \left|
+\begin{pmatrix}
+s & 0 \\
+0 & s
+\end{pmatrix} - \begin{pmatrix}
+0 & 0\\
+0 & -1
+\end{pmatrix} + \begin{pmatrix}
+k_1 \\
+k_2
+\end{pmatrix} \begin{pmatrix}
+1 & -1
+\end{pmatrix}\right| \\
+  &= \begin{vmatrix}
+s+k_1 & -k_1 \\
+k_2 & s+1-k_2
+\end{vmatrix} \\
+&= (s+k_1)(s+1-k_2)+k_1k_2 \\
+&= s^2+(1+k_1-k_2)s+k_1
+\end{align*}
+Observatörens dynamik behöver vara snabbare än det slutna systemet. Placera därför polerna i till exempel $\lbrace -6, -6 \rbrace$, vilket motsvarar polynomet 
+\[(s+6)^2 = s^2+12s+36\]
+Koefficientidentifiering ger 
+\[k_1 = 36, k_2 = 25\]
+Den resulterande observatören ges således av 
+\[\dot{\hat{x}} = \begin{pmatrix}
+0 & 0\\
+0 & -1
+\end{pmatrix}\hat{x} + \begin{pmatrix}
+1 \\
+1
+\end{pmatrix}u + \begin{pmatrix}
+36 \\
+25
+\end{pmatrix}(y-\begin{pmatrix}
+1 & -1
+\end{pmatrix}\hat{x})\]
+
+\section*{Uppgift 9.8}
+Givet är en linjäriserad modell av ett vattentank-system. De följande variablerna beskriver avvikelser från ett jämviktsläge:
+\begin{itemize}
+\item $q$ - vattenflödet
+\item $h$ - vattenhöjden
+\item $u$ - pumpspänningen
+\item $v$ - störning i form av fluktuationer vid vattenytan
+\end{itemize}
+Pumpen beskrivs av följande dynamik nära jämviktsläget: 
+\[Q(s) = \frac{k_1}{1+Ts}U(s)\]
+där $k_1 = 1, T = 0.5$. Vattenhöjdens dynamik nära jämviktsläget ges av 
+\[A\dot{h} = q-v\]
+där $A = 1$.
+
+\subsection*{a)}
+Med $q$ och $h$ som tillstånd, bestäm en tillståndsbeskrivning av systemet där $y = h$ utgör utsignalen. Bestäm även en styrlag 
+\[u = -l_1q-l_2h+r\]
+så att slutna systemets poler hamnar i $\lbrace -2, -2 \rbrace$.
+\qline
+Bestäm först derivatorna av de båda tillstånden.
+\begin{align*}
+  Q(s) &= \frac{k_1}{1+Ts}U(s) \\
+  \Rightarrow TsQ(s) &= -Q(s) + k_1U(s) \\
+  \Rightarrow \dot{q} &= -\frac{1}{T}q + \frac{k_1}{T}u \\
+  &= -2q+2u
+\end{align*}
+
+Dynamiken för $h$ är redan given som en differentialekvation. På tillståndsform erhålls
+\begin{align*}
+\begin{pmatrix}
+  \dot{q}(t) \\
+  \dot{h}(t)
+\end{pmatrix} &= 
+  \begin{pmatrix}
+-2 & 0 \\
+1 & 0
+  \end{pmatrix}\begin{pmatrix}
+    q(t) \\
+    h(t)
+  \end{pmatrix} + \begin{pmatrix}
+2 \\
+0
+  \end{pmatrix}u(t) + \begin{pmatrix}
+0 \\
+-1
+  \end{pmatrix}v(t) \\
+  y(t) &= \begin{pmatrix}
+0 & 1
+  \end{pmatrix}\begin{pmatrix}
+q(t) \\
+h(t)
+  \end{pmatrix}
+\end{align*}
+
+för att förkorta uttrycken införs tillståndsvektorn 
+\[x = \begin{pmatrix}
+q \\
+h
+\end{pmatrix}\]
+och en mer koncis tillståndsbeskrivning ges nu av 
+\begin{align*}
+  \dot{x} &= Ax + Bu + Fv \\
+  y &= Cx
+\end{align*}
+där de olika matriserna har fått variabelnamn. \\
+
+Bestäm det karaktäristiska polynomet för det slutna systemet, så att polerna kan placeras
+\begin{align*}
+  \det{(sI-(A-BL))} &= \begin{vmatrix}
+s + 2 + 2l_1 & 2l_2 \\
+-1 & s
+  \end{vmatrix} \\
+&= s^2 + (2+2l_1)s + 2l_2
+\end{align*}
+Notera att vi inte undersökte systemets styrbarhet. Enligt ovan kan vi välja godtyckliga koefficienter på det karaktäristiska polynomet, så att systemet är styrbart. Målpolynomet ges av 
+\[(s+2)^2 = s^2 + 4s + 4\]
+koefficientidentifiering ger att 
+\[l_1 = 1, l_2 = 2\]
+så att styrlagen ges av 
+\[u(t) = -\begin{pmatrix}
+1 & 2
+\end{pmatrix}\begin{pmatrix}
+q(t) \\
+h(t)
+\end{pmatrix} + r(t)\]
+
+\subsection*{b)}
+Hur stort blir det statiska felet ifall $v(t) \equiv 0.1$, då $r = 0$?
+\qline
+Undersök systemet i stationäritet, det vill säga då alla tillståndsderivator är noll. Det slutna systemet ges av 
+\begin{align*}
+  \dot{x} &= (A-BL)x + Br + Fv \\
+  &= \begin{pmatrix}
+-4 & -4 \\
+1 & 0
+  \end{pmatrix}x + \begin{pmatrix}
+0 \\
+-1
+  \end{pmatrix}v \\
+&= \begin{pmatrix}
+-4q-4h \\
+q-0.1
+\end{pmatrix}
+\end{align*}
+I stationäritet gäller alltså 
+\[q_{\infty} = 0.1, h_{\infty} = -0.1\]
+Eftersom $h_{\infty} \neq 0$ har störnignen gett upphov till ett statiskt fel.
+
+\subsection*{c)}
+Utgå från det slutna systemet från a). Bestäm en framkoppling från $v$ till $r$ så att störningen  elimineras. Framkopplingen måste gå att implementera.
+\qline
+I Figur \ref{fig:fram} återgivs ett blockschema som illustrerar hur framkoppling fungerar.
+
+\begin{figure}[h!]
+  \centering
+\begin{tikzpicture}[auto, node distance=2cm, >=latex']
+\node [block] (Gc) {$G_c(s)$};
+\node [sum, left of=Gc, node distance=2cm] (sum1) {};
+\node [sum, right of=Gc, node distance=2cm] (sum2) {};
+\node [block, above of=Gc, node distance=4cm] (Ff) {$F_f(s)$};
+\node [block, above of=sum2] (Gv) {$G_v(s)$};
+\node [split, right of=Ff] (split) {};
+
+\draw [wire] ++(-4,0) -- node[pos=0.99, below] {$+$} (sum1) node[pos=0.45, above] {$r(t)$};
+\draw [wire] (sum1) -- (Gc);
+\draw [wire] (Gc) -- node[pos=0.99, below] {$+$} (sum2);
+\draw [wire] (sum2) -- ++(2,0) node[pos=0.45, below] {$y(t)$};
+
+\draw[wire] ++(2,6) -- node[pos=0.5, right] {$v(t)$} (Gv);
+\draw[wire] (Gv) -- node[pos=0.99, right] {$+$} (sum2);
+\draw[wire] (split) -- (Ff);
+\draw[wire] (Ff) -| node[pos=0.99,right] {$+$} (sum1);
+\end{tikzpicture}  
+  \caption{Framkoppling från störsignal}
+  \label{fig:fram}
+\end{figure}
+\FloatBarrier
+För att bestämma framkopplingen behöver vi bestämma överföringsfunktionerna från $v$ och $r$ till $y = h$. Från tillståndsbeskrivningen erhålls
+\begin{align*}
+  \dot{q} &= -4q-4h + 2r \\
+  \dot{h} &= q-v
+\end{align*}
+Laplacetransformering ger
+\begin{align*}
+  Q(s) &= -\frac{4}{s+4}H(s) + \frac{2}{s+4}R(s) \\
+  H(s) &= \frac{1}{s}Q(s) - \frac{1}{s}V(s)
+\end{align*}
+Substituera uttrycket för $Q(s)$ i uttrycket för $H(s)$ 
+\begin{align*}
+  H(s) &= -\frac{4}{s(s+4)}H(s) + \frac{2}{s(s+4)}R(s)-\frac{1}{s}V(s) \\
+  \Rightarrow H(s) &= \frac{\frac{2}{s(s+4)}}{1+\frac{4}{s(s+4)}}R(s) - \frac{\frac{1}{s}}{1+\frac{4}{s(s+4)}}V(s) \\
+       &= \frac{2}{s(s+4)+4}R(s) - \frac{s+4}{s(s+4)+4} \\
+       &= \frac{2}{(s+2)^2}R(s) - \frac{s+4}{(s+2)^2}V(s) \\
+       &= G_c(s)R(s) + G_v(s)V(s)
+\end{align*}
+så att 
+\[G_c(s) = \frac{2}{(s+2)^2},\;\;\; G_v(s) = -\frac{s+4}{(s+2)^2}\]
+Inför nu en framkoppling $F_f(s)$ så att $R(s) = F_f(s)V(s)$ (eftersom $r = 0$ behöver vi inte införa någon referenssignal utöver framkopplingen). Detta ger 
+\[Y(s) = H(s) = G_c(s)F_f(s)V(s)+G_v(s)V(s) = (G_c(s)F_f(s)+G_v(s))V(s)\]
+och vi ser att störningen elimineras precis då 
+\[G_c(s)F_f(s)+G_v(s) = 0\]
+Framkopplingen kan således bestämmas som 
+\[F_f(s) = -\frac{G_v(s)}{G_c(s)} = \frac{s+4}{2} = \frac{s}{2} + 2\]
+Den resulterande framkopplingen innehåller en ren derivering och kan inte implementeras direkt. Deriveringen kan utökas med ett filter för att den ska bli implementerbar. I det här fallet tar vi bort deriveringen helt, så att framkopplingen ges av $F_f(s) = 2$. Det resulterande slutna systemet ges nu av
+\begin{align*}
+  \dot{x} &= (A-BL)x+2Bc+Fv \\
+          &= \begin{pmatrix}
+-4q-4h+4v \\
+q-v
+          \end{pmatrix}
+\end{align*}
+I stationäritet gäller nu att 
+\[q_{\infty} = v,\;\;\; -4v-4h+4v=0 \Rightarrow h_{\infty} = 0\]
+Framkopplingen eliminerade helt det statiska felet!
+
+\subsection*{d)}
+Hur påverkas det statiska felet ifall $k_1$ avviker från $1$ och samma styrlag som a) och c) används?
+\qline
+Beräkna det slutna systemet igen, men behåll $k_1$ som en okänd parameter.
+\begin{align*}
+  \dot{x} &= (A-BL)x + 2Bv + Fv \\
+  &= 
+    \left(
+    \begin{pmatrix}
+-2 & 0 \\
+1 & 0
+    \end{pmatrix} - \begin{pmatrix}
+-2k_1 \\
+0
+    \end{pmatrix}\begin{pmatrix}
+1 & 2
+    \end{pmatrix}
+    \right)x + \begin{pmatrix}
+4k_1 \\
+0
+    \end{pmatrix}v + \begin{pmatrix}
+0 \\
+-1
+    \end{pmatrix}v \\
+&= \begin{pmatrix}
+-2-2k_1 & -4k_1 \\
+1 & 0
+\end{pmatrix}x + \begin{pmatrix}
+4k_1 \\
+-1
+\end{pmatrix}v \\
+&= \begin{pmatrix}
+(-2-2k_1)q - 4k_1h + 4k_1v \\
+q-v
+\end{pmatrix}
+\end{align*}
+I stationäritet erhålls
+\begin{align*}
+  q_{\infty} \\
+  (-2-2k_1)v-4k_1h+4k_1v = 0 \\
+  \Rightarrow h_{\infty} &= \frac{k_1-1}{2k_1}v
+\end{align*}
+Således blir det statiska felet nollskilt ifall $k_1 \neq 1$.
+
+\subsection*{e)}
+Föreslå en ny styrlag som eliminerar felet även då $k_1$ avviker från 1.
+\qline
+Ifall vi inför en integrering kan vi helt eliminera det statiska felet. Inför därför ett nytt tillstånd 
+\[\dot{z} = h\]
+så att $z$ precis är integralen av utsignalen. Det resulterande systemet ges av
+\begin{align*}
+  \begin{pmatrix}
+    \dot{q} \\
+    \dot{h} \\
+    \dot{z}
+  \end{pmatrix} &= \begin{pmatrix}
+-2 & 0 & 0 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+  \end{pmatrix}\begin{pmatrix}
+q \\
+h \\
+z
+  \end{pmatrix} + \begin{pmatrix}
+2k_1 \\
+0 \\
+0
+  \end{pmatrix}u + \begin{pmatrix}
+0 \\
+-1 \\
+0
+  \end{pmatrix}v \\
+y &= \begin{pmatrix}
+0 & 1 & 0
+\end{pmatrix}\begin{pmatrix}
+q \\
+h \\
+z
+\end{pmatrix}
+\end{align*}
+Undersök styrbarheten: 
+\[\mathcal{S} = \begin{pmatrix}
+2k_1 & -4k_1 & 8k_1 \\
+0 & 2k_1 & -4k_1 \\
+0 & 0 & 2k_1
+\end{pmatrix}\]
+Eftersom $\mathcal{S}$ är triangulär har den full rang, så att systemet är styrbart. Det är således möjligt att stabilisera systemet även efter att vi infört tillståndet $z$. Inför en återkoppling 
+\[u = -l_1q-l_2g-l_3z + r\]
+Det slutna systemet ges då av 
+\[\begin{pmatrix}
+  \dot{q}\\
+  \dot{h}\\
+  \dot{z}
+\end{pmatrix} = \begin{pmatrix}
+-2-2k_1l_1 & -2k_1l_2 & -2k_1l_3 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{pmatrix}\begin{pmatrix}
+q \\
+h \\
+z
+\end{pmatrix} + \begin{pmatrix}
+0 \\
+-1 \\
+0
+\end{pmatrix}  \]
+I stationäritet gäller
+\[\dot{z} = 0 \Rightarrow h_{\infty} = 0\]
+oberoende av tillståndsåterkopplingen, störningen och $k_1$. Det statiska felet elimineras alltså förutsatt att vi når stationäritet. Eftersom systemet är styrbart är det möjligt att placera polerna så att det slutna systemet blir stabilt och således når stationäritet. Valfri stabiliserande styrlag eliminerar alltså det statiska felet!
+\end{document}
+
