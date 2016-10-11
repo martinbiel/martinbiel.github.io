@@ -30,341 +30,315 @@ cross/.default={5pt}}
 \newcommand{\sspan}[1]{\mathrm{span}\left\{#1\right\}}
 \newcommand{\ima}[1]{\mathrm{Im}\; #1}
 \newcommand{\qline}{\hrule \vspace*{10pt}}
+\newcommand{\de}[1]{\mathrm{d}#1}
 
 %\linespread{2} %-- Uncomment for Double Space
 \begin{document}
 \begin{titlepage}
 \author{Martin Biel \\ \texttt{mbiel@kth.se}}
-\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 5}
-\date{13 september 2016}
+\title{EL1000 - Reglerteknik, allmän kurs \\ \Large Övning 6}
+\date{14 september 2016}
 \end{titlepage}
 
 \maketitle
 
-\section*{Argumentvariationsprincipen}
-Låt $f(z)$ vara en \emph{meromorf} funktion, det vill säga en funktion som är \emph{analytisk} i ett öppet områda $\Omega$, så när som på ett ändligt antal punkter (poler).
+\section*{Repetition}
+\textbf{Linjärt tids-invariant system (LTI)}:
+\begin{itemize}
+\item $\alpha_1 u_1(t) + \alpha_2u_2(t) \rightarrow \alpha_1 y_1(t) + \alpha_2 y_2(t)$ 
+\item $u(t-T) \rightarrow y(t-T), \forall T$
+\end{itemize}
+$\Rightarrow$ En summa av olika insignaler superpositioneras och det spelar ingen roll \emph{när} vi lägger på insignalen, utan \emph{hur länge} den har verkat. \\
 
-Ifall $\gamma$ är en kurva som \emph{omsluter} $P$ poler och $N$ nollställen till $f(z)$ enkelt (ett varv) så gäller att
-\begin{equation*}
- N-P = \frac{1}{2\pi}\mathrm{var}_{\gamma}\;\mathrm{arg}f(z)
-\end{equation*}
-$f(z)$ definierar en avbildning $\gamma \rightarrow \gamma'$, så att varje punkt $z \in \gamma$ mappas till en punkt $z' = f(z) \in \gamma'$, och $\mathrm{var}_{\gamma}\;\mathrm{arg}f(z)$ innefattar variationen i argument längs den mappade kurvan $\gamma'$ när $\gamma$ genomlöps i positiv riktning (moturs). I enklare mening kan variationen i argument tolkas som antal varv $\gamma'$ löper kring origo. Genom Argumentvariationsprincipen är det möjligt att dra slutsatser om en funktions poler och nollställen, som omsluts av en sluten kurva, genom att grafiskt observera funktionens avbildning av kurvan. Argumentvariationsprincipen ligger som grund för Nyquistkriteriet.
-
-\section*{Nyquistkriteriet}
-När vi ritade Rotort undersökte vi stabiliteten hos det slutna systemet genom att analysera det slutna systemets poler. Med Nyquistkriteriet är det möjligt att undersöka stabilitet hos det slutna systemet genom att analysera det öppna systemet. Sluta systemet ges av
-\begin{equation*}
-  G_c(s) = \frac{G_0(s)}{1 + G_0(s)} = \frac{G(s)F(s)}{1 + G(s)F(s)}
-\end{equation*}
-Därav följer att polerna till $G_c(s)$ motsvarar nollställen till funktionen $1 + G_0(s)$. Alltså är det slutna systemet instabilt ifall $1 + G_0(s)$ har nollställen i HHP. Idén med Nyquistkriteriet är att åberopa argumentvariationsprincipen på $G_0(s)$ för att dra slutsatser om hur många av det slutna systemets poler som befinner sig i HHP. Eftersom vi är intresserade av nollställen till $1+G_0(s)$ i höger halvplan använder vi den slutna kurvan som återges i Figur \ref{fig:nyquistorig}.
-
-\begin{figure}[h!]
-  \centering  
-\begin{tikzpicture}
-% Configurable parameters
-\def\gap{0.2}
-\def\bigradius{3}
-\def\littleradius{0.3}
-
-% Axes
-\draw [help lines,->] (-1.25*\bigradius, 0) -- (1.25*\bigradius,0);
-\draw [help lines,->] (0, -1.25*\bigradius) -- (0, 1.25*\bigradius);
-% Red path
-\draw[line width=1pt, dashed, decoration={ markings,
-  mark=at position 0.4 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.6 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.75 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 1 with {\arrow[line width=1.2pt]{>}}},
-  postaction={decorate}]
-  let
-     \n1 = {acos(\gap/\bigradius)}
-  in (-\n1:\bigradius) arc (-\n1:\n1:\bigradius)
-  -- (\gap,2+\littleradius) arc (90:-90:\littleradius)
-  -- (\gap,\littleradius) arc (90:-90:\littleradius)
-  -- (\gap,-2+\littleradius) arc (90:-90:\littleradius)
-  -- cycle;
-% The labels
-\node at (3.6,-0.2){$\mathrm{Re}$};
-\node at (-0.3,3.53) {$\mathrm{Im}$};
-\node at (1.9,2.8) {$\gamma$};
-\draw (0,2) node[cross] {};
-\draw (0,0) node[cross] {};
-\draw (0,-2) node[cross] {};
-
-\end{tikzpicture}
-\caption{Kurvan $\gamma$ som avbildas av $G_0(s)$ i Nyquistkriteriet.}
-  \label{fig:nyquistorig}
-\end{figure}
-\FloatBarrier
-
-Genom att öka radien av den stora halvcirkeln så kommer $\gamma$ i gräns att täcka hela HHP. Notera att eventuella poler på imaginäraxeln måste uteslutas eftersom argumentvariationsprincipen kräver att $G_0(s)$ är analytisk på randen av $\gamma$. Poler utesluts genom att låta kurvan röra sig längs halvcirklar, med godtyckligt liten radie, omkring dem. Låt $N_{1+G_0(s)}$ beteckna antalet nollställen i HHP hos $1 + G_0(s)$ och $P_{1 + G_0(s)}$ notera antalet poler i HHP. Antalet poler hos $1 + G_0(s)$ är samma som antalet poler hos $G_0(s)$, alltså gäller $P_{1 + G_0(s)} = P_0$. Åberopa nu argumentsvariationsprincipen genom att låta $G_0(s)$ avbilda kurvan $\gamma$ ovan (Notera att vi observerar avbildningen av $G_0(s)$, inte $1+G_0(s)$).
+\section*{Frekvenssvar}
+Låt $u(t) = \sin{\omega t} = \ima{e^{i\omega T}}$ och minns att utsignalen kan bestämmas genom en faltning mellan insignalen $u(t)$ och överföringsfunktionen 
+\[G(s) = \int_{0}^{\infty}g(\tau) e^{-s \tau} \de{\tau}
+\]
+så att
 \begin{align*}
-  N_{1 + G_0(s)} - P_0 &= \frac{1}{2\pi}\mathrm{var}_{\gamma}\;\mathrm{arg} (1 + G_0(s)) \\
-  \Rightarrow N_{1 + G_0(s)} &= P_0 + \text{antal varv } \gamma' \text{omsluter -1 i positiv riktning}
+  y(t) &= \int_{0}^{\infty}g(\tau) u(t-\tau) \de{\tau} \\
+       &= \ima{\int_{0}^{\infty}e^{i\omega(t-\tau)}\de{\tau}} \\
+       &= \ima{\int_{0}^{\infty}g(\tau)e^{-i\omega \tau}\de{\tau} \cdot e^{i\omega t}} \\
+       &= \ima{G(i\omega) \cdot e^{i\omega t}} \\
+       &= \ima{|G(i\omega)| \cdot e^{i\arg{G(i\omega)}} \cdot e^{i\omega t}} \\
+       &= |G(i\omega)| \sin{\omega t + \phi}
 \end{align*}
-Eftersom kurvan mappas av $G_0(s)$ räknar vi antal varv kring $-1$ istället för kring origo. Kom ihåg att riktningen spelar stor roll! I enkla termer gäller alltså att: \\
-\begin{center}
-Antalet poler i HHP för det slutna systemet \\
-= \\
-Antalet poler i HHP för det öppna systemet \\
-+ \\
-Antal varv $\gamma'$ omsluter $-1$ i positiv riktning \\  
-\end{center}
-Ifall det öppna systemet inte har några poler i HHP säger Nyquist kriteriet att $-1$ inte får omslutas av $\gamma'$ i positiv riktning för att slutna systemet ska vara stabilt. Notera att Ifall öppna systemet har en pol i HHP så krävs det att $\gamma'$ omsluter $-1$ i negativ riktning minst en gång för stabilitet!
+där $\phi = \arg{G(i\omega)}$. \\
+$\Rightarrow$ Insignalen förstärks med $|G(i\omega)|$ och förskjuts med $\arg{G(i\omega)}$. \\
 
-\section*{Nyquistkurvan}
-Nyquistkurvan innefattar avbildningen av positiva Im-axeln, det vill säga $G_0(s)$ då $s = i\omega$ där $\omega: 0 \to \infty$. Notera att denna kurvas riktning är motsatt den som uppstår om hela nyquistdiagrammet ritas. För enklare system, som inte ger upphov till komplexa nyquistdiagram, så kan ett förenklat Nyquistkriterium tillämpas baserat på Nyquistkurvan:
-\begin{center}
-Ifall $G_0(s)$ inte har några poler i HPP så är det slutna systemet stabilt ifall punkten $-1$ ligger till vänster om Nyquistkurvan.
-\end{center}
-I uppgifterna nedan åsyftar \emph{Nyquistdiagram} hela avbildningen av $\gamma$, och \emph{Nyquistkurvan} enbart positiva Im-axelns avbildning.
+Eftersom linjära system superpositionerar insignaler, och godtyckliga funktioner kan skrivas som en serie trigonometriska funktioner (Fourierserie), så är det tillräckligt att analysera $G(i\omega)$ för att dra slutsatser om hur systemet påverkas av olika insignaler. $G(i\omega)$ kallas systemets \emph{frekvenssvar}.
 
-\section*{Uppgift 3.14}
-Ett system $G(s)$ styrs genom återkoppling med en $P-$regulator.
-
-\subsection*{A)}
-För $K_P = 1$ erhålls nyquistdiagrammen i Figur \ref{fig:314nyquist}. Vilka motsvarande slutna system är stabila? ($G(s)$ har inga poler i HHP i något av fallen)
+\section*{Bodediagram}
+Bodediagram består av två diagram
+\begin{itemize}
+\item $|G(i\omega)|$ - Beloppskurva (Ofta i logaritmisk skala) 
+\item $\arg{G(i\omega)}$ - Faskurvan
+\end{itemize}
+Nyquistkurvan är precis 
+\[G(i\omega), \omega: 0 \to \infty\]
+Alltså visar Bodediagrammen och Nyquistkurvan samma sak! Deras relation är illustrerad i Figur
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.5\textwidth]{3_14nyquist}
-  \caption{Nyquistkurvor för $4$ olika system då en $P-$regulator med $K_P = 1$ används.}
-  \label{fig:314nyquist}
-\end{figure}
-\FloatBarrier
-\qline
-Eftersom de öppna systemet inte har några poler i HHP blir stabilitetskriteriet att $-1$ inte får omslutas i Nyquistdiagrammet. Det kan i början vara konceptuellt svårt att bestämma ifall $-1$ omsluts i ett Nyquistdiagram (särskilt om man inte tidigare läst en kurs i komplex analys). Det finns olika knep och minnesregler för att underlätta, men det krävs framförallt träning. \\\\
-Ett trick är att låta en penna utgå från $-1$ och först peka mot origo (åt höger). Låt detta motsvara ursprungsvinkeln $0$ grader. Följ sen nyquistdiagrammet (moturs) med pennspetsen och försök visualisera vinkeln mellan pennspetsen och origo. När pennan istället pekar åt vänster har vi svept $180$ grader, och ifall vi fortsätter i samma riktning tills den pekar åt höger igen har vi svept $360$ vilket motsvarar ett varv. När pennspetsen har rört varje del av kurvan och vi är tillbaka i origo kan vi räkna hur många gånger vi svepte $360$ grader i motursriktningen.\\
-
-\textbf{i)} I det här Nyquistdiagrammet omsluts inte $-1$ alls. Med penntricket: Ifall vi följer kurvan mellan origo och $-0.4$ så pekar pennan först upp en aning men återgår sen till att peka åt höger. Detta innebär att sett från $-1$ är den totala argumentvariationen noll mellan origo och $-0.4$. På samma sätt är variationen noll mellan $-0.4$ och positiva skärningen med Re-axeln, och därifrån gäller samma resultat när kurvan återgår till origo.\\
-$\Rightarrow$ Det slutna systemet är stabilt. \\
-
-\textbf{ii)} Det här fallet är något lättare eftersom det tydligt går att se vilken område som omsluts av nyquistdiagrammet. Eftersom $-1$ inte finns på insidan av kurvan (till exempel omsluts $1$) så omsluts in $-1$.\\
-$\Rightarrow$ Det slutna systemet är stabilt. \\
-
-\textbf{iii)} Med penntricket: Mellan origo och $-2$ sveper pennan $180$ grader, eftersom den nu pekar åt vänster mot $-2$. När vi fortsätter följa kurvan moturs till positiva skärningen med Re-axeln fortsätter pennan svepa tills den till slut pekar åt höger igen. Således har vi då gått ett varv runt $-1$. Samma sak upprepas när vi löper längs restrerande halvan av kurvan, pennan pekar tillslut till höger igen och vi har rört oss två varv kring $-1$. Kurvan omsluter alltså $-1$ två gånger. \\
-$\Rightarrow$ Det slutna systemet är instabilt. \\
-
-\textbf{iv)} Med penntricket: Mellan origo och $-2$ sveper vi likt innan $180$ grader, men när vi följer kurvan från $-2$ till positiva skärningen med Re-axeln byter pennan riktningen och återgår till slut till att peka åt höger (men den här gången har vi inte gått ett fullt varv!). Samma sak upprepas när vi löper längs den restrerande halvan av kurvan, vi sveper först $180$ i en riktning, men sen $180$ i motsatt riktning. Således omsluter vi totalt $-1$ två gånger, fast i motsatt riktning! \\
-$\Rightarrow$ Det slutna systemet är stabilt.
-
-\subsection*{b)}
-Ifall nu $K > 0$, för vilka $K$ blir respektive slutna system ovan stabila?
-\qline
-Hur påverkar $K$ Nyquistdiagramen? Ifall vi bestämmer hur ett tal på kurvan förändras på grund av $K$ får vi direkt hur hela kurvan förändras. Varje punkt på kurvan är ett komplext tal med belopp och argument. Minns att $\gamma'(s) = G_0(s \text{ längs } \gamma) = KG(s \text{ längs } \gamma)$ \\
-\textbf{Belopp:}
-\[|\gamma'(s)| = |KG| = |K|\cdot|G|\]
-$\Rightarrow$ Varje punkt på kurvan skalas med en faktor $K$. \\
-\textbf{Argument:}
-\[\mathrm{arg}(\gamma'(s)) = \mathrm{arg}(KQ) = \mathrm{arg}(K) + \mathrm{arg}(G) = 0 + \mathrm{arg}(G)\]
-(Argumentet för $K$ är noll eftersom det är ett reellt tal). \\
-$\Rightarrow$ Inga vinklar ändras! \\
-$\Rightarrow$ Nyquistdiagrammen spänns ut/in med en faktor $K$, men bibehåller sin form (eftersom inga argument förändras). \\
-
-Identifiera kritiska punkter och undersök för vilka $K$ som $-1$ omsluts. \\
-
-\textbf{i)} Ifall skärningen med negativa Re-axeln (som för $K = 1$ är $-0.4$) sker vänster om $-1$ så omsluter kurvan $-1$ (verifiera med t.ex. penntricket). 
-\[K\cdot 0.4 = 1 \Rightarrow K = \frac{5}{2}\]
-$\Rightarrow$ Stabilt när $0 < K < \dfrac{5}{2}$.\\
-
-\textbf{ii)} Det är inte möjligt att skala om den här kurvan så den omsluter $-1$. \\
-$\Rightarrow$ stabilt för $0 < K < \infty$. \\
-
-\textbf{iii)} Den kritiska punkten är vid $-2$ (skärning med negativa Re-axeln). Ifall detta sker till höger om $-1$ så omsluter inte kurvan $-1$ (verifera med t.ex. penntricket).
-\[K\cdot 2 = 1 \Rightarrow K = \frac{1}{2}\]
-$\Rightarrow$ stabilt för $0 < K < \dfrac{1}{2}$. \\
-
-\textbf{iv)} Det här fallet har två kritiska punkter. Vi kan likt (iii) helt utesluta att $-1$ omsluts ifall vi flyttar skärningen längs till vänster (i $-4$) till att ligga höger om $-1$.
-\[K \cdot 4 = 1 \Rightarrow K = \frac{1}{4}\]
-Notera sen att ifall den andra skärningen med negativa Re-axeln (i $-2$) skulle ske till höger om $-1$ så erhålls inte längre fenomenet när $-1$ omsluts i motsatta riktningar. Istället omsluts $-1$ nu två gånger (verifiera med t.ex. penntricket).
-\[K \cdot 2 = 1 \Rightarrow K = \frac{1}{2}\]
-$\Rightarrow$ stabilt för $0 < K < \dfrac{1}{4}, K > \dfrac{1}{2}$.
-
-\section*{Uppgift 3.15}
-\subsection*{b)}
-Rita Nyquistdiagrammet för dubbelintegratorn
-\[G(s) = \frac{1}{s^2}\]
-\qline
-Dubbelintegratorn har en dubbelpol i origo som måste uteslutas. Således ges domänkurvan $\gamma$ som följer, se Figur \ref{fig:315nyquistorig}
-\begin{figure}[h!]
-\centering  
-\begin{tikzpicture}
-% Configurable parameters
-\def\gap{0.2}
-\def\bigradius{3}
-\def\littleradius{0.3}
-
-% Axes
-\draw [help lines,->] (-1.25*\bigradius, 0) -- (1.25*\bigradius,0);
-\draw [help lines,->] (0, -1.25*\bigradius) -- (0, 1.25*\bigradius);
-% Red path
-\draw[line width=1pt, dashed, decoration={ markings,
-  mark=at position 0.4 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.6 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 0.75 with {\arrow[line width=1.2pt]{>}},
-  mark=at position 1 with {\arrow[line width=1.2pt]{>}}},
-  postaction={decorate}]
-  let
-     \n1 = {acos(\gap/\bigradius)}
-  in (-\n1:\bigradius) arc (-\n1:\n1:\bigradius)
-  -- (\gap,\littleradius) arc (90:-90:\littleradius)
-  -- cycle;
-% The labels
-\node at (3.6,-0.2){$\mathrm{Re}$};
-\node at (-0.3,3.53) {$\mathrm{Im}$};
-\node at (1.9,2.8) {$\gamma$};
-\node at (0.4, 2) {\textbf{1}};
-\node at (0.6, 0.35) {\textbf{2}};
-\node at (0.4, -2) {\textbf{3}};
-\node at (2.5, -2) {\textbf{4}};
-\draw (0,0) node[cross] {};
-
-\end{tikzpicture}
-\caption{Kurvan $\gamma$.}
-  \label{fig:315nyquistorig}
-\end{figure}
-\FloatBarrier
-I figuren har delar som lättast parametriserats för sig märkts ut. Undersök hur de fyra delarna mappas av $G(s)$ i turordning.\\
-
-\textbf{1} Positiva Im-axelns avbildning.\\
-$s = i\omega$ där $\omega: \infty \to 0$.
-\[G(i\omega) = \frac{1}{(i\omega)^2} = -\frac{1}{\omega^2}\]
-Avbildningens början: $-\dfrac{1}{\omega^2} \to 0$ då $\omega \to \infty$ \\
-Avbildningens slut: $-\dfrac{1}{\omega^2} \to -\infty$ då $\omega \to 0$ \\
-Den positiva Im-axeln mappas alltså på negativa Re-axeln (i vänster riktning $-\infty \to 0$). \\
-
-\textbf{2} Lilla halvcirclens avbildning \\
-$s = re^{i\theta}$ där $r \to 0, \theta: \dfrac{\pi}{2} \to -\dfrac{\pi}{2}$
-\[G(re^{i\theta} = \frac{1}{(re^{i\theta})^2} = \frac{1}{r^2e^{2i\theta}}\]
-Avbildningens början: $G(re^{i\theta}) \to \infty \cdot e^{-i\pi}$ då $r \to 0, \theta = \dfrac{\pi}{2}$ \\
-Avbildningens slut: $G(re^{i\theta}) \to \infty \cdot e^{i\pi}$ då $r \to 0, \theta = -\dfrac{\pi}{2}$ \\
-Den lilla halvcirlen mappas alltså på en stor helcirkel ($-180$ grader till $180$ grader med växande radie). \\
-
-\textbf{3} Negativa Im-axeln
-$s = -i\omega$ där $\omega: 0 \to \infty$.
-\[G(-i\omega) = \frac{1}{(-i\omega)^2} = -\frac{1}{\omega^2}\]
-Avbildningens början: $-\dfrac{1}{\omega^2} \to -\infty$ då $\omega \to 0$ \\
-Avbildningens slut: $-\dfrac{1}{\omega^2} \to -0$ då $\omega \to \infty$ \\
-Den negativa Im-axeln mappas alltså på negativa Re-axeln (i höger riktning $0 \to -\infty$). \\
-
-\textbf{4} Stora halvcirclens avbildning \\
-$s = Re^{i\theta}$ där $r \to \infty, \theta: -\dfrac{\pi}{2} \to \dfrac{\pi}{2}$
-\[G(Re^{i\theta} = \frac{1}{(Re^{i\theta})^2} = \frac{1}{R^2e^{2i\theta}}\]
-Avbildningens början: $G(Re^{i\theta}) \to 0 \cdot e^{i\pi}$ då $R \to \infty, \theta = -\dfrac{\pi}{2}$ \\
-Avbildningens slut: $G(Re^{i\theta}) \to 0 \cdot e^{-i\pi}$ då $R \to \infty, \theta = \dfrac{\pi}{2}$ \\
-Den stora halvcirlen mappas alltså på en liten helcirkel ($180$ grader till $-180$ grader med minskande radie). \\
-
-Det resulterande Nyquistdiagrammet är uppritat i Figur \ref{fig:315nyquist}.
-\begin{figure}[h!]
-\centering
-\begin{tikzpicture}
-% Configurable parameters
-\def\gap{0.2}
-\def\bigradius{3}
-\def\littleradius{0.5}
-
-% Axes
-\draw [help lines,->] (-1.25*\bigradius, 0) -- (1.25*\bigradius,0);
-\draw [help lines,->] (0, -1.25*\bigradius) -- (0, 1.25*\bigradius);
-% Red path
-\draw[line width=1pt, decoration={ markings,
-  mark=at position 0.2455 with {\arrow[line width=1.2pt]{<}},
-  mark=at position 0.765 with {\arrow[line width=1.2pt]{<}},
-  mark=at position 0.87 with {\arrow[line width=1.2pt]{<}},
-  mark=at position 0.97 with {\arrow[line width=1.2pt]{<}}},
-  postaction={decorate}]
-  let
-     \n1 = {180 - asin(\gap/2/\bigradius)},
-     \n2 = {180 - asin(\gap/2/\littleradius)}
-  in (\n1:\bigradius) arc (\n1:-\n1:\bigradius)
-  -- (-\n2:\littleradius) arc (-\n2:\n2:\littleradius)
-  -- cycle;
-
-% The labels
-\node at (3.6,-0.2){$\mathrm{Re}$};
-\node at (-0.3,3.53) {$\mathrm{Im}$};
-\node at (-1.8,2.8) {$\gamma'$};
-\node at (-1.8,-0.5) {\textbf{1}};
-\node at (0.6,-2.6) {\textbf{2}};
-\node at (-1.8,0.5) {\textbf{3}};
-\node at (0.5,0.6) {\textbf{4}};
-
-\end{tikzpicture}
-\caption{Nyquistdiagram för dubbelintegratorn}
-\label{fig:315nyquist}
+  \includegraphics[width=0.8\textwidth]{bodenyquist}
+  \caption{Samband mellan Bodediagrammet och Nyquistkurvan (Källa: Mariette Annergren}
+  \label{fig:bodenyquist}
 \end{figure}
 \FloatBarrier
 
-Notera att del \textbf{1} och del \textbf{3} går längs negativa Re-axeln, gapet är bara inritat för att förtydliga diagrammets riktning. Kurvan omsluter inte $-1$ eftersom den punkten ligger på randen av diagrammet. Denna situation uppstår eftersom det slutna systemet får poler på imaginära axeln.
+I Bodediagrammet (och även indirekt i Nyquistkurvan) kan några storheter som ger mycket information om systemet definieras:
 
-\section*{Uppgift 3.16}
-Ett system $G(s)$ är asymptotiskt stabilt (ekvivalent med insignal-utsignal stabilt för de system som förekommer i den här kursen), och styrs genom negativ återkoppling. Nyquistkurvan för $G(s)$ är återgiven i Figure \ref{fig:316nyquist}.
+\begin{itemize}
+\item $\omega_p$ - Fasskärfrekvens \\
+\begin{itemize}
+ \item Bode: Faskurvan skär $-180 ^{\circ}$ 
+ \item Nyquist: kurvan skär negativa Re-axeln
+\end{itemize}
+\item $\omega_c$ - Skärfrekvens \\
+\begin{itemize}
+\item Bode: Beloppskurvan skär $1$ ($0$ dB) 
+\item Nyquist: Kurvan skär enhetscirkeln
+\end{itemize}
+\item $\varphi_m$ - Fasmarginal
+\begin{itemize}
+\item Bode: Vinkelavståndet mellan fasen vid $\omega_c$ och $-180 ^{\circ}$
+\item Nyquist: Vinkeln mellan negativa Re-axeln och skärningen med enhetscirkeln
+\end{itemize}
+\item $A_m$ - Amplitudmarginal
+\begin{itemize}
+\item Bode: Logaritmiskt avstånd mellan beloppet vid $\omega_p$ och $0$ dB (belopp $1$)
+\item Nyquist: Inversa avståndet mellan origo och skärningen med negativa Re-axeln
+\end{itemize}
 
-\begin{figure}[h!]
-  \centering
-  \includegraphics[width=0.4\textwidth]{3_16nyquist}
-  \caption{Nyquistkurva för $G(s)$.}
-  \label{fig:316nyquist}
-\end{figure}
+
+
+\end{itemize}
+
+
+
+
+\subsection*{Elementära Bodediagram}
+Betrakta 
+\[G(s) = \frac{b}{s+a}\]
+för små frekvenser gäller 
+\[G(s)_{lf} = \frac{b}{a}\]
+en konstant, och för stora frekvenser gäller 
+\[G(s)_{hf} = \frac{b}{s}\]
+Det är nu möjligt att identifiera en brytpunkt när asymptoterna skär varandra: 
+\[\frac{b}{a} = \frac{b}{s} \Rightarrow s = a\]
+när bodediagrammet når brytpunkten $s = a$ sker en negativ lutningsförändring. På samma sätt gäller att när bodediagrammet för någon annan $\tilde{G}(s)$, med nollställen, når en brytpunkt i täljaren så sker en positiv lutningsförändring. Dessa betraktelser går att generalisera till allmänna bodediagram.
+\subsection*{Skissa Bodediagram}
+
+\begin{enumerate}
+\item Faktorisera $G(s)$:
+  \[G(s) = \frac{K(1+s/z_1)(1+s/z_2)\dots(1+s/z_m)}{s^p(1+s/p_1)(1+s/p_2)\dots(1+s/p_n)}\]
+  Nu gäller 
+  \[\log{|G(i\omega)|} = \log{K} - p\log{\omega} + \log{\left|1+\frac{i\omega}{z_1}\right|} + \dots + \log{\left| 1 + \frac{i\omega}{z_m}\right|} - \log{\left|1 + \frac{i\omega}{p_1}\right|} - \dots - \log{\left| 1 + \frac{i\omega}{p_m}\right|}\] 
+  \[\arg{G(i\omega)} = -\frac{\pi p}{2} + \arg{1 + \frac{i\omega}{z_1}} + \dots + \arg{1+\frac{i\omega}{z_m}} - \arg{1 + \frac{i\omega}{p_1}} - \dots - \arg{1 + \frac{i\omega}{p_n}}\]
+Bodediagrammet är alltså en summa av elementära Bodediagram!
+\item Beräkna lågfrekvensasymptot ( $\omega \to 0$ ) 
+\item Beräkna högfrekvensasymptot ( $\omega \to \infty$ )
+\item Identifiera brytpunkter: $z_1, z_2, \dots, z_m, p_1, p_2, \dots, p_n$
+\item Identifiera bidrag till lutning (följer från de elementära Bodediagrammen):
+\begin{itemize}
+\item Brytpunkt från en pol $\rightarrow -1$ dekad/dekad i lutning
+\item Brytpunkt från nollställe $\rightarrow 1$ dekad/dekad i lutning
+\item Inledningsvis är lutningen $-p$
+\end{itemize}
+\item Förankra Bodediagrammet i en godtycklig punkt $\bar{\omega}$ genom att beräkna $|G(i \bar{\omega})|$
+\item Beräkna $\arg{G(i\omega)}$ för några olika $\omega$ och interpolera faskurvan.
+\end{enumerate}
+
+\section*{Uppgift 4.2}
+Målet är att behålla en given kurs $\Phi$ för ett fartyg, låt 
+\[\omega = \dot{\Phi}\]
+För små $\omega$ och $\delta$ gäller 
+\[T_1 \dot{\omega} = -\omega+k_1 \delta\]
+där $T_1 = 100$ och $k_1 = 0.1$. Fartyget är utrustat med en autopilot 
+\[F(s) = K \frac{1+s/a}{1+s/b}\]
+(där $a = 0.02$ och $b = 0.05$) vars mål är att se till att fartyget bibehåller kursen. Den beräknade insignalen styr ett roder med följande dynamik 
+\[G_r(s) = \frac{1}{1+sT_2}\]
+där $T_2 = 10$. Totalt gäller alltså 
+\[\Phi(s) = G_s(s)G_r(s)F(s)\]
+där
+$\Phi(s) = G_s(s) \Delta(s)$
 
 \subsection*{a)}
-Ifall en P-regulator används, för vilka $K_P$ är det slutna systemet stabilt?
+Rita Bodediagram för $FG_rG_s$ för $K = 0.5$
 \qline
-Eftersom en \emph{Nyquistkurva} är given blir stabilitetskriteriet att $-1$ måste ligga till vänster om kurvan. Minns att $K_P$ bara ändrar beloppet av varje punkt på kurvan. Identifiera den kritiska punkten när Nyquistkurvan skär negativa Re-axeln i $-1.5$. Ifall skärningen sker till höger om $-1$ erhålls ett stabilt slutet system.
-\[K\cdot 1.5 = 1 \Rightarrow K = \frac{2}{3}\]
-$\Rightarrow$ stabilt slutet system ifall $K < \dfrac{2}{3}$.
+Bestäm först $G_s(s)$:
+\begin{align*}
+  T_1 \ddot{\Phi} + \dot{\Phi} &= k_1 \delta \\
+  \Rightarrow s^2 T_1 \Phi(S) + s \Phi(s) &= k_1 \Delta(s) \\
+  \Rightarrow \Phi(s) &= \frac{k_1}{T_1s^2+s}\Delta(s)
+\end{align*}
+så att 
+\[G(s) = \frac{k_1}{T_1 S^2 +s}\]
+Alltså gäller 
+\[G_0(s) = F(s)G_r(s)G_s(s) = K\frac{1+\frac{s}{a}}{1+\frac{s}{b}} \cdot \frac{1}{1+sT_2} \cdot \frac{k_1}{T_1 s^2+s}\]
+
+1) Faktorisera:
+\[G_0(s) = \frac{Kk_1 (1+\frac{s}{a})}{s(1+\frac{s}{b})\left(1+\frac{s}{(\frac{1}{T_2})}\right)\left(1+\frac{s}{(\frac{1}{T_1})}\right)}\]
+2) Lågfrekvensasymptot: 
+\[s \to 0 \Rightarrow G_0(s) \to \frac{Kk_1}{s} = \frac{0.05}{s}\]
+3) Högfrekvensasymptot: 
+\[s \to \infty \Rightarrow G_0(s) \to \frac{Kk_1 \cdot \frac{s}{a} }{s \cdot \frac{s}{b} \cdot \frac{s}{1/T_2} \cdot \frac{s}{1/T_1}} = \frac{Kk_1b}{aT_1T_2} \cdot \frac{1}{s^3} = \frac{1.25 \cdot 10^{-4}}{s^3}\]
+4)+5) Brytpunkter + bidrag 
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{c|c|c|c|c|c}
+ Punkt & $0$ & $1/T_1=0.01$ & $a=0.02$ & $b=0.05$ & $1/T_2=0.1$ \\
+ Typ & pol & pol & nollställe & pol & pol \\
+ Bidrag & -1 dek/dek & -1 dek/dek & +1 dek/dek & -1 dek/dek & -1 dek/dek \\
+ Lutning & -1 dek/dek & -2 dek/dek & -1 dek/dek & -2 dek/dek & -3 dek/dek 
+  \end{tabular}
+  \caption{Brytpunkterna till $G_0$ med lutningsbidrag och resulterande lutning}
+  \label{tab:brytbidr}
+\end{table}
+\FloatBarrier
+Resultatet stämmer överens med låg- och högfrekvensasymptoterna. \\
+6) Förankra \\
+Välj en godtyckligt punkt mellan första och andra brytpunkt (eller mellan 0 och första brytpunkt ifall $p = 0$). 
+\[|G_0|_{lf} = \lbrace \omega = 0.005 \rbrace = \frac{0.05}{0.005} = 10\]
+7) Beräkna några punkter på faskurvan
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{c|c|c|c|c|c|c}
+ Frekvens & $0.001$ & $0.005$ & $0.01$ & $0.02$ & $0.04$ & $0.08$ \\
+ Fas & $-95 ^{\circ}$ & $-111 ^{\circ}$ & $-125 ^{\circ}$ & $-142 ^{\circ}$ & $-163 ^{\circ}$ & $-194^{\circ}$
+  \end{tabular}
+  \caption{Fasen för $G_0(s)$ för några $\omega$}
+  \label{tab:fas}
+\end{table}
+\FloatBarrier
+Det resulterande bodediagrammet återges i Figur \ref{fig:42bode}. Notera att det verkliga diagrammet befinner sig något under asymptoterna.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{4_2bode}
+  \caption{Bodediagram för $G_0(s)$}
+  \label{fig:42bode}
+\end{figure}
+\FloatBarrier
 
 \subsection*{b)}
-Bestäm det stationära felet, $e_{\infty}$, som funktion av $K_P$ ifall $y_{ref}$ är ett enhetssteg.
+$K$ ökar till dess systemet börjar självsvänga. Vid vilket $K$ värde sker detta och med vilken period sker svängningarna?
 \qline
-Vet från a) att $G_c(s)$ är stabil då $K < 2/3$. Alltså kan vi använda slutvärdessatsen för dessa $K$:
+Systemet börjar självsvänga precis när det övergår till instabilitet, det vill säga då Nyquistkurvan korsar $-1$. I Bodediagrammet motsvarar detta att $\omega_c = \omega_p$ eftersom Nyquistkurvan då skär negativa Re-axeln med belopp $1$. Från Bodediagrammet erhålls 
+\[|0.5 G(i\omega)| = \lbrace \omega = \omega_p = 0.06 \rbrace = 0.24\]
+så att 
+\[|G(i\omega_p)| = 0.48\]
+Välj $K$ så att $\omega_c = \omega_p$: 
+\[K |G(i\omega_p= | = 1 \Rightarrow K = \frac{1}{0.48} = 2.1\]
+Vid detta $K$ är $\omega_c = \omega_p$ så att systemet börjar självsvänga med frekvens $\omega_c = \omega_p = 0.06$, vilket motsvarar perioden 
+\[T = \frac{2\pi}{\omega_c} = \frac{2\pi}{0.06} = 105 \mathrm{s}\]
+
+\section*{Bodediagram för slutna system}
+I Figur \ref{fig:closedbode} återgivs Bodediagrammet för ett slutet system
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.8\textwidth]{closedbode}
+  \caption{Bodediagram för ett slutet system (Källa: Mariette Annergren)}
+  \label{fig:closedbode}
+\end{figure}
+\FloatBarrier
+
+\begin{itemize}
+\item $M_p$ - Resonanstopp \\
+Den maximala förstärkningen som uppnås med $G_c(s)$
+\item $\omega_r$ - Resonansfrekvens \\
+Signaler med frekvens $\omega_r$ förstärks mest. I princip gäller 
+\[M \sim M_p\]
+där $M$ är stegsvarets översläng
+\item $\omega_B$ - Bandbredd \\
+  Frekvens då $|G_c(s)| = \dfrac{1}{\sqrt{2}}$, säger något om vilka frekvenser som systemet förstärker och därmed hur snabbt systemet är. I princip gäller 
+  \[\omega_B \sim \frac{1}{T_r}\]
+  där $T_r$ är stegsvarets stigtid
+\item $|G_c(0)|$ - Statisk förstärkning \\
+Ifall $|G_c(0)| = 1$ kommer stegsvaret inte ha något stationärt fel
+\end{itemize}
+
+\section*{Uppgift 4.4}
+Para ihop rätt stegsvar med rätt Bodediagram i Figur \ref{fig:4_4bode}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{4_4bode}
+  \caption{Fyra stegsvar med tillhörande Bodediagram i okänd ordning}
+  \label{fig:4_4bode}
+\end{figure}
+\FloatBarrier
+
+\begin{itemize}
+\item B har stationärt fel och endast 3) har $|G_c(0)| \neq 1$ \\
+  $\Rightarrow B \leftrightarrow 3$
+\item D har lägst översläng och 1) har lägst resonanstopp \\
+  $\Rightarrow D \leftrightarrow 1$
+\item C är långsammare än A (lägre $T_r$) och 4) har lägre bandbredd än 2) \\
+  $\Rightarrow C \leftrightarrow 4, \;\;\; A \leftrightarrow 2$
+\end{itemize}
+Sammanfattningsvis:
 \begin{align*}
-  E(s) &= S(s)Y_{ref}(s) = \frac{1}{1+K_PG(s)}Y_{ref}(s) \\
-  \Rightarrow e_{\infty} &= \lim_{t \to \infty}e(t) = \lim_{s \to 0}sE(s) = \lim_{s \to 0}s \cdot \frac{1}{1 + K_PG(s)\cdot\frac{1}{s}} \\
-  &= \frac{1}{1+K_PG(0)} = \lbrace G(0) = 2 \text{ (se figur) } \rbrace = \frac{1}{1+2K_P}
+  B &\leftrightarrow 3 \\
+  D &\leftrightarrow 1 \\
+  C &\leftrightarrow 4 \\
+  A &\leftrightarrow 2
 \end{align*}
-Det stationära felet ges alltså av
-\[e_{\infty} = \frac{1}{1+2K}, K < \frac{2}{3}\]
-Notera att det stationära felet försvinner endast då $K_P \to \infty$, men systemet blir instabilt redan för $K_P = 2/3$. Det är inte möjligt att stabilisera systemet $G(s)$ med enbart P-reglering utan att det uppstår ett stationärt fel.
 
-\subsection*{c)}
-Ifall $G(s)$ istället styrs av en I-regulator:
-\[\frac{K_I}{s}\]
-(vilket skulle eliminera det stationära felet) För vilka $K_I$ är det slutna systemet stabilt?\vspace*{5pt}
+\section*{Uppgift 5.8}
+Ett blockdiagram för ett system med en tidsfördröjning är återgivet i Figur \ref{fig:5_8block}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{5_8block}
+  \caption{System med tidsfördröjning}
+  \label{fig:5_8block}
+\end{figure}
+\FloatBarrier
+$G_1(s)$ har inga poler i HHP.
+
+\subsection*{a)}
+Om $G_1(s)$ har Bodediagrammet som återges i Figur \ref{fig:5_8bode}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{5_8bode}
+  \caption{Bodediagram för $G_1(s)$}
+  \label{fig:5_8bode}
+\end{figure}
+\FloatBarrier
+För vilka $T$ blir det slutna systemet stabilt?
 \qline
-Hur påverkar integratorn Nyquistkurvan?\\
+Hur påverkar tidsfördröjningen Bodediagrammet? \\
 
-\textbf{Belopp:}
-\[|\gamma'(s)| =
-\begin{Bmatrix}
-  s = i\omega \\
-  \omega \geq 0
-\end{Bmatrix}
-= 
-\left|
-  \frac{K_I}{i\omega}
-\right| |G(i\omega) = 
-\left|
-  \frac{K_I}{\omega}
-\right||G(i\omega|\]
-$\Rightarrow$ Kurvan skalas med $
-\left|
-  \dfrac{K_I}{\omega}
-\right|$.\\
+\textbf{Amplitud:} 
+\[|e^{-i\omega T}| = 1\]
+$\Rightarrow$ amplituden påverkas inte! \\
 
-\textbf{Argument:}
-\[\mathrm{arg}(\gamma'(s)) = \mathrm{arg}
-\left(
-  \frac{K_I}{i\omega}G(i\omega)
-\right) = \mathrm{arg}(K_I) - \mathrm{arg}(i\omega) + \mathrm{arg}(G(i\omega)) = \mathrm{arg}(G(i\omega)) - \frac{\pi}{2}
-\]
-$\Rightarrow$ Kurvan vrid $90$ grader \emph{medurs} (minns att moturs är den positiva riktningen). För att underlätta vrider vi kurvan $90$ grader innan vi applicerar skalningen. Skärningen med negativa Im-axeln i $-3i$ då $\omega = 2$ kommer vridas $90$ grader medurs och blir då en skärning med negativa Re-axeln i $-3$. Detta blir våran nya kritiska punkt. Likt tidigare kollar vi vad $K_I$ måste uppfylla för att skärningen med Re-axeln ska ske till höger om $-1$:
-\[
-\left|
-  \frac{K_I}{\omega}G(i\omega)
-\right| = \lbrace \omega = 2 \rbrace = 
-\left|
-  \frac{K_I}{2} (-3)
-\right| = \frac{3}{2}K_I = 1 \Rightarrow K = \frac{2}{3}\]
-$\Rightarrow$ stabilt slutet system ifall $K > \dfrac{2}{3}$.
+\textbf{Fas:} 
+\[\arg{e^{-i\omega T}} = -\omega T\]
+$\Rightarrow$ Fasen minskar med $\omega T$! \\
+
+Ur Bodediagrammet urläses
+\begin{align*}
+  \omega_c &= 1 \mathrm{rad/s} \\
+  \varphi_m &= 40 ^{\circ} = 0.698 \mathrm{rad}
+\end{align*}
+Systemet är stabilt ifall fasmarginalen fortfarande är positiv efter tidsfördröjningens påverkan. 
+\begin{align*}
+  \varphi_m^* &= \varphi_m - \omega_c T \\
+  &= 0.698-1 \cdot T
+\end{align*}
+Alltså krävs
+\begin{align*}
+  0.698-T > 0 \\
+  \Rightarrow T &< 0.698
+\end{align*}
+
+
+
+
+
+
+
+
+
+
 \end{document}
 
