@@ -8,7 +8,7 @@ ruby RUBY_VERSION
 #     bundle exec jekyll serve
 #
 # This will help ensure the proper Jekyll version is running.
-# Happy Jekylling!
+# Happy Jekylling
 gem "jekyll", "3.4.0"
 
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
