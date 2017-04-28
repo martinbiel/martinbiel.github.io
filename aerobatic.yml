@@ -1,6 +1,6 @@
-id: 928cc98b-e2ed-451a-b9d4-ea33f0cfe6a4
+id: 14a5b4fc-6279-4e9c-bd7c-a590ade2cad0
 deploy:
   ignore: []
   directory: .
 plugins:
-  - name: martinbiel
+  - name: webpage
