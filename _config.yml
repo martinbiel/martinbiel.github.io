@@ -24,6 +24,12 @@ markdown:         kramdown
 
 gems:		  [jekyll-paginate, jekyll-gist, redcarpet, jekyll-sitemap, kramdown]
 
+defaults:
+  - scope:
+      path: "assets/img"
+    values:
+      image: true
+
 collections:
     publications:
         output: true
