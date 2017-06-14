@@ -20,8 +20,9 @@ paginate:         5
 
 # Custom vars
 version:          2.1.0
+markdown:         kramdown
 
-gems:		  [jekyll-paginate, jekyll-gist, redcarpet, jekyll-sitemap]
+gems:		  [jekyll-paginate, jekyll-gist, redcarpet, jekyll-sitemap, kramdown]
 
 collections:
     publications:
