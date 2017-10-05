@@ -17,11 +17,11 @@ permalink: /publications/
 ### {{ publicationsInYear.name }}
         {% for publication in publicationsByDate reversed %}
         {% if publication.presentation == nil %}
-* **{{ publication.title }}** [[abstract]({{ publication.url }})] [[{{ publication.type }}]({{ publication.publication-location }})]  
+* **{{ publication.title }}** [[abstract]({{ publication.url }})] [[{{ publication.type }}]({{ publication.publication-location }})]
 {{ publication.authors }}. _{{ publication.publishedTo }}_
         {% else %}
-* **{{ publication.title }}** [[abstract]({{ publication.url }})] [[{{ publication.type }}]({{ publication.publication-location }})] [[presentation]({{ site.baseurl }}{{ publication.presentation }})]  
-{{ publication.authors }}. _{{ publication.publishedTo }}_        
+* **{{ publication.title }}** [[abstract]({{ publication.url }})] [[{{ publication.type }}]({{ publication.publication-location }})] [[presentation]({{ publication.presentation }})]
+{{ publication.authors }}. _{{ publication.publishedTo }}_
         {% endif %}
         {% endfor %}
     {% endfor %}

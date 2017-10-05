@@ -5,5 +5,5 @@ type: exercise
 number: 3
 authors: Martin Biel
 year: 2016
-exercise-notes: teaching/el1000/exercise_3/exercise_3.pdf
+exercise-notes: /teaching/el1000/exercise_3/exercise_3.pdf
 ---
