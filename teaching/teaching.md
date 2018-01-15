@@ -3,10 +3,17 @@ layout: page
 title: Teaching
 permalink: /teaching/
 ---
-Material for courses I teach is available here. 
-
-## Fall 2016
+## Courses
+Material for courses I teach is available here.
 
 * [EL1000 - Automatic Control, General Course](el1000)
 
+## Master theses
+A collection of master theses that I have supervised.
 
+{% assign allSupervised = site.supervised | sort_by: "date" %}
+
+{% for supervised in allSupervised reversed %}
+* **{{ supervised.title }}** [[abstract]({{ supervised.url }})] [[{{ supervised.type }}]({{ supervised.publication-location }})]
+{{ supervised.authors }}. _{{ supervised.publishedTo }}_
+{% endfor %}

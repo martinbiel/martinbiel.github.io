@@ -11,6 +11,8 @@ My research interests lie within optimization, parallel computations and control
 # Ph.D Courses
 Below is a list of courses I have taken at the doctoral level.
 ## KTH
+* [**SF3846**](https://www.kth.se/student/kurser/kurs/SF3846?l=en) - Combinatorial Optimization
+* [**SF3810**](https://www.kth.se/student/kurser/kurs/SF3810?l=en) - Convexity and Optimization in Linear Spaces
 * [**SF3580**](https://www.kth.se/student/kurser/kurs/SF3580?l=en) - Numerical Linear Algebra
 * [**LH3000**](https://www.kth.se/student/kurser/kurs/LH3000?l=en) - Basic Communication and Teaching
 * [**DS3103**](https://www.kth.se/student/kurser/kurs/DS3103?l=en) - Introduction to Scientific Writing

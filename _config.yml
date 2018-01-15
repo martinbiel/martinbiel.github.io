@@ -31,6 +31,8 @@ defaults:
       image: true
 
 collections:
+    supervised:
+        output: true
     publications:
         output: true
     teachingmaterial:
