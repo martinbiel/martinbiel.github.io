@@ -12,7 +12,7 @@ My research interests lie within optimization, parallel computations and control
 Below is a list of courses I have taken at the doctoral level.
 ## KTH
 * [**AK3127**](https://www.kth.se/student/kurser/kurs/AK3127?l=en) - The Sustainable Scientist
-* [**SF3840**](https://www.kth.se/student/kurser/kurs/SF2840?l=en) - Numerical Nonlinear Programming
+* [**SF3840**](https://www.kth.se/student/kurser/kurs/SF3840?l=en) - Numerical Nonlinear Programming
 * [**AK3012**](https://www.kth.se/student/kurser/kurs/AK3012?l=en) - Supplementary Course in Theory and Methodology of Science
 * [**SF3846**](https://www.kth.se/student/kurser/kurs/SF3846?l=en) - Combinatorial Optimization
 * [**SF3810**](https://www.kth.se/student/kurser/kurs/SF3810?l=en) - Convexity and Optimization in Linear Spaces
