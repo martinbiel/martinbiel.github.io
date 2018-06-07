@@ -14,7 +14,6 @@ permalink: /publications/
 
     {% for publicationsInYear in publicationsByYear reversed %}
         {% assign publicationsByDate = publicationsInYear.items | sort_by: "date" %}
-### {{ publicationsInYear.name }}
         {% for publication in publicationsByDate reversed %}
         {% if publication.presentation == nil %}
 * **{{ publication.title }}** [[abstract]({{ publication.url }})] [[{{ publication.type }}]({{ publication.publication-location }})]

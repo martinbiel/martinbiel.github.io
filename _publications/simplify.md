@@ -1,12 +1,12 @@
 ---
 title: "SiMpLIfy: A toolbox for structured model reduction"
 type: paper
-group: Papers
+group: Conference Papers
 authors: Martin Biel, Farhad Farokhi, Henrik Sandberg
 publishedTo: Control Conference (ECC), 2015 European
 year: 2015
 date: 2015-11-23
-publication-location: http://ieeexplore.ieee.org/document/7330696/ 
+publication-location: http://ieeexplore.ieee.org/document/7330696/
 layout: default
 ---
 
@@ -16,4 +16,4 @@ In this paper, we present a toolbox for structured model reduction developed for
 
 Published in: [{{ page.publishedTo }}](http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=7317886)
 
-[[paper]({{ page.paper-location }} )]
+[[paper]({{ page.publication-location }} )]
