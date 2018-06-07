@@ -3,8 +3,9 @@
     "build": {
       "engine": "jekyll"
     }
-  },  
+  },
   "dependencies": {
-    "redcarpet": ">= 3.3.0"
+      "redcarpet": ">= 3.3.0"
+      "rouge": ">= 3.1.1"
   }
 }

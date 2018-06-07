@@ -4,7 +4,7 @@ type: paper
 group: Conference Papers
 authors: Martin Biel, Mikael Norrlöf
 publishedTo: 2018 IEEE 15th International Workshop on Advanced Motion Control (AMC)
-presentation: /publications/trajreshape/presentation.pdf
+presentation: /publications/amc2018/presentation.pdf
 year: 2018
 date: 2018-06-04
 publication-location: https://ieeexplore.ieee.org/document/8371062/

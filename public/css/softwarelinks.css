@@ -1,0 +1,78 @@
+#softwaregrid {
+    margin: 0 auto;
+    text-align: justify;
+    width: 100%;
+    margin-top: 50px;
+}
+
+#softwaregrid:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+
+#software {
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    background-color: #202020;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 25px;
+    border: 5px solid black;
+    border-radius: 55px;
+}
+
+#softwaretitle {
+    text-align: center;
+    font-size: 24pt;
+    color: #FFCB9A;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    margin-top: -5px;
+}
+
+#active {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: green;
+    border-radius: 50px;
+}
+
+#inactive {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50px;
+}
+
+#softwareimage {
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#link_container {
+    width: 85%;
+    text-align: justify;
+    margin-top: -15px;
+    margin-bottom: -25px;
+}
+
+#link_container:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+
+#link_container li {
+    display: inline-block;
+}
+
+#softwarelink {
+    color: #FFCB9A;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    width: 50%;
+    font-size: 22pt;
+}
