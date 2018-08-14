@@ -23,6 +23,6 @@ group :jekyll_plugins do
    gem 'jekyll-sitemap', '1.0.0'
    gem 'jekyll-gist', '1.4.0'
    gem 'redcarpet', '3.4.0'
-   gem 'kramdown', '1.13.2'
+   gem 'kramdown', '1.14'
    gem 'rouge', '3.2.0'
 end

@@ -18,7 +18,7 @@ author:
 
 paginate:         5
 
-gems:		  [jekyll-paginate, jekyll-gist, redcarpet, jekyll-sitemap, kramdown]
+plugins:	  [jekyll-paginate, jekyll-gist, redcarpet, jekyll-sitemap, kramdown]
 
 defaults:
   - scope:
