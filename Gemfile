@@ -24,4 +24,5 @@ group :jekyll_plugins do
    gem 'jekyll-gist', '1.4.0'
    gem 'redcarpet', '3.4.0'
    gem 'kramdown', '1.13.2'
+   gem 'rouge', '3.2.0'
 end
