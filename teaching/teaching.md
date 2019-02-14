@@ -7,7 +7,7 @@ permalink: /teaching/
 Material for courses I teach is available here.
 
 * [EL2700 - Model Predictive Control](el2700)
-* [EL2000 - Automatic Control, General Course](el1000)
+* [EL1000 - Automatic Control, General Course](el1000)
 
 ## Master theses
 A collection of master theses that I have supervised.
