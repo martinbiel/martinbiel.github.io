@@ -7,7 +7,8 @@ permalink: /publications/
 
 {% assign allPublications = site.publications | group_by: "group" %}
 
-{% for publicationsByType in allPublications %}
+{% for publicationtype in site.publication-order %}
+    {% assign publicationsByType = allPublications | where:"name", publicationtype | first %}
 ## {{ publicationsByType.name }}
 ---
     {% assign publicationsByYear = publicationsByType.items | group_by: "year" %}

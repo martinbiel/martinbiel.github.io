@@ -1,7 +1,7 @@
 ---
 title: "Distributed L-shaped Algorithms in Julia"
 type: paper
-group: Conference Papers
+group: Conferences
 authors: Martin Biel, Mikael Johansson
 publishedTo: 2018 IEEE/ACM Parallel Applications Workshop, Alternatives To MPI (PAW-ATM)
 presentation: /publications/paw2018/presentation.pdf

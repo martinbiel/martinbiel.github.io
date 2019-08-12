@@ -1,7 +1,7 @@
 ---
 title: "Efficient trajectory reshaping in a dynamic environment"
 type: paper
-group: Conference Papers
+group: Conferences
 authors: Martin Biel, Mikael Norrlöf
 publishedTo: 2018 IEEE 15th International Workshop on Advanced Motion Control (AMC)
 presentation: /publications/amc2018/presentation.pdf

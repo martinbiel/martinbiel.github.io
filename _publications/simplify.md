@@ -1,7 +1,7 @@
 ---
 title: "SiMpLIfy: A toolbox for structured model reduction"
 type: paper
-group: Conference Papers
+group: Conferences
 authors: Martin Biel, Farhad Farokhi, Henrik Sandberg
 publishedTo: Control Conference (ECC), 2015 European
 year: 2015

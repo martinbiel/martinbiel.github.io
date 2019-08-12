@@ -34,3 +34,9 @@ collections:
     software:
         output: true
     teachingmaterial:
+
+publication-order:
+   - Journals
+   - Conferences
+   - Preprints
+   - Theses

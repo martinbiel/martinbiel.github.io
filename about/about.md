@@ -8,7 +8,7 @@ I graduated from KTH’s Engineering Physics programme in 2016 and received a MS
 
 My research interests lie within optimization, parallel computations and control theory. I am also interested in software development, and enjoy implementing mathematical ideas into useful applications. My current research project involves the development of scalable optimization algorithms, that could allow for accurate real-time optimization of the Swedish hydropower networks.
 
-# Ph.D Courses
+# PhD Courses
 Below is a list of courses I have taken at the doctoral level.
 ## KTH
 * [**AK3127**](https://www.kth.se/student/kurser/kurs/AK3127?l=en) - The Sustainable Scientist
