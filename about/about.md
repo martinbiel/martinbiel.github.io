@@ -24,3 +24,4 @@ Below is a list of courses I have taken at the doctoral level.
 
 ## Other Institutions
 * [**PUMPS**](http://bcw.ac.upc.edu/PUMPS2017/) - Programming and Tuning Massively Parallel Systems (Summer school)
+* [**BEA512**](https://www.nhh.no/en/courses/modeling-decision-problems-under-uncertainty/) - Modeling Decision Problems under Uncertainty
