@@ -31,8 +31,6 @@ collections:
         output: true
     publications:
         output: true
-    software:
-        output: true
     teachingmaterial:
 
 publication-order:
