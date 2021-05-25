@@ -22,7 +22,7 @@ group :jekyll_plugins do
    gem 'jekyll-paginate', '1.1.0'
    gem 'jekyll-sitemap', '1.0.0'
    gem 'jekyll-gist', '1.4.0'
-   gem 'redcarpet', '3.4.0'
-   gem 'kramdown', '2.3.0'
+   gem 'redcarpet', '3.5.1'
+   gem 'kramdown', '2.3.1'
    gem 'rouge', '3.2.0'
 end
