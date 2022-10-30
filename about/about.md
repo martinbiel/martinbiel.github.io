@@ -4,9 +4,9 @@ title: About
 permalink: /about/
 ---
 
-I graduated from KTH’s Engineering Physics programme in 2016 and received a MSc in _Applied and Computational Mathematics**. Since August of 2016 I am pursuing a doctoral degree at the [Divison of Decision and Control Systems](https://www.kth.se/dcs) at KTH, under the supervision of Prof. [Mikael Johansson](https://people.kth.se/~mikaelj/) and co-supervision of Prof. [Lennart Söder](https://www.kth.se/profile/lsod/).
+I graduated from KTH’s Engineering Physics programme in 2016 and received a MSc in _Applied and Computational Mathematics**, and a Ph.D. degree in Electrical Engineering at KTH in 2021. Since 2022, I am employed as a researcher at the Swedish Defence Research Agency (FOI).
 
-My research interests lie within optimization, parallel computations and control theory. I am also interested in software development, and enjoy implementing mathematical ideas into useful applications. My current research project involves the development of scalable optimization algorithms, that could allow for accurate real-time optimization of the Swedish hydropower networks.
+My research interests lie within optimization, parallel computations and control theory. I am also interested in software development, and enjoy implementing mathematical ideas into useful applications.
 
 # PhD Courses
 Below is a list of courses I have taken at the doctoral level.
